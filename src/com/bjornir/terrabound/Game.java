@@ -1,6 +1,7 @@
 package com.bjornir.terrabound;
 
 import com.bjornir.terrabound.entities.Player;
+import com.bjornir.terrabound.utils.MapUtils;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,6 +24,7 @@ public class Game extends BasicGame {
         player.setX(20);
         player.setY(50);
         map = new TiledMap("sprites/arena.tmx");
+        MapUtils.setMap(map);
     }
 
     @Override

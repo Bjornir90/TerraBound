@@ -6,7 +6,7 @@ import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class Movable {
+public abstract class Movable {
     protected Vector speed, position;
     private float scale;
     private Image sprite;
@@ -26,14 +26,25 @@ public class Movable {
         Vector futureCoords = new Vector();
         futureCoords.setX(position.getX());
         futureCoords.setY(position.getY());
-        futureCoords.addVector(speed);
+        futureCoords.addVector(speed.multiplyScalar(delta));
         return futureCoords;
     }
 
     public void update(int delta){
-        position = calculateFutureCoords(delta);
+        Vector futureCoords = calculateFutureCoords(delta);
+        if(MapUtils.collidesWithTerrain(futureCoords.getX(), futureCoords.getY())){
+            onTerrainCollision();
+        } else {
+            position = futureCoords;
+        }
         speed.setY(speed.getY() + Game.GRAVITY*delta);
     }
+
+    /**
+     * Is called by update() method in Movable when a collision is detected with the terrain
+     * Allow for different behaviors when colliding with the terrain
+     */
+    public abstract void onTerrainCollision();
 
     public float getX() {
         return position.getX();

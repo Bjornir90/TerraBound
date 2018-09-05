@@ -18,14 +18,30 @@ public class Vector {
         this.y = y;
     }
 
-    public void addVector(Vector vector){
+    public void addSelfVector(Vector vector){
         this.x += vector.getX();
         this.y += vector.getY();
     }
 
-    public void multiplyScalar(float k){
+    public void multiplySelfScalar(float k){
         this.x = this.x * k;
         this.y = this.y * k;
+    }
+
+    public Vector addVector(Vector vector){
+        Vector toReturn = new Vector();
+        toReturn.setX(this.getX());
+        toReturn.setY(this.getY());
+        toReturn.addSelfVector(vector);
+        return toReturn;
+    }
+
+    public Vector multiplyScalar(float k){
+        Vector toReturn = new Vector();
+        toReturn.setX(this.getX());
+        toReturn.setY(this.getY());
+        toReturn.multiplySelfScalar(k);
+        return toReturn;
     }
 
     public float getX() {

@@ -12,6 +12,11 @@ public class Player extends Movable implements KeyListener {
         super(spritePath, scale);
     }
 
+    @Override
+    public void onTerrainCollision() {
+        this.position.setY(0);
+    }
+
 
     @Override
     public void keyPressed(int i, char c) {
