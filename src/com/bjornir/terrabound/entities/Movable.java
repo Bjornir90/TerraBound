@@ -36,22 +36,22 @@ public class Movable {
     }
 
     public float getX() {
-        return x;
+        return position.getX();
     }
 
     public float getY() {
-        return y;
+        return position.getY();
     }
 
     public void draw(){
-        sprite.draw(x, y, scale);
+        sprite.draw(position.getX(), position.getY(), scale);
     }
 
     public void setX(float x) {
-        this.x = x;
+        this.position.setX(x);
     }
 
     public void setY(float y) {
-        this.y = y;
+        this.position.setY(y);
     }
 }
