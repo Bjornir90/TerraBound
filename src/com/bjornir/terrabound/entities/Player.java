@@ -14,7 +14,7 @@ public class Player extends Movable implements KeyListener {
 
     @Override
     public void onTerrainCollision() {
-        this.position.setY(0);
+        this.speed.setY(0);
     }
 
 

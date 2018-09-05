@@ -26,7 +26,7 @@ public abstract class Movable {
         Vector futureCoords = new Vector();
         futureCoords.setX(position.getX());
         futureCoords.setY(position.getY());
-        futureCoords.addVector(speed.multiplyScalar(delta));
+        futureCoords.addSelfVector(speed.multiplyScalar(delta));
         return futureCoords;
     }
 
@@ -34,10 +34,11 @@ public abstract class Movable {
         Vector futureCoords = calculateFutureCoords(delta);
         if(MapUtils.collidesWithTerrain(futureCoords.getX(), futureCoords.getY())){
             onTerrainCollision();
+            System.out.printf("Collision detected");
         } else {
             position = futureCoords;
+            speed.setY(speed.getY() + Game.GRAVITY*delta);
         }
-        speed.setY(speed.getY() + Game.GRAVITY*delta);
     }
 
     /**
