@@ -8,8 +8,8 @@ import org.newdawn.slick.SlickException;
 
 public class Player extends Movable implements KeyListener {
 
-    public Player(String spritePath) throws SlickException {
-        super(spritePath);
+    public Player(String spritePath, float scale) throws SlickException {
+        super(spritePath, scale);
     }
 
 
@@ -19,6 +19,8 @@ public class Player extends Movable implements KeyListener {
             this.setSpeed(new Vector(speed.getX()+Game.ACCELERATION, speed.getY()));
         } else if(i == Input.KEY_A){
             this.setSpeed(new Vector(speed.getX()-Game.ACCELERATION, speed.getY()));
+        } else if(i == Input.KEY_SPACE){
+            this.setSpeed(new Vector(speed.getX(), -2.0f));
         }
 
     }
@@ -51,4 +53,6 @@ public class Player extends Movable implements KeyListener {
     public void inputStarted() {
 
     }
+
+
 }
