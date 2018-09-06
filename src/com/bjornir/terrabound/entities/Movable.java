@@ -6,16 +6,32 @@ import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import java.util.HashMap;
+
 public abstract class Movable {
     protected Vector speed, position;
+    protected HashMap<String, Vector> offsetsFromTopLeftCorner;
     private float scale;
     private Image sprite;
+    public static String TOPLEFT = "tl", TOPRIGHT = "tr", BOTTOMLEFT = "bl", BOTTOMRIGHT = "br";
+
+    private HashMap<String, Vector> calculateCorners(){
+        float width = sprite.getWidth();
+        float height = sprite.getHeight();
+        HashMap<String, Vector> offsetsFromTopLeftCorner = new HashMap<>();
+        offsetsFromTopLeftCorner.put("tl", new Vector(0, 0));
+        offsetsFromTopLeftCorner.put("tr", new Vector(width, 0));
+        offsetsFromTopLeftCorner.put("bl", new Vector(0, height));
+        offsetsFromTopLeftCorner.put("br", new Vector(width, height));
+        return offsetsFromTopLeftCorner;
+    }
 
     public Movable(String spritePath, float scale) throws SlickException {
         sprite = new Image(spritePath);
         speed = new Vector();
         position = new Vector();
         this.scale = scale;
+        this.offsetsFromTopLeftCorner = calculateCorners();
     }
 
     public void setSpeed(Vector vector){
