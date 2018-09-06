@@ -10,14 +10,15 @@ import java.util.HashMap;
 
 public abstract class Movable {
     protected Vector speed, position;
-    protected HashMap<String, Vector> offsetsFromTopLeftCorner;
+    private HashMap<String, Vector> offsetsFromTopLeftCorner;
     private float scale;
     private Image sprite;
     public static String TOPLEFT = "tl", TOPRIGHT = "tr", BOTTOMLEFT = "bl", BOTTOMRIGHT = "br";
+    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3;
 
     private HashMap<String, Vector> calculateCorners(){
-        float width = sprite.getWidth();
-        float height = sprite.getHeight();
+        float width = sprite.getWidth()*scale;
+        float height = sprite.getHeight()*scale;
         HashMap<String, Vector> offsetsFromTopLeftCorner = new HashMap<>();
         offsetsFromTopLeftCorner.put("tl", new Vector(0, 0));
         offsetsFromTopLeftCorner.put("tr", new Vector(width, 0));
@@ -48,12 +49,17 @@ public abstract class Movable {
 
     public void update(int delta){
         Vector futureCoords = calculateFutureCoords(delta);
-        if(MapUtils.collidesWithTerrain(futureCoords.getX(), futureCoords.getY())){
-            onTerrainCollision();
-            System.out.printf("Collision detected");
-        } else {
-            position = futureCoords;
-            speed.setY(speed.getY() + Game.GRAVITY*delta);
+        for(Vector offset : offsetsFromTopLeftCorner.values()) {
+            Vector futureCorner = futureCoords.addVector(offset);
+            if (MapUtils.collidesWithTerrain(futureCorner.getX(), futureCorner.getY())) {
+                System.out.printf("Collision detected");
+                //Now we determine on which side the collision occurred
+                float width = sprite.getWidth()*scale, height = sprite.getHeight()*scale;
+
+            } else {
+                position = futureCoords;
+                speed.setY(speed.getY() + Game.GRAVITY * delta);
+            }
         }
     }
 
@@ -61,7 +67,7 @@ public abstract class Movable {
      * Is called by update() method in Movable when a collision is detected with the terrain
      * Allow for different behaviors when colliding with the terrain
      */
-    public abstract void onTerrainCollision();
+    public abstract void onTerrainCollision(int side);
 
     public float getX() {
         return position.getX();
@@ -81,5 +87,9 @@ public abstract class Movable {
 
     public void setY(float y) {
         this.position.setY(y);
+    }
+
+    public Vector getCornerOffset(String corner){
+        return offsetsFromTopLeftCorner.get(corner);
     }
 }
