@@ -10,21 +10,20 @@ import java.util.HashMap;
 
 public abstract class Movable {
     protected Vector speed, position;
-    private HashMap<String, Vector> offsetsFromTopLeftCorner;
+    private HashMap<Integer, Vector> offsetsFromTopLeftCorner;
     private float scale;
     private Image sprite;
-    public static String TOPLEFT = "tl", TOPRIGHT = "tr", BOTTOMLEFT = "bl", BOTTOMRIGHT = "br";
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3;
 
-    private HashMap<String, Vector> calculateCorners(){
+    private HashMap<Integer, Vector> calculateCentersOfSides(){
         float width = sprite.getWidth()*scale;
         float height = sprite.getHeight()*scale;
-        HashMap<String, Vector> offsetsFromTopLeftCorner = new HashMap<>();
-        offsetsFromTopLeftCorner.put("tl", new Vector(0, 0));
-        offsetsFromTopLeftCorner.put("tr", new Vector(width, 0));
-        offsetsFromTopLeftCorner.put("bl", new Vector(0, height));
-        offsetsFromTopLeftCorner.put("br", new Vector(width, height));
-        return offsetsFromTopLeftCorner;
+        HashMap<Integer, Vector> centersOfSides = new HashMap<>();
+        centersOfSides.put(TOP, new Vector(width/2, 0));
+        centersOfSides.put(LEFT, new Vector(0, height/2));
+        centersOfSides.put(BOTTOM, new Vector(width/2, height));
+        centersOfSides.put(RIGHT, new Vector(width, height/2));
+        return centersOfSides;
     }
 
     public Movable(String spritePath, float scale) throws SlickException {
@@ -48,19 +47,7 @@ public abstract class Movable {
     }
 
     public void update(int delta){
-        Vector futureCoords = calculateFutureCoords(delta);
-        for(Vector offset : offsetsFromTopLeftCorner.values()) {
-            Vector futureCorner = futureCoords.addVector(offset);
-            if (MapUtils.collidesWithTerrain(futureCorner.getX(), futureCorner.getY())) {
-                System.out.printf("Collision detected");
-                //Now we determine on which side the collision occurred
-                float width = sprite.getWidth()*scale, height = sprite.getHeight()*scale;
 
-            } else {
-                position = futureCoords;
-                speed.setY(speed.getY() + Game.GRAVITY * delta);
-            }
-        }
     }
 
     /**
