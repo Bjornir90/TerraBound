@@ -13,8 +13,12 @@ public class Player extends Movable implements KeyListener {
     }
 
     @Override
-    public void onTerrainCollision() {
-        this.speed.setY(0);
+    public void onTerrainCollision(int side) {
+        if(side == Movable.BOTTOM || side == Movable.TOP) {
+            this.speed.setY(0);
+        } else if(side == Movable.LEFT || side == Movable.RIGHT){
+            this.speed.setX(0);
+        }
     }
 
 

@@ -5,7 +5,7 @@ import com.bjornir.terrabound.entities.Movable;
 public class RayCaster {
 
 
-    public static boolean raycastTerrain(float height, float width, Vector origin, int axis){
+    public static boolean raycastTerrain(float width, float height, Vector origin, int axis){
         float x1 = 0, x2 = 0, y1 = 0, y2 = 0;
         if(axis == Movable.TOP){
             x1 = origin.getX()-width/2;

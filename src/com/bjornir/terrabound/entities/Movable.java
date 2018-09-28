@@ -1,7 +1,7 @@
 package com.bjornir.terrabound.entities;
 
-import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.MapUtils;
+import com.bjornir.terrabound.utils.RayCaster;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public abstract class Movable {
     protected Vector speed, position;
-    private HashMap<Integer, Vector> offsetsFromTopLeftCorner;
-    private float scale;
+    private HashMap<Integer, Vector> centerOfSides;
+    private float scale, scaledWidth, scaledHeight;
     private Image sprite;
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3;
 
@@ -31,7 +31,9 @@ public abstract class Movable {
         speed = new Vector();
         position = new Vector();
         this.scale = scale;
-        this.offsetsFromTopLeftCorner = calculateCorners();
+        scaledWidth = sprite.getWidth()*scale;
+        scaledHeight = sprite.getHeight()*scale;
+        this.centerOfSides = calculateCentersOfSides();
     }
 
     public void setSpeed(Vector vector){
@@ -47,7 +49,20 @@ public abstract class Movable {
     }
 
     public void update(int delta){
-
+        Vector futureCoords = calculateFutureCoords(delta);
+        for(Vector center : centerOfSides.values()){
+            Vector futureCenter = center.addVector(futureCoords);
+            if(MapUtils.collidesWithTerrain(futureCenter.getX(), futureCenter.getY())){
+                for(int side = 0; side<4; side++){
+                    if(RayCaster.raycastTerrain(scaledWidth, scaledHeight, center, side)){
+                        onTerrainCollision(side);
+                        return;
+                    }
+                }
+            }
+        }
+        position = futureCoords;
+        speed.setY(speed.getY()+0.001f);
     }
 
     /**
@@ -74,9 +89,5 @@ public abstract class Movable {
 
     public void setY(float y) {
         this.position.setY(y);
-    }
-
-    public Vector getCornerOffset(String corner){
-        return offsetsFromTopLeftCorner.get(corner);
     }
 }
