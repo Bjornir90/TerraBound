@@ -19,6 +19,7 @@ public class Player extends Movable implements KeyListener {
         } else if(side == Movable.LEFT || side == Movable.RIGHT){
             this.speed.setX(0);
         }
+	    System.out.println("Collision with terrain detected : side = " + side);
     }
 
 

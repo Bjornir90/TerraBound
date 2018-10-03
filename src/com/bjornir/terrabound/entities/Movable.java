@@ -54,7 +54,7 @@ public abstract class Movable {
             Vector futureCenter = center.addVector(futureCoords);
             if(MapUtils.collidesWithTerrain(futureCenter.getX(), futureCenter.getY())){
                 for(int side = 0; side<4; side++){
-                    if(RayCaster.raycastTerrain(scaledWidth, scaledHeight, center, side)){
+                    if(RayCaster.raycastTerrain(scaledWidth, scaledHeight, center.addVector(position), side)){
                         onTerrainCollision(side);
                         return;
                     }
