@@ -19,4 +19,12 @@ public class MapUtils {
         Image tile = MapUtils.map.getTileImage((int)  x/MapUtils.tileWidth, (int) y/MapUtils.tileHeight, 0);
         return tile != null;
     }
+
+    public static int getMapWidth(){
+        return map.getWidth()*map.getTileWidth();
+    }
+
+    public static int getMapHeight(){
+        return map.getHeight()*map.getTileHeight();
+    }
 }

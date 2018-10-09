@@ -16,17 +16,15 @@ public class RayCaster {
 	}
 
 	public static void drawRays(Graphics g){
-		Color[] colors = new Color[5];
+		Color[] colors = new Color[4];
 		colors[0] = Color.cyan;//top
 		colors[1] = Color.green;//left
 		colors[2] = Color.orange;//bottom
 		colors[3] = Color.magenta;//right
-		colors[4] = Color.pink;
 		int colorIndex = 0;
 		for(Rectangle r : boundariesToDraw){
 			g.setColor(colors[colorIndex]);
-			if(colorIndex<4)
-				colorIndex++;
+			colorIndex++;
 			g.draw(r);
 		}
 		boundariesToDraw.clear();//To avoid redrawing the same boundaries over and over

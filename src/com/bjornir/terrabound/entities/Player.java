@@ -30,7 +30,7 @@ public class Player extends Movable implements KeyListener {
         } else if(i == Input.KEY_A){
             this.setSpeed(new Vector(speed.getX()-Game.ACCELERATION, speed.getY()));
         } else if(i == Input.KEY_SPACE){
-            this.setSpeed(new Vector(speed.getX(), -2.0f));
+            this.setSpeed(new Vector(speed.getX(), -1.5f));
         }
 
     }

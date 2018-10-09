@@ -57,6 +57,12 @@ public abstract class Movable {
         for(int side = 0; side<4; side++){
 	        Vector center = centerOfSides.get(side);
 	        Vector futureCenter = center.addVector(futureCoords);
+	        if(futureCoords.getX() < 0 || futureCoords.getX() > MapUtils.getMapWidth()){
+	        	speed.setX(0);
+	        }
+	        if(futureCoords.getY() < 0 || futureCoords.getY() > MapUtils.getMapHeight()){
+	        	speed.setY(0);
+	        }
 	        if (debug) {
 		        RayCaster.prepareRayDraw(scaledWidth, scaledHeight, center.addVector(position), side);
 	        }
