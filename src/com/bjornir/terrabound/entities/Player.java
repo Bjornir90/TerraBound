@@ -26,9 +26,9 @@ public class Player extends Movable implements KeyListener {
     @Override
     public void keyPressed(int i, char c) {
         if(i == Input.KEY_D){
-            this.setSpeed(new Vector(speed.getX()+Game.ACCELERATION, speed.getY()));
+            this.setSpeed(new Vector(Game.ACCELERATION, speed.getY()));
         } else if(i == Input.KEY_A){
-            this.setSpeed(new Vector(speed.getX()-Game.ACCELERATION, speed.getY()));
+            this.setSpeed(new Vector(-Game.ACCELERATION, speed.getY()));
         } else if(i == Input.KEY_SPACE){
             this.setSpeed(new Vector(speed.getX(), -1.5f));
         }
@@ -38,9 +38,9 @@ public class Player extends Movable implements KeyListener {
     @Override
     public void keyReleased(int i, char c) {
         if(i == Input.KEY_D){
-            this.setSpeed(new Vector(speed.getX()-Game.ACCELERATION, speed.getY()));
+            this.setSpeed(new Vector(0, speed.getY()));
         } else if(i == Input.KEY_A){
-            this.setSpeed(new Vector(speed.getX()+Game.ACCELERATION, speed.getY()));
+            this.setSpeed(new Vector(0, speed.getY()));
         }
     }
 

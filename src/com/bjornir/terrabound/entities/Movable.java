@@ -52,7 +52,7 @@ public abstract class Movable {
         return futureCoords;
     }
 
-    public void update(int delta){
+    public Vector update(int delta){
         Vector futureCoords = calculateFutureCoords(delta);
         for(int side = 0; side<4; side++){
 	        Vector center = centerOfSides.get(side);
@@ -76,6 +76,7 @@ public abstract class Movable {
         Vector updatedFutureCoords = calculateFutureCoords(delta);
         position = updatedFutureCoords;
         speed.setY(speed.getY()+Game.GRAVITY);
+        return speed;
     }
 
     /**

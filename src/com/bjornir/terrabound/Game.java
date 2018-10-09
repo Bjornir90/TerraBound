@@ -3,16 +3,16 @@ package com.bjornir.terrabound;
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.RayCaster;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import com.bjornir.terrabound.utils.Vector;
+import org.newdawn.slick.*;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class Game extends BasicGame {
-    public static float MAX_SPEED = 5.0f, ACCELERATION = 1.0f, GRAVITY = 0.007f;
+    public static float MAX_SPEED = 5.0f, ACCELERATION = 1.0f, GRAVITY = 0.009f;
     private Player player;
     private TiledMap map;
+    private TextField tf;
 
     public Game() {
         super("TerraBound");
@@ -27,6 +27,7 @@ public class Game extends BasicGame {
         player.setG(container.getGraphics());
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
+        tf = new TextField(container, container.getDefaultFont(), 50, 50, 250, 50);
     }
 
     @Override
@@ -34,11 +35,13 @@ public class Game extends BasicGame {
         player.draw();
         RayCaster.drawRays(g);
         map.render(0, 0);
+        tf.render(container, g);
     }
 
     @Override
     public void update(GameContainer container, int delta) {
-        player.update(delta);
+        Vector speed = player.update(delta);
+        tf.setText(speed.toString());
     }
 
 }
