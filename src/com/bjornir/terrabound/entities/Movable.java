@@ -16,7 +16,7 @@ public abstract class Movable {
     private float scale, scaledWidth, scaledHeight;
     private Image sprite;
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3;
-    private boolean debug = true;
+    protected boolean debug = true, friction = true;//TODO change for arrows
     private Graphics g;
 
     private HashMap<Integer, Vector> calculateCentersOfSides(){
@@ -76,6 +76,10 @@ public abstract class Movable {
         Vector updatedFutureCoords = calculateFutureCoords(delta);
         position = updatedFutureCoords;
         speed.setY(speed.getY()+Game.GRAVITY);
+        if(friction){
+	        float x = speed.getX();
+        	speed.setX(x - (x*0.1f));
+        }
         return speed;
     }
 
