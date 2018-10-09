@@ -2,6 +2,7 @@ package com.bjornir.terrabound;
 
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.utils.MapUtils;
+import com.bjornir.terrabound.utils.RayCaster;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,18 +24,20 @@ public class Game extends BasicGame {
         player.setInput(container.getInput());
         player.setX(20);
         player.setY(50);
+        player.setG(container.getGraphics());
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
     }
 
     @Override
-    public void render(GameContainer container, Graphics g) throws SlickException {
+    public void render(GameContainer container, Graphics g) {
         player.draw();
+        RayCaster.drawRays(g);
         map.render(0, 0);
     }
 
     @Override
-    public void update(GameContainer container, int delta) throws SlickException {
+    public void update(GameContainer container, int delta) {
         player.update(delta);
     }
 

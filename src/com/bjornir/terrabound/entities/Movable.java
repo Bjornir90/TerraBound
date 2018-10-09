@@ -1,8 +1,10 @@
 package com.bjornir.terrabound.entities;
 
+import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.RayCaster;
 import com.bjornir.terrabound.utils.Vector;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -14,6 +16,8 @@ public abstract class Movable {
     private float scale, scaledWidth, scaledHeight;
     private Image sprite;
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3;
+    private boolean debug = true;
+    private Graphics g;
 
     private HashMap<Integer, Vector> calculateCentersOfSides(){
         float width = sprite.getWidth()*scale;
@@ -50,19 +54,22 @@ public abstract class Movable {
 
     public void update(int delta){
         Vector futureCoords = calculateFutureCoords(delta);
-        for(Vector center : centerOfSides.values()){
-            Vector futureCenter = center.addVector(futureCoords);
-            if(MapUtils.collidesWithTerrain(futureCenter.getX(), futureCenter.getY())){
-                for(int side = 0; side<4; side++){
-                    if(RayCaster.raycastTerrain(scaledWidth, scaledHeight, center.addVector(position), side)){
-                        onTerrainCollision(side);
-                        return;
-                    }
-                }
-            }
+        for(int side = 0; side<4; side++){
+	        Vector center = centerOfSides.get(side);
+	        Vector futureCenter = center.addVector(futureCoords);
+	        if (debug) {
+		        RayCaster.prepareRayDraw(scaledWidth, scaledHeight, center.addVector(position), side);
+	        }
+	        if(MapUtils.collidesWithTerrain(futureCenter.getX(), futureCenter.getY())){
+		        if(RayCaster.raycastTerrain(scaledWidth, scaledHeight, center.addVector(position), side)){
+			        onTerrainCollision(side);
+		        }
+	        }
         }
-        position = futureCoords;
-        speed.setY(speed.getY()+0.001f);
+        //We calculate the futurecoords again to take into account the collisions detected above
+        Vector updatedFutureCoords = calculateFutureCoords(delta);
+        position = updatedFutureCoords;
+        speed.setY(speed.getY()+Game.GRAVITY);
     }
 
     /**
@@ -90,4 +97,20 @@ public abstract class Movable {
     public void setY(float y) {
         this.position.setY(y);
     }
+
+    public Vector getPosition() {
+        return position;
+    }
+
+    public float getScaledWidth() {
+        return scaledWidth;
+    }
+
+    public float getScaledHeight() {
+        return scaledHeight;
+    }
+
+	public void setG(Graphics g) {
+		this.g = g;
+	}
 }
