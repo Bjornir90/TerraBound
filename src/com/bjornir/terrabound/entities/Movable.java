@@ -75,10 +75,10 @@ public abstract class Movable {
         //We calculate the futurecoords again to take into account the collisions detected above
         Vector updatedFutureCoords = calculateFutureCoords(delta);
         position = updatedFutureCoords;
-        speed.setY(speed.getY()+Game.GRAVITY);
+        speed.setY(speed.getY()+Game.GRAVITY*delta);
         if(friction){
 	        float x = speed.getX();
-        	speed.setX(x - (x*0.1f));
+        	speed.setX(x - (x*0.1f*delta));
         }
         return speed;
     }
