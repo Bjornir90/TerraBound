@@ -13,6 +13,11 @@ public class Vector {
         this.y = y;
     }
 
+    public Vector(Vector v){
+        this.x = v.getX();
+        this.y = v.getY();
+    }
+
     public void setCoordinates(float x, float y){
         this.x = x;
         this.y = y;
@@ -58,6 +63,22 @@ public class Vector {
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    /**
+     * Creates a new Vector, that has this x coordinate and 0 as its y coordinate. It simply instantiate a new Vector using this Vector x coordinate.
+     * @return the projection on the x axis of this Vector
+     */
+    public Vector getXProjection(){
+        return new Vector(this.x, 0);
+    }
+
+    /**
+     * Creates a new Vector, that has this y coordinate and 0 as its x coordinate. It simply instantiate a new Vector using this Vector y coordinate.
+     * @return the projection on the y axis of this Vector
+     */
+    public Vector getYProjection(){
+        return new Vector(0, this.y);
     }
 
     @Override

@@ -9,10 +9,15 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class Game extends BasicGame {
-    public static float MAX_SPEED = 1.0f, ACCELERATION = 0.2f, GRAVITY = 0.05f;
+    public static float MAX_SPEED = 1.2f, ACCELERATION = 0.6f, GRAVITYSTRENGTH = 0.003f;
+    public static Vector GRAVITY;
     private Player player;
     private TiledMap map;
     private TextField tf;
+
+    static {
+        GRAVITY = new Vector(0, GRAVITYSTRENGTH);
+    }
 
     public Game() {
         super("TerraBound");
@@ -27,7 +32,7 @@ public class Game extends BasicGame {
         player.setG(container.getGraphics());
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
-        tf = new TextField(container, container.getDefaultFont(), 50, 50, 250, 50);
+        tf = new TextField(container, container.getDefaultFont(), 15, 15, 250, 75);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class Game extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) {
         Vector speed = player.update(delta);
-        tf.setText(speed.toString());
+        tf.setText("Time to update : "+ delta + "ms\n"+speed+"\n"+player.getAcceleration());
     }
 
 }

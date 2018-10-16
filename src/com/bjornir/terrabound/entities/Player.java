@@ -20,25 +20,25 @@ public class Player extends Movable implements KeyListener {
         if(side == Movable.BOTTOM){
             onPlatform = true;
             this.speed.setY(0);
+            this.acceleration.setY(0);
         }else if(side == Movable.TOP) {
             this.speed.setY(0);
+            this.acceleration.setY(0);
         } else if(side == Movable.LEFT || side == Movable.RIGHT){
             this.speed.setX(0);
+            this.acceleration.setX(0);
         }
-	    System.out.println("Collision with terrain detected : side = " + side);
     }
 
 
     @Override
     public void keyPressed(int i, char c) {
         if(i == Input.KEY_D){
-            this.setSpeed(new Vector(Game.ACCELERATION, speed.getY()));
-            friction = false;
+            this.setAcceleration(new Vector(Game.ACCELERATION, acceleration.getY()));
         } else if(i == Input.KEY_A){
-            this.setSpeed(new Vector(-Game.ACCELERATION, speed.getY()));
-            friction = false;
+            this.setAcceleration(new Vector(-Game.ACCELERATION, acceleration.getY()));
         } else if(i == Input.KEY_SPACE && onPlatform){
-            this.setSpeed(new Vector(speed.getX(), -1.3f));
+            this.setAcceleration(new Vector(acceleration.getX(), -0.5f));
             onPlatform = false;
         }
 
@@ -46,12 +46,8 @@ public class Player extends Movable implements KeyListener {
 
     @Override
     public void keyReleased(int i, char c) {
-        if(i == Input.KEY_D){
-            this.setSpeed(new Vector(0, speed.getY()));
-            friction = true;
-        } else if(i == Input.KEY_A){
-            this.setSpeed(new Vector(0, speed.getY()));
-            friction = true;
+        if(i == Input.KEY_D || i == Input.KEY_A){
+            this.setAcceleration(new Vector(0, acceleration.getY()));
         }
     }
 
@@ -74,6 +70,7 @@ public class Player extends Movable implements KeyListener {
     public void inputStarted() {
 
     }
+
 
 
 }
