@@ -38,10 +38,12 @@ public class Game extends BasicGame {
             @Override
             public void keyPressed(int i, char c) {
                 if(i == Input.KEY_P){
-                    if(container.isPaused())
+                    if(!container.isPaused())
                         container.pause();
                     else
                         container.resume();
+                } else if(i == Input.KEY_ESCAPE){
+                    container.exit();
                 }
             }
 
