@@ -110,13 +110,14 @@ public abstract class Movable {
 	        }*/
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
-                if(futurePixel.getX() == position.getX()){
+	            //Remove the corners, because they detect a collision on the wrong sides
+                if(futurePixel.getX() == position.getX() && futurePixel.getY() != position.getY() && futurePixel.getY() != position.getY()+scaledHeight){
                     onTerrainCollision(LEFT);
-                } else if(futurePixel.getX() == position.getX()+scaledWidth){
+                } else if(futurePixel.getX() == position.getX()+scaledWidth && futurePixel.getY() != position.getY() && futurePixel.getY() != position.getY()+scaledHeight){
                     onTerrainCollision(RIGHT);
-                } else if(futurePixel.getY() == position.getY()){
+                } else if(futurePixel.getY() == position.getY() && futurePixel.getX() != position.getX() && futurePixel.getX() != position.getX()+scaledWidth){
                     onTerrainCollision(TOP);
-                } else if(futurePixel.getY() == position.getY()+scaledHeight){
+                } else if(futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() != position.getX() && futurePixel.getX() != position.getX()+scaledWidth){
                     onTerrainCollision(BOTTOM);
                 }
 
