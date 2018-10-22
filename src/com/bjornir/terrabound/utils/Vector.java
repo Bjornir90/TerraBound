@@ -65,6 +65,11 @@ public class Vector {
         this.y = y;
     }
 
+    public void addX(float x){ this.x += x; }
+
+    public void addY(float y){ this.y += y; }
+
+
     /**
      * Creates a new Vector, that has this x coordinate and 0 as its y coordinate. It simply instantiate a new Vector using this Vector x coordinate.
      * @return the projection on the x axis of this Vector

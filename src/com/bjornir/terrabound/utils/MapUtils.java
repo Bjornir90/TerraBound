@@ -15,6 +15,10 @@ public class MapUtils {
         MapUtils.tileHeight = map.getTileHeight();
     }
 
+    public static boolean collidesWithTerrain(Vector toTest){
+        return collidesWithTerrain(toTest.getX(), toTest.getY());
+    }
+
     public static boolean collidesWithTerrain(float x, float y){
         Image tile = MapUtils.map.getTileImage((int)  x/MapUtils.tileWidth, (int) y/MapUtils.tileHeight, 0);
         return tile != null;

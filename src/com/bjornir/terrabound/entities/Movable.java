@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Movable {
@@ -46,28 +47,70 @@ public abstract class Movable {
         Vector futureCoords = new Vector();
         futureCoords.setX(position.getX());
         futureCoords.setY(position.getY());
-        futureCoords.addSelfVector(speed.multiplyScalar(delta));
+        futureCoords = handleMovement(delta, futureCoords);
         return futureCoords;
     }
 
+    private Vector handleMovement(int delta, Vector originPosition){
+        return originPosition.addVector(speed.multiplyScalar(delta));
+    }
+
+    protected ArrayList<Vector> calculateFutureBounds(int delta){
+        //Vector position is top left of sprite
+        //Create an ArrayList of the coordinates of each pixels on the boundaries
+        ArrayList<Vector> pixelsOnBoundaries = new ArrayList<>();
+        Vector bottomLeft = new Vector(position);
+        bottomLeft.addY(scaledHeight);
+        Vector topRight = new Vector(position);
+        topRight.addX(scaledWidth);
+
+        for(int x = 0; x<scaledWidth; x++){
+            Vector pixelOnTopBoundary = new Vector(position);
+            pixelOnTopBoundary.addX(x);
+            Vector pixelOnBottomBoundary = new Vector(bottomLeft);
+            pixelOnBottomBoundary.addX(x);
+            pixelsOnBoundaries.add(pixelOnTopBoundary);
+            pixelsOnBoundaries.add(pixelOnBottomBoundary);
+        }
+
+        for(int y = 0; y<scaledHeight; y++){
+            Vector pixelOnLeftBoundary = new Vector(position);
+            pixelOnLeftBoundary.addX(y);
+            Vector pixelOnRightBoundary = new Vector(topRight);
+            pixelOnRightBoundary.addX(y);
+            pixelsOnBoundaries.add(pixelOnLeftBoundary);
+            pixelsOnBoundaries.add(pixelOnRightBoundary);
+        }
+
+        pixelsOnBoundaries.forEach(p -> handleMovement(delta, p));
+        return pixelsOnBoundaries;
+    }
+
     public Vector update(int delta){
-        Vector futureCoords = calculateFutureCoords(delta);
-        for(int side = 0; side<4; side++){
-	        Vector center = centerOfSides.get(side);
-	        Vector futureCenter = center.addVector(futureCoords);
-	        if(futureCoords.getX() < 0 || futureCoords.getX() >= MapUtils.getMapWidth()){
+        ArrayList<Vector> futureBounds = calculateFutureBounds(delta);
+        for(Vector futurePixel : futureBounds){
+	        if(futurePixel.getX() < 0 || futurePixel.getX() >= MapUtils.getMapWidth()){
 	        	speed.setX(0);
 	        }
-	        if(futureCoords.getY() < 0 || futureCoords.getY() >= MapUtils.getMapHeight()){
+	        if(futurePixel.getY() < 0 || futurePixel.getY() >= MapUtils.getMapHeight()){
 	        	speed.setY(0);
 	        }
-	        if (debug) {
+	        /*if (debug) {
 		        RayCaster.prepareRayDraw(scaledWidth, scaledHeight, center.addVector(position), side);
-	        }
-	        if(MapUtils.collidesWithTerrain(futureCenter.getX(), futureCenter.getY())){
-		        if(RayCaster.raycastTerrain(scaledWidth, scaledHeight, center.addVector(position), side)){
-			        onTerrainCollision(side);
-		        }
+	        }*/
+	        if(MapUtils.collidesWithTerrain(futurePixel)){
+	            //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
+	            Vector center = calculateCenter();
+	            if(futurePixel.getX() < center.getX()){
+	                onTerrainCollision(LEFT);
+                } else if(futurePixel.getX() > center.getX()){
+	                onTerrainCollision(RIGHT);
+                } else if(futurePixel.getY() < center.getY()){
+	                onTerrainCollision(TOP);
+                } else if(futurePixel.getY() > center.getY()){
+	                onTerrainCollision(BOTTOM);
+                }
+
 	        }
         }
         //We calculate the futurecoords again to take into account the collisions detected above
@@ -100,6 +143,13 @@ public abstract class Movable {
      * Allow for different behaviors when colliding with the terrain
      */
     public abstract void onTerrainCollision(int side);
+
+    protected Vector calculateCenter(){
+        Vector center = new Vector(position);
+        center.addX(scaledWidth/2);
+        center.addY(scaledHeight/2);
+        return center;
+    }
 
     public float getX() {
         return position.getX();
