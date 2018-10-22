@@ -31,4 +31,10 @@ public class MapUtils {
     public static int getMapHeight(){
         return map.getHeight()*map.getTileHeight();
     }
+
+    public static int getTileHeight() {
+        return tileHeight;
+    }
+
+    public static int getTileWidth() { return tileWidth; }
 }

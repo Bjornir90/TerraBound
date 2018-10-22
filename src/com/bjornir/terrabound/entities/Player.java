@@ -1,6 +1,7 @@
 package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.Game;
+import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
@@ -19,11 +20,19 @@ public class Player extends Movable implements KeyListener {
     public void onTerrainCollision(int side) {
         if(side == Movable.BOTTOM){
             onPlatform = true;
-            this.speed.setY(0);
-            this.acceleration.setY(0);
+            if(this.speed.getY()>0)
+                this.speed.setY(0);
+            if(this.acceleration.getY()>0)
+                this.acceleration.setY(0);
+            //get out of the terrain tile
+            this.position.addY(-this.position.getY()%MapUtils.getTileHeight());
         }else if(side == Movable.TOP) {
-            this.speed.setY(0);
-            this.acceleration.setY(0);
+            if(this.speed.getY()<0)
+                this.speed.setY(0);
+            if(this.acceleration.getY()<0)
+                this.acceleration.setY(0);
+            //get out of the terrain tile
+            this.position.addY(this.position.getY()%MapUtils.getTileHeight());
         } else if(side == Movable.LEFT || side == Movable.RIGHT){
             this.speed.setX(0);
             this.acceleration.setX(0);

@@ -38,10 +38,10 @@ public class Game extends BasicGame {
     @Override
     public void render(GameContainer container, Graphics g) {
         player.draw();
-        player.drawBounds();
-        RayCaster.drawRays(g);
         map.render(0, 0);
         tf.render(container, g);
+        player.drawBounds();
+
     }
 
     @Override
