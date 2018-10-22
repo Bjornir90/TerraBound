@@ -47,7 +47,7 @@ public class Player extends Movable implements KeyListener {
         } else if(i == Input.KEY_A){
             this.setAcceleration(new Vector(-Game.ACCELERATION, acceleration.getY()));
         } else if(i == Input.KEY_SPACE && onPlatform){
-            this.setAcceleration(new Vector(acceleration.getX(), -0.5f));
+            this.setAcceleration(new Vector(acceleration.getX(), -0.05f));
             onPlatform = false;
         }
 

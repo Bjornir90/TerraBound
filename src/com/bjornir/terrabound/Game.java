@@ -25,6 +25,7 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
+        container.setMinimumLogicUpdateInterval(2);
         player = new Player("sprites/Archer(noBow).png", 2);
         player.setInput(container.getInput());
         player.setX(20);
@@ -33,6 +34,42 @@ public class Game extends BasicGame {
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 250, 75);
+        container.getInput().addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(int i, char c) {
+                if(i == Input.KEY_P){
+                    if(container.isPaused())
+                        container.pause();
+                    else
+                        container.resume();
+                }
+            }
+
+            @Override
+            public void keyReleased(int i, char c) {
+
+            }
+
+            @Override
+            public void setInput(Input input) {
+
+            }
+
+            @Override
+            public boolean isAcceptingInput() {
+                return true;
+            }
+
+            @Override
+            public void inputEnded() {
+
+            }
+
+            @Override
+            public void inputStarted() {
+
+            }
+        });
     }
 
     @Override
@@ -41,7 +78,6 @@ public class Game extends BasicGame {
         map.render(0, 0);
         tf.render(container, g);
         player.drawBounds();
-
     }
 
     @Override
@@ -49,5 +85,6 @@ public class Game extends BasicGame {
         Vector speed = player.update(delta);
         tf.setText("Time to update : "+ delta + "ms\n"+speed+"\n"+player.getAcceleration());
     }
+
 
 }
