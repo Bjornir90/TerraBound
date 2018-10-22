@@ -4,6 +4,7 @@ import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.RayCaster;
 import com.bjornir.terrabound.utils.Vector;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -55,6 +56,14 @@ public abstract class Movable {
         return originPosition.addVector(speed.multiplyScalar(delta));
     }
 
+    public void drawBounds(){
+        ArrayList<Vector> pixels = calculateFutureBounds(0);
+        g.setColor(Color.cyan);
+        for(Vector p : pixels){
+            g.drawRect(p.getX(), p.getY(), 1, 1);
+        }
+    }
+
     protected ArrayList<Vector> calculateFutureBounds(int delta){
         //Vector position is top left of sprite
         //Create an ArrayList of the coordinates of each pixels on the boundaries
@@ -64,7 +73,7 @@ public abstract class Movable {
         Vector topRight = new Vector(position);
         topRight.addX(scaledWidth);
 
-        for(int x = 0; x<scaledWidth; x++){
+        for(int x = 0; x<=scaledWidth; x++){
             Vector pixelOnTopBoundary = new Vector(position);
             pixelOnTopBoundary.addX(x);
             Vector pixelOnBottomBoundary = new Vector(bottomLeft);
@@ -73,11 +82,11 @@ public abstract class Movable {
             pixelsOnBoundaries.add(pixelOnBottomBoundary);
         }
 
-        for(int y = 0; y<scaledHeight; y++){
+        for(int y = 0; y<=scaledHeight; y++){
             Vector pixelOnLeftBoundary = new Vector(position);
-            pixelOnLeftBoundary.addX(y);
+            pixelOnLeftBoundary.addY(y);
             Vector pixelOnRightBoundary = new Vector(topRight);
-            pixelOnRightBoundary.addX(y);
+            pixelOnRightBoundary.addY(y);
             pixelsOnBoundaries.add(pixelOnLeftBoundary);
             pixelsOnBoundaries.add(pixelOnRightBoundary);
         }
@@ -101,13 +110,13 @@ public abstract class Movable {
 	        if(MapUtils.collidesWithTerrain(futurePixel)){
 	            //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
 	            Vector center = calculateCenter();
-	            if(futurePixel.getX() < center.getX()){
+	            if(futurePixel.getX() == position.getX()){
 	                onTerrainCollision(LEFT);
-                } else if(futurePixel.getX() > center.getX()){
+                } else if(futurePixel.getX() == position.getX()+scaledWidth){
 	                onTerrainCollision(RIGHT);
-                } else if(futurePixel.getY() < center.getY()){
+                } else if(futurePixel.getY() == position.getY()){
 	                onTerrainCollision(TOP);
-                } else if(futurePixel.getY() > center.getY()){
+                } else if(futurePixel.getY() == position.getY()+scaledHeight){
 	                onTerrainCollision(BOTTOM);
                 }
 
@@ -118,9 +127,7 @@ public abstract class Movable {
         position = updatedFutureCoords;
         //Immutable speed
         Vector newSpeed = speed.addVector(acceleration.multiplyScalar(delta));
-        System.out.println("newSpeed = " + newSpeed);
         //Apply gravity to object
-        System.out.println("acceleration.getY() = " + acceleration.getY());
         acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
         //Friction, to bring the character to a stop
         newSpeed.setX(newSpeed.getX()*0.7f);
