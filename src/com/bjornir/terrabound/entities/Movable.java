@@ -131,7 +131,7 @@ public abstract class Movable {
         //Apply gravity to object
         acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
         //Friction, to bring the character to a stop
-        newSpeed.setX(newSpeed.getX()*0.7f);
+        newSpeed.setX(newSpeed.getX()*0.85f);
         //Limit objects speed
         if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
             //Set speed to 0 if close enough (rounding error)

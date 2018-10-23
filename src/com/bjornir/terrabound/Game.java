@@ -9,7 +9,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class Game extends BasicGame {
-    public static float MAX_SPEED = 1.2f, ACCELERATION = 0.6f, GRAVITYSTRENGTH = 0.003f;
+    public static float MAX_SPEED = 1.2f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f;
     public static Vector GRAVITY;
     private Player player;
     private TiledMap map;
