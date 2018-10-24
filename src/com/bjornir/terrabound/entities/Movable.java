@@ -96,6 +96,24 @@ public abstract class Movable {
 
     public Vector update(int delta){
         calculateFutureBounds(delta);
+        //Immutable speed
+        Vector newSpeed = speed.addVector(acceleration.multiplyScalar(delta));
+        //Apply gravity to object
+        acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
+        //Friction, to bring the character to a stop
+        newSpeed.setX(newSpeed.getX()*0.85f);
+        //Limit objects speed
+        if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
+            //Set speed to 0 if close enough (rounding error)
+            if(Math.abs(newSpeed.getX()) < 0.0001f)
+                newSpeed.setX(0);
+            speed = newSpeed;
+        } else if(newSpeed.getX() > 0){
+            speed = new Vector(Game.MAX_SPEED, newSpeed.getY());
+        } else if(newSpeed.getX() < 0){
+            speed = new Vector(-Game.MAX_SPEED, newSpeed.getY());
+        }
+
         for(Vector futurePixel : futureBoundaries){
             if(futurePixel.getX() < 0 || futurePixel.getX() >= MapUtils.getMapWidth()){
                 speed.setX(0);
@@ -105,9 +123,7 @@ public abstract class Movable {
                 speed.setY(0);
                 acceleration.setY(0);
             }
-	        /*if (debug) {
-		        RayCaster.prepareRayDraw(scaledWidth, scaledHeight, center.addVector(position), side);
-	        }*/
+
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
 	            //Remove the corners, because they detect a collision on the wrong sides
@@ -126,23 +142,6 @@ public abstract class Movable {
         //We calculate the futurecoords again to take into account the collisions detected above
         Vector updatedFutureCoords = calculateFutureCoords(delta);
         position = updatedFutureCoords;
-        //Immutable speed
-        Vector newSpeed = speed.addVector(acceleration.multiplyScalar(delta));
-        //Apply gravity to object
-        acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
-        //Friction, to bring the character to a stop
-        newSpeed.setX(newSpeed.getX()*0.85f);
-        //Limit objects speed
-        if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
-            //Set speed to 0 if close enough (rounding error)
-            if(Math.abs(newSpeed.getX()) < 0.0001f)
-                newSpeed.setX(0);
-            speed = newSpeed;
-        } else if(newSpeed.getX() > 0){
-            speed = new Vector(Game.MAX_SPEED, newSpeed.getY());
-        } else if(newSpeed.getX() < 0){
-            speed = new Vector(-Game.MAX_SPEED, newSpeed.getY());
-        }
         return speed;
     }
 

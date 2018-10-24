@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
  <tileset firstgid="1" source="grassplatform.tsx"/>
- <layer name="Tile Layer 1" width="60" height="34">
+ <layer id="1" name="Tile Layer 1" width="60" height="34">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3XQQoAIAgEwPr/p7t2CyTJagb8gbtiawAAVNGDwz/sATP9wIqbQhb7BOfpdn4X/Z8z8iGLUN+uzrhleNsA7dP/YeAfAAA=
+   H4sIAAAAAAAAA+2WwQ3AMAgDyf5Ld4bWjcHGJ/E2JxHIqaqzrLYQX2/i6018vYmvN6iv2v+mO5/NBF/mHEzwZaLoi+wHRV+Erb5KNwVBufcvTPBlztMEXybx9ebG25i827vz2cS3Jx+tt3lIL0oo9owQX2/+2hdKFbx5AG9kzcrgHwAA
   </data>
  </layer>
 </map>

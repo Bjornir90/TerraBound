@@ -28,7 +28,7 @@ public class Game extends BasicGame {
         container.setMinimumLogicUpdateInterval(2);
         player = new Player("sprites/Archer(noBow).png", 2);
         player.setInput(container.getInput());
-        player.setX(20);
+        player.setX(50);
         player.setY(50);
         player.setG(container.getGraphics());
         map = new TiledMap("sprites/arena.tmx");
