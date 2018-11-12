@@ -17,7 +17,7 @@ public abstract class Movable {
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
     private Image sprite;
-    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3;
+    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, COLLISION_TOLERANCE = 5;
     protected boolean debug = false;
     private Graphics g;
     private ArrayList<Vector> futureBoundaries;
@@ -127,14 +127,14 @@ public abstract class Movable {
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
 	            //Remove the corners, because they detect a collision on the wrong sides
-                if(futurePixel.getX() == position.getX() && futurePixel.getY() != position.getY() && futurePixel.getY() != position.getY()+scaledHeight){
-                    onTerrainCollision(LEFT);
-                } else if(futurePixel.getX() == position.getX()+scaledWidth && futurePixel.getY() != position.getY() && futurePixel.getY() != position.getY()+scaledHeight){
-                    onTerrainCollision(RIGHT);
-                } else if(futurePixel.getY() == position.getY() && futurePixel.getX() != position.getX() && futurePixel.getX() != position.getX()+scaledWidth){
+        if(futurePixel.getY() == position.getY() && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
                     onTerrainCollision(TOP);
-                } else if(futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() != position.getX() && futurePixel.getX() != position.getX()+scaledWidth){
+                } else if(futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
                     onTerrainCollision(BOTTOM);
+                } else if(futurePixel.getX() == position.getX() && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE){
+                    onTerrainCollision(LEFT);
+                } else if(futurePixel.getX() == position.getX()+scaledWidth && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE) {
+                    onTerrainCollision(RIGHT);
                 }
 
             }

@@ -31,10 +31,10 @@ public class Player extends Movable implements KeyListener {
                 this.speed.setY(0);
             if(this.acceleration.getY()<0)
                 this.acceleration.setY(0);
-            System.out.println("Collision on top");
             //get out of the terrain tile
             this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
         } else if(side == Movable.LEFT || side == Movable.RIGHT){
+            System.out.println("Collisions on the side");
             this.speed.setX(0);
             this.acceleration.setX(0);
         }
