@@ -95,25 +95,9 @@ public abstract class Movable {
     }
 
     public Vector update(int delta){
+        speed.addSelfVector(acceleration.multiplyScalar(delta));
+        onUpdate(delta);
         calculateFutureBounds(delta);
-        //Immutable speed
-        Vector newSpeed = speed.addVector(acceleration.multiplyScalar(delta));
-        //Apply gravity to object
-        acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
-        //Friction, to bring the character to a stop
-        newSpeed.setX(newSpeed.getX()/(delta*0.08f));
-        //Limit objects speed
-        if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
-            //Set speed to 0 if close enough (rounding error)
-            if(Math.abs(newSpeed.getX()) < 0.0001f)
-                newSpeed.setX(0);
-            speed = newSpeed;
-        } else if(newSpeed.getX() > 0){
-            speed = new Vector(Game.MAX_SPEED, newSpeed.getY());
-        } else if(newSpeed.getX() < 0){
-            speed = new Vector(-Game.MAX_SPEED, newSpeed.getY());
-        }
-
         for(Vector futurePixel : futureBoundaries){
             if(futurePixel.getX() < 0 || futurePixel.getX() >= MapUtils.getMapWidth()){
                 speed.setX(0);
@@ -151,6 +135,7 @@ public abstract class Movable {
      */
     public abstract void onTerrainCollision(int side);
 
+    public abstract void onUpdate(int delta);
     protected Vector calculateCenter(){
         Vector center = new Vector(position);
         center.addX(scaledWidth/2);

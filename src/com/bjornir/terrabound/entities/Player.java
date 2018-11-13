@@ -39,6 +39,26 @@ public class Player extends Movable implements KeyListener {
         }
     }
 
+    @Override
+    public void onUpdate(int delta) {
+        Vector newSpeed = new Vector(speed);
+        //Apply gravity to player
+        acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
+        //Friction, to bring the character to a stop
+        newSpeed.setX(newSpeed.getX()/(delta*0.08f));
+        //Limit objects speed
+        if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
+            //Set speed to 0 if close enough (rounding error)
+            if(Math.abs(newSpeed.getX()) < 0.0001f)
+                newSpeed.setX(0);
+            speed = newSpeed;
+        } else if(newSpeed.getX() > 0){
+            speed = new Vector(Game.MAX_SPEED, newSpeed.getY());
+        } else if(newSpeed.getX() < 0){
+            speed = new Vector(-Game.MAX_SPEED, newSpeed.getY());
+        }
+    }
+
 
     @Override
     public void keyPressed(int i, char c) {
