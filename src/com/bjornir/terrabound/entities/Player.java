@@ -34,7 +34,6 @@ public class Player extends Movable implements KeyListener {
             //get out of the terrain tile
             this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
         } else if(side == Movable.LEFT || side == Movable.RIGHT){
-            System.out.println("Collisions on the side");
             this.speed.setX(0);
             this.acceleration.setX(0);
         }
@@ -43,6 +42,7 @@ public class Player extends Movable implements KeyListener {
 
     @Override
     public void keyPressed(int i, char c) {
+        System.out.println("Key pressed : " + c);
         if(i == Input.KEY_D){
             this.setAcceleration(new Vector(Game.ACCELERATION, acceleration.getY()));
         } else if(i == Input.KEY_A){
@@ -56,6 +56,7 @@ public class Player extends Movable implements KeyListener {
 
     @Override
     public void keyReleased(int i, char c) {
+        System.out.println("Key released : " + c);
         if(i == Input.KEY_D || i == Input.KEY_A){
             this.setAcceleration(new Vector(0, acceleration.getY()));
         }

@@ -96,12 +96,12 @@ public abstract class Movable {
 
     public Vector update(int delta){
         calculateFutureBounds(delta);
-        //Immutable speed
-        Vector newSpeed = speed.addVector(acceleration.multiplyScalar(delta));
         //Apply gravity to object
         acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
+        //Immutable speed
+        Vector newSpeed = speed.addVector(acceleration.multiplyScalar(delta));
         //Friction, to bring the character to a stop
-        newSpeed.setX(newSpeed.getX()*0.85f);
+        newSpeed.setX(newSpeed.getX()/(delta*0.08f));
         //Limit objects speed
         if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
             //Set speed to 0 if close enough (rounding error)
