@@ -25,7 +25,7 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        container.setMinimumLogicUpdateInterval(2);
+        //container.setMinimumLogicUpdateInterval(2);
         player = new Player("sprites/Archer(noBow).png", 2);
         player.setInput(container.getInput());
         player.setX(50);
@@ -34,6 +34,7 @@ public class Game extends BasicGame {
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 250, 75);
+        //container.setMinimumLogicUpdateInterval(1);
         container.getInput().addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(int i, char c) {

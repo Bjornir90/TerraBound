@@ -126,8 +126,8 @@ public abstract class Movable {
 
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
-	            //Remove the corners, because they detect a collision on the wrong sides
-        if(futurePixel.getY() == position.getY() && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
+                //Remove the corners, because they detect a collision on the wrong sides
+                if(futurePixel.getY() == position.getY() && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
                     onTerrainCollision(TOP);
                 } else if(futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
                     onTerrainCollision(BOTTOM);
