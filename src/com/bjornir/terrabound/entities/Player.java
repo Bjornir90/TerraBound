@@ -9,11 +9,15 @@ import org.newdawn.slick.SlickException;
 
 public class Player extends Movable implements KeyListener {
 
-    private boolean onPlatform;
+    private boolean onPlatform, dashing;
+    private float timeSinceDashBeginning;
+    private final float timeOfDash = 50;
 
     public Player(String spritePath, float scale) throws SlickException {
         super(spritePath, scale);
         onPlatform = false;
+        dashing = false;
+        timeSinceDashBeginning = 0;
     }
 
     @Override
@@ -41,11 +45,23 @@ public class Player extends Movable implements KeyListener {
 
     @Override
     public void onUpdate(int delta) {
+        if(dashing){
+            if(timeSinceDashBeginning>timeOfDash){
+                dashing = false;
+            }
+            timeSinceDashBeginning += delta;
+        }
+        if(dashing){
+            return;
+        }
         Vector newSpeed = new Vector(speed);
         //Apply gravity to player
         acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
         //Friction, to bring the character to a stop
-        newSpeed.setX(newSpeed.getX()/(delta*0.08f));
+        float friction = delta*0.08f;
+        //Delta too low might cause friction to get under 1 => it would accelerate infinitely
+        friction = (friction<1)?1.01f:friction;
+        newSpeed.setX(newSpeed.getX()/((friction)));
         //Limit objects speed
         if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
             //Set speed to 0 if close enough (rounding error)
@@ -77,7 +93,21 @@ public class Player extends Movable implements KeyListener {
                 }
                 break;
             case Input.KEY_F:
-                this.position.addY(-150);
+                this.position.addY(-200);
+                speed = new Vector(0, 0);
+                break;
+            case Input.KEY_E:
+                this.acceleration = new Vector(0, 0);
+                this.speed = new Vector(4, 0);
+                dashing = true;
+                timeSinceDashBeginning = 0;
+                break;
+            case Input.KEY_Q:
+                this.acceleration = new Vector(0, 0);
+                this.speed = new Vector(-4, 0);
+                dashing = true;
+                timeSinceDashBeginning = 0;
+                break;
         }
 
     }

@@ -9,11 +9,12 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
 public class Game extends BasicGame {
-    public static float MAX_SPEED = 1.2f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f;
+    public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f;
     public static Vector GRAVITY;
     private Player player;
     private TiledMap map;
     private TextField tf;
+    private float maxSpeedReached;
 
     static {
         GRAVITY = new Vector(0, GRAVITYSTRENGTH);
@@ -43,6 +44,7 @@ public class Game extends BasicGame {
                     else
                         container.resume();
                 } else if(i == Input.KEY_ESCAPE){
+                    System.out.println("maxSpeedReached = " + maxSpeedReached);
                     container.exit();
                 }
             }
@@ -86,6 +88,9 @@ public class Game extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) {
         Vector speed = player.update(delta);
+        if(speed.getX() > maxSpeedReached){
+            maxSpeedReached = speed.getX();
+        }
         tf.setText("Time to update : "+ delta + "ms\n"+speed+"\n"+player.getAcceleration());
     }
 
