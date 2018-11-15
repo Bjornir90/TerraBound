@@ -37,9 +37,14 @@ public class Player extends Movable implements KeyListener {
                 this.acceleration.setY(0);
             //get out of the terrain tile
             this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
-        } else if(side == Movable.LEFT || side == Movable.RIGHT){
-            this.speed.setX(0);
-            //this.acceleration.setX(0);
+        } else if(side == Movable.LEFT){
+            if(this.speed.getX()<0)
+                this.speed.setX(0);
+            this.position.addX(MapUtils.getTileWidth()-this.position.getX()%MapUtils.getTileWidth());
+        } else if( side == Movable.RIGHT){
+            if(this.speed.getX()>0)
+                this.speed.setX(0);
+            this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
         }
     }
 
