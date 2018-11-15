@@ -39,7 +39,7 @@ public class Player extends Movable implements KeyListener {
             this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
         } else if(side == Movable.LEFT || side == Movable.RIGHT){
             this.speed.setX(0);
-            this.acceleration.setX(0);
+            //this.acceleration.setX(0);
         }
     }
 
@@ -60,7 +60,7 @@ public class Player extends Movable implements KeyListener {
         //Friction, to bring the character to a stop
         float friction = delta*0.08f;
         //Delta too low might cause friction to get under 1 => it would accelerate infinitely
-        friction = (friction<1)?1.01f:friction;
+        friction = (friction<1)?1.005f:friction;
         newSpeed.setX(newSpeed.getX()/((friction)));
         //Limit objects speed
         if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
