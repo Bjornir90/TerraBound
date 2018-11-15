@@ -63,13 +63,19 @@ public class Player extends Movable implements KeyListener {
     @Override
     public void keyPressed(int i, char c) {
         System.out.println("Key pressed : " + c);
-        if(i == Input.KEY_D){
-            this.setAcceleration(new Vector(Game.ACCELERATION, acceleration.getY()));
-        } else if(i == Input.KEY_A){
-            this.setAcceleration(new Vector(-Game.ACCELERATION, acceleration.getY()));
-        } else if(i == Input.KEY_SPACE && onPlatform){
-            this.setAcceleration(new Vector(acceleration.getX(), -0.08f));
-            onPlatform = false;
+        switch(i){
+            case Input.KEY_D:
+                this.setAcceleration(new Vector(Game.ACCELERATION, acceleration.getY()));
+                break;
+            case Input.KEY_A:
+                this.setAcceleration(new Vector(-Game.ACCELERATION, acceleration.getY()));
+                break;
+            case Input.KEY_SPACE:
+                if(onPlatform) {
+                    this.setAcceleration(new Vector(acceleration.getX(), -0.08f));
+                    onPlatform = false;
+                }
+                break;
         }
 
     }
