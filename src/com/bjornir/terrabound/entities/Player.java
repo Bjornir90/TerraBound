@@ -76,6 +76,8 @@ public class Player extends Movable implements KeyListener {
                     onPlatform = false;
                 }
                 break;
+            case Input.KEY_F:
+                this.position.addY(-150);
         }
 
     }
