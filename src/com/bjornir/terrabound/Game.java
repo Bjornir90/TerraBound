@@ -1,6 +1,8 @@
 package com.bjornir.terrabound;
 
+import com.bjornir.terrabound.entities.Arrow;
 import com.bjornir.terrabound.entities.Player;
+import com.bjornir.terrabound.utils.ListOfArrows;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.RayCaster;
 import com.bjornir.terrabound.utils.Vector;
@@ -15,6 +17,7 @@ public class Game extends BasicGame {
     private TiledMap map;
     private TextField tf;
     private float maxSpeedReached;
+    private ListOfArrows arrowList;
 
     static {
         GRAVITY = new Vector(0, GRAVITYSTRENGTH);
@@ -27,14 +30,20 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         container.setVSync(true);
+
         player = new Player("sprites/Archer(noBow).png", 2);
         player.setInput(container.getInput());
         player.setX(50);
         player.setY(50);
         player.setG(container.getGraphics());
+
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
+
+        arrowList = ListOfArrows.getInstance();
+
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 250, 75);
+
         container.getInput().addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(int i, char c) {
@@ -83,6 +92,9 @@ public class Game extends BasicGame {
         map.render(0, 0);
         tf.render(container, g);
         player.drawBounds();
+        for(Arrow a : arrowList.getAllArrows()){
+            a.draw();
+        }
     }
 
     @Override
@@ -90,6 +102,9 @@ public class Game extends BasicGame {
         Vector speed = player.update(delta);
         if(speed.getX() > maxSpeedReached){
             maxSpeedReached = speed.getX();
+        }
+        for(Arrow a : arrowList.getAllArrows()){
+            a.update(delta);
         }
         tf.setText("Time to update : "+ delta + "ms\n"+speed+"\n"+player.getAcceleration());
     }

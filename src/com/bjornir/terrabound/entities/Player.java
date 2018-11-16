@@ -1,13 +1,15 @@
 package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.Game;
+import com.bjornir.terrabound.utils.ListOfArrows;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
+import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 
-public class Player extends Movable implements KeyListener {
+public class Player extends Movable implements KeyListener, MouseListener {
 
     private boolean onPlatform, dashing;
     private float timeSinceDashBeginning;
@@ -146,5 +148,41 @@ public class Player extends Movable implements KeyListener {
     }
 
 
+    @Override
+    public void mouseWheelMoved(int i) {
 
+    }
+
+    @Override
+    public void mouseClicked(int i, int i1, int i2, int i3) {
+
+    }
+
+    @Override
+    public void mousePressed(int i, int i1, int i2) {
+        if(i == Input.MOUSE_LEFT_BUTTON){
+            ListOfArrows list = ListOfArrows.getInstance();
+            try {
+                Arrow a = new Arrow("sprites/Arrow.png", 1);
+            } catch (SlickException e) {
+                e.printStackTrace();
+                System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseMoved(int i, int i1, int i2, int i3) {
+
+    }
+
+    @Override
+    public void mouseDragged(int i, int i1, int i2, int i3) {
+
+    }
 }
