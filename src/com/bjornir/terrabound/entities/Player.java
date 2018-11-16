@@ -167,10 +167,7 @@ public class Player extends Movable implements KeyListener, MouseListener {
                 a.setX(this.getX());
                 a.setY(this.getY());
                 Vector arrowDirection = this.position.negateVector().addVector(new Vector(i1, i2));
-                float angle = (float) Math.toDegrees(Math.acos(1/arrowDirection.norm()));
-                if(i2 > this.getX()){
-                    angle += 2*(180-angle);
-                }
+                float angle = arrowDirection.getAngle();
                 System.out.println("angle = " + angle);
                 a.setAngle(angle);
                 arrowDirection.normalizeSelf();

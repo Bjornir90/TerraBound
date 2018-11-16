@@ -20,7 +20,10 @@ public class Arrow extends Movable {
 
 	@Override
 	public void onUpdate(int delta) {
-
+		float oldAngle = this.angle;
+		this.angle = this.speed.getAngle();
+		float angleIncrement = this.angle-oldAngle;
+		rotateSprite(angleIncrement);
 	}
 
 	public void setAngle(float angle) {

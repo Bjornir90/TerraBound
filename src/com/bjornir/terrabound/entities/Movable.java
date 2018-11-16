@@ -190,4 +190,8 @@ public abstract class Movable {
     public Vector getAcceleration() {//TODO delete
         return acceleration;
     }
+
+    public void rotateSprite(float angle){
+        this.sprite.rotate(angle);
+    }
 }

@@ -65,6 +65,14 @@ public class Vector {
         this.y /= this.norm();
     }
 
+    public float getAngle(){
+        float angle = (float) Math.toDegrees(Math.acos(1/this.norm()));
+        if(this.getY() > 0){
+            angle += 2*(180-angle);
+        }
+        return angle;
+    }
+
     public float getX() {
         return x;
     }
