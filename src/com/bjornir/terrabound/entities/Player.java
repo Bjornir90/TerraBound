@@ -164,6 +164,19 @@ public class Player extends Movable implements KeyListener, MouseListener {
             ListOfArrows list = ListOfArrows.getInstance();
             try {
                 Arrow a = new Arrow("sprites/Arrow.png", 1);
+                a.setX(this.getX());
+                a.setY(this.getY());
+                Vector arrowDirection = this.position.negateVector().addVector(new Vector(i1, i2));
+                float angle = (float) Math.toDegrees(Math.acos(1/arrowDirection.norm()));
+                if(i2 > this.getX()){
+                    angle += 2*(180-angle);
+                }
+                System.out.println("angle = " + angle);
+                a.setAngle(angle);
+                arrowDirection.normalizeSelf();
+                arrowDirection.multiplySelfScalar(1.5f);
+                a.setSpeed(arrowDirection);
+                list.add(a);
             } catch (SlickException e) {
                 e.printStackTrace();
                 System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");

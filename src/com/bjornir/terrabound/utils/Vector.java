@@ -49,6 +49,22 @@ public class Vector {
         return toReturn;
     }
 
+    public Vector negateVector(){
+        Vector result = new Vector();
+        result.setX(-this.getX());
+        result.setY(-this.getY());
+        return result;
+    }
+
+    public float norm(){
+        return (float) Math.sqrt(Math.pow(this.x, 2)+Math.pow(this.y, 2));
+    }
+
+    public void normalizeSelf(){
+        this.x /= this.norm();
+        this.y /= this.norm();
+    }
+
     public float getX() {
         return x;
     }

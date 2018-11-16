@@ -9,6 +9,7 @@ public class Arrow extends Movable {
 
 	public Arrow(String spritePath, float scale) throws SlickException {
 		super(spritePath, scale);
+		angle = 0.0f;
 	}
 
 	@Override
@@ -20,5 +21,9 @@ public class Arrow extends Movable {
 	@Override
 	public void onUpdate(int delta) {
 
+	}
+
+	public void setAngle(float angle) {
+		this.angle = angle;
 	}
 }
