@@ -15,7 +15,7 @@ public class Game extends BasicGame {
     public static Vector GRAVITY;
     private Player player;
     private TiledMap map;
-    private TextField tf;
+    private TextField tf, vectortf;
     private float maxSpeedReached;
     private ListOfArrows arrowList;
 
@@ -42,8 +42,10 @@ public class Game extends BasicGame {
 
         arrowList = ListOfArrows.getInstance();
 
-        tf = new TextField(container, container.getDefaultFont(), 15, 15, 250, 75);
+        vectortf = new TextField(container, container.getDefaultFont(), 1200, 20, 800, 20);
+        tf = new TextField(container, container.getDefaultFont(), 15, 15, 300, 75);
 
+        container.getInput().addMouseListener(player);
         container.getInput().addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(int i, char c) {
@@ -91,6 +93,7 @@ public class Game extends BasicGame {
         player.draw();
         map.render(0, 0);
         tf.render(container, g);
+        vectortf.render(container, g);
         player.drawBounds();
         for(Arrow a : arrowList.getAllArrows()){
             a.draw();
@@ -106,7 +109,8 @@ public class Game extends BasicGame {
         for(Arrow a : arrowList.getAllArrows()){
             a.update(delta);
         }
-        tf.setText("Time to update : "+ delta + "ms\n"+speed+"\n"+player.getAcceleration());
+        tf.setText("Time to update : "+ delta + "ms\n Speed : "+speed+"\n Acceleration : "+player.getAcceleration());
+        vectortf.setText("Vector to mouse " + player.mouseVector());
     }
 
 

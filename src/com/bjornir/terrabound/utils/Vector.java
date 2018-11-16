@@ -61,16 +61,23 @@ public class Vector {
     }
 
     public void normalizeSelf(){
-        this.x /= this.norm();
-        this.y /= this.norm();
+        float norm = this.norm();
+        this.x = this.x/norm;
+        this.y = this.y/norm;
     }
 
     public float getAngle(){
-        float angle = (float) Math.toDegrees(Math.acos(1/this.norm()));
-        if(this.getY() > 0){
-            angle += 2*(180-angle);
+        float angle = (float) Math.toDegrees(Math.acos(this.x/this.norm()));
+        System.out.println("Vector angle = " + angle);
+        if(this.y > 0){
+            angle = -angle;
         }
+
         return angle;
+    }
+
+    public boolean isNullVector(){
+        return (this.x == 0 && this.y == 0);
     }
 
     public float getX() {
@@ -112,9 +119,11 @@ public class Vector {
 
     @Override
     public String toString() {
-        return "Vector{" +
+        return "{" +
                 "x=" + x +
                 ", y=" + y +
+                ", angle=" + getAngle() +
+                ", norm=" + norm() +
                 '}';
     }
 }

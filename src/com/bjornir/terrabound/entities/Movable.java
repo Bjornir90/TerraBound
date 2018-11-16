@@ -19,13 +19,15 @@ public abstract class Movable {
     private Image sprite;
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, COLLISION_TOLERANCE = 5;
     protected boolean debug = false;
+    protected float mass;
     private Graphics g;
     private ArrayList<Vector> futureBoundaries;
 
 
-    public Movable(String spritePath, float scale) throws SlickException {
+    public Movable(String spritePath, float scale, float mass) throws SlickException {
+        this.mass = mass;
         sprite = new Image(spritePath);
-        acceleration = new Vector(Game.GRAVITY);
+        acceleration = new Vector(Game.GRAVITY.multiplyScalar(mass));
         speed = new Vector();
         position = new Vector();
         futureBoundaries = new ArrayList<>();

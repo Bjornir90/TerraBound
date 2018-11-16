@@ -14,12 +14,14 @@ public class Player extends Movable implements KeyListener, MouseListener {
     private boolean onPlatform, dashing;
     private float timeSinceDashBeginning;
     private final float timeOfDash = 50;
+    private float[] mouseCoords;
 
     public Player(String spritePath, float scale) throws SlickException {
-        super(spritePath, scale);
+        super(spritePath, scale, 1.0f);
         onPlatform = false;
         dashing = false;
         timeSinceDashBeginning = 0;
+        mouseCoords = new float[2];
     }
 
     @Override
@@ -170,14 +172,17 @@ public class Player extends Movable implements KeyListener, MouseListener {
                 float angle = arrowDirection.getAngle();
                 System.out.println("angle = " + angle);
                 a.setAngle(angle);
+                a.rotateSprite(-angle);
                 arrowDirection.normalizeSelf();
-                arrowDirection.multiplySelfScalar(1.5f);
+                //arrowDirection.multiplySelfScalar(1.5f);
                 a.setSpeed(arrowDirection);
                 list.add(a);
             } catch (SlickException e) {
                 e.printStackTrace();
                 System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
             }
+        } else if (i == Input.MOUSE_RIGHT_BUTTON){
+            this.rotateSprite(-2.5f);
         }
     }
 
@@ -188,11 +193,18 @@ public class Player extends Movable implements KeyListener, MouseListener {
 
     @Override
     public void mouseMoved(int i, int i1, int i2, int i3) {
-
+        mouseCoords[0] = i2;
+        mouseCoords[1] = i3;
     }
 
     @Override
     public void mouseDragged(int i, int i1, int i2, int i3) {
 
+    }
+
+    public Vector mouseVector(){
+        Vector mousePos = new Vector(mouseCoords[0], mouseCoords[1]);
+        Vector fromPlayerToMouse = position.negateVector().addVector(mousePos);
+        return fromPlayerToMouse;
     }
 }

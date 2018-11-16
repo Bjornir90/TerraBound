@@ -8,7 +8,7 @@ public class Arrow extends Movable {
 	float angle;
 
 	public Arrow(String spritePath, float scale) throws SlickException {
-		super(spritePath, scale);
+		super(spritePath, scale, 0.2f);
 		angle = 0.0f;
 	}
 
@@ -23,7 +23,8 @@ public class Arrow extends Movable {
 		float oldAngle = this.angle;
 		this.angle = this.speed.getAngle();
 		float angleIncrement = this.angle-oldAngle;
-		rotateSprite(angleIncrement);
+		if(!speed.isNullVector())
+			rotateSprite(-angleIncrement);
 	}
 
 	public void setAngle(float angle) {
