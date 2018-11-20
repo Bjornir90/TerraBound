@@ -1,9 +1,6 @@
 package com.bjornir.terrabound.networking;
 
-import com.neovisionaries.ws.client.WebSocket;
-import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketException;
-import com.neovisionaries.ws.client.WebSocketFactory;
+import com.neovisionaries.ws.client.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,11 +12,17 @@ public class ClientEndpoint {
     private static ClientEndpoint instance;
 
     private ClientEndpoint(){
+        initConnection();
+    }
+
+    private void initConnection(){
         try {
             ws = new WebSocketFactory().setConnectionTimeout(5000).createSocket(server).addListener(new WebSocketAdapter(){
                 @Override
                 public void onTextMessage(WebSocket webSocket, String message){
                     System.out.println("Received message : " + message);
+                    int separatorIndex = message.indexOf(';');
+                    long networkID = Long.parseLong(message.substring(0, separatorIndex));
                 }
 
                 @Override
@@ -32,8 +35,8 @@ public class ClientEndpoint {
             try {
                 ws.connect();
             } catch (WebSocketException e) {
-                System.out.println("Error connecting to server : ");
-                System.out.println(e.getMessage());
+                WebSocketError error = e.getError();
+                System.err.println("Could not connect to server : "+error.name());
             }
         } catch (IOException e) {
             e.printStackTrace();

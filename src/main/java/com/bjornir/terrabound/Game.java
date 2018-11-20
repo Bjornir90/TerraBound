@@ -113,7 +113,7 @@ public class Game extends BasicGame {
         for(Arrow a : arrowsList.getAllLocalArrows()){
             a.update(delta);
         }
-        tf.setText("Time to update : "+ delta + "ms\n Speed : "+speed+"\n Acceleration : "+player.getAcceleration());
+        tf.setText("Time to update : "+ delta + "ms\n Speed : "+speed+"\n Accel : "+player.getAcceleration());
         vectortf.setText("Vector to mouse " + player.mouseVector());
     }
 

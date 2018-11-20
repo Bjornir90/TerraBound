@@ -26,6 +26,15 @@ public class ArrowsList {
 		localList.add(a);
 	}
 
+	public Arrow isPresent(long netID){
+		for(Arrow a : remoteList){
+			if(a.getNetworkID() == netID){
+				return a;
+			}
+		}
+		return null;
+	}
+
 	public ArrayList<Arrow> getAllLocalArrows(){
 		return new ArrayList<>(localList);
 	}

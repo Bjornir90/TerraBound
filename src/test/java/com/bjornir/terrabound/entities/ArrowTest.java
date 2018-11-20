@@ -3,8 +3,6 @@ package com.bjornir.terrabound.entities;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.SlickException;
 
-import java.beans.VetoableChangeListener;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrowTest {
@@ -38,7 +36,7 @@ class ArrowTest {
 	@org.junit.jupiter.api.Test
 	void createFromRemote(){
 		Arrow original = new Arrow(1);
-		original.setPosition(new Vector(4, 12));
+		original.setPosition(new Vector(4.9f, 124.8f));
 		original.setSpeed(new Vector(0.2f, 0.8f));
 		original.setAngle(34.8f);
 		String data = original.formatForSending();

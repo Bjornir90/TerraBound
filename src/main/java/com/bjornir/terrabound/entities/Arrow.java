@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 public class Arrow extends Movable {
 
 	private float angle;
+	private long networkID;
 
 	public static Arrow createFromRemote(String data){
 		Arrow a =  new Arrow(1);
@@ -16,6 +17,7 @@ public class Arrow extends Movable {
 	public Arrow(float scale) {
 		super(scale, 0.2f);
 		angle = 0.0f;
+		generateNetworkID();
 	}
 
 	@Override
@@ -77,6 +79,10 @@ public class Arrow extends Movable {
 		return angle;
 	}
 
+	public long getNetworkID() {
+		return networkID;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -93,5 +99,9 @@ public class Arrow extends Movable {
 		int result = super.hashCode();
 		result = 31 * result + (angle != +0.0f ? Float.floatToIntBits(angle) : 0);
 		return result;
+	}
+
+	private void generateNetworkID(){//Only collision possible : arrows spawned at the same time, at the same place, with the same direction
+		networkID = hashCode()*System.nanoTime();
 	}
 }
