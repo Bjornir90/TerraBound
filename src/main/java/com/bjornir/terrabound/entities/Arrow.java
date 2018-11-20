@@ -7,7 +7,13 @@ public class Arrow extends Movable {
 
 	private float angle;
 
-	public Arrow(float scale) throws SlickException {
+	public static Arrow createFromRemote(String data){
+		Arrow a =  new Arrow(1);
+		a.updateFromRemote(data);
+		return a;
+	}
+
+	public Arrow(float scale) {
 		super(scale, 0.2f);
 		angle = 0.0f;
 	}
@@ -48,8 +54,6 @@ public class Arrow extends Movable {
 		float[] dataNumbers = new float[expectedNumberOfData];
 		for(; currentDataIndex<expectedNumberOfData; currentDataIndex++){
 			currentEndIndex = data.indexOf(':');
-			System.out.println("currentEndIndex = " + currentEndIndex);
-			System.out.println("data = " + data);
 			if(currentEndIndex == -1) {
 				dataNumbers[currentDataIndex] = Float.parseFloat(data);
 				break;
