@@ -1,12 +1,10 @@
 package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.Game;
-import com.bjornir.terrabound.utils.ListOfArrows;
+import com.bjornir.terrabound.utils.ArrowsList;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.*;
-
-import java.util.ArrayList;
 
 public class Player extends Movable implements KeyListener, MouseListener {
 
@@ -163,7 +161,7 @@ public class Player extends Movable implements KeyListener, MouseListener {
     public void mousePressed(int i, int i1, int i2) {
         Vector mouseDirection = this.position.negateVector().addVector(new Vector(i1, i2));
         if(i == Input.MOUSE_LEFT_BUTTON){
-            ListOfArrows list = ListOfArrows.getInstance();
+            ArrowsList list = ArrowsList.getInstance();
             try {
                 Arrow a = new Arrow("sprites/Arrow.png", 1);
                 a.setX(this.getX());
@@ -175,7 +173,7 @@ public class Player extends Movable implements KeyListener, MouseListener {
                 mouseDirection.normalizeSelf();
                 //arrowDirection.multiplySelfScalar(1.5f);
                 a.setSpeed(mouseDirection);
-                list.add(a);
+                list.addLocal(a);
             } catch (SlickException e) {
                 e.printStackTrace();
                 System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
@@ -197,8 +195,8 @@ public class Player extends Movable implements KeyListener, MouseListener {
                     a.setPosition(currentlyCheckedPixel);
                     a.setAngle(mouseDirection.getAngle());
                     a.rotateSprite(-a.getAngle());
-                    ListOfArrows la = ListOfArrows.getInstance();
-                    la.add(a);
+                    ArrowsList la = ArrowsList.getInstance();
+                    la.addLocal(a);
                     break;
                 }
             }

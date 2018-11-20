@@ -3,9 +3,8 @@ package com.bjornir.terrabound;
 import com.bjornir.terrabound.entities.Arrow;
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.networking.ClientEndpoint;
-import com.bjornir.terrabound.utils.ListOfArrows;
+import com.bjornir.terrabound.utils.ArrowsList;
 import com.bjornir.terrabound.utils.MapUtils;
-import com.bjornir.terrabound.utils.RayCaster;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.gui.TextField;
@@ -18,7 +17,7 @@ public class Game extends BasicGame {
     private TiledMap map;
     private TextField tf, vectortf;
     private float maxSpeedReached;
-    private ListOfArrows arrowList;
+    private ArrowsList arrowsList;
     private ClientEndpoint endpoint;
 
     static {
@@ -42,7 +41,7 @@ public class Game extends BasicGame {
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
 
-        arrowList = ListOfArrows.getInstance();
+        arrowsList = ArrowsList.getInstance();
 
         vectortf = new TextField(container, container.getDefaultFont(), 1200, 20, 800, 20);
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 300, 75);
@@ -99,7 +98,7 @@ public class Game extends BasicGame {
         tf.render(container, g);
         vectortf.render(container, g);
         player.drawBounds();
-        for(Arrow a : arrowList.getAllArrows()){
+        for(Arrow a : arrowsList.getAllArrows()){
             a.draw();
         }
     }
@@ -110,7 +109,7 @@ public class Game extends BasicGame {
         if(speed.getX() > maxSpeedReached){
             maxSpeedReached = speed.getX();
         }
-        for(Arrow a : arrowList.getAllArrows()){
+        for(Arrow a : arrowsList.getAllLocalArrows()){
             a.update(delta);
         }
         tf.setText("Time to update : "+ delta + "ms\n Speed : "+speed+"\n Acceleration : "+player.getAcceleration());
