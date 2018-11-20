@@ -5,7 +5,7 @@ import org.newdawn.slick.SlickException;
 
 public class Arrow extends Movable {
 
-	float angle;
+	private float angle;
 
 	public Arrow(String spritePath, float scale) throws SlickException {
 		super(spritePath, scale, 0.2f);
@@ -29,5 +29,9 @@ public class Arrow extends Movable {
 
 	public void setAngle(float angle) {
 		this.angle = angle;
+	}
+
+	public float getAngle() {
+		return angle;
 	}
 }

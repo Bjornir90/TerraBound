@@ -20,7 +20,7 @@ public abstract class Movable {
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, COLLISION_TOLERANCE = 5;
     protected boolean debug = false;
     protected float mass;
-    private Graphics g;
+    protected Graphics g;
     private ArrayList<Vector> futureBoundaries;
 
 
@@ -195,5 +195,9 @@ public abstract class Movable {
 
     public void rotateSprite(float angle){
         this.sprite.rotate(angle);
+    }
+
+    public void setPosition(Vector position) {
+        this.position = position;
     }
 }

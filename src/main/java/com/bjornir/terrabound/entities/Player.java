@@ -4,16 +4,15 @@ import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.ListOfArrows;
 import com.bjornir.terrabound.utils.MapUtils;
 import com.bjornir.terrabound.utils.Vector;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
-import org.newdawn.slick.MouseListener;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
+
+import java.util.ArrayList;
 
 public class Player extends Movable implements KeyListener, MouseListener {
 
     private boolean onPlatform, dashing;
     private float timeSinceDashBeginning;
-    private final float timeOfDash = 50;
+    private final float timeOfDash = 50, hookLength = 350;
     private float[] mouseCoords;
 
     public Player(String spritePath, float scale) throws SlickException {
@@ -162,27 +161,47 @@ public class Player extends Movable implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(int i, int i1, int i2) {
+        Vector mouseDirection = this.position.negateVector().addVector(new Vector(i1, i2));
         if(i == Input.MOUSE_LEFT_BUTTON){
             ListOfArrows list = ListOfArrows.getInstance();
             try {
                 Arrow a = new Arrow("sprites/Arrow.png", 1);
                 a.setX(this.getX());
                 a.setY(this.getY());
-                Vector arrowDirection = this.position.negateVector().addVector(new Vector(i1, i2));
-                float angle = arrowDirection.getAngle();
+                float angle = mouseDirection.getAngle();
                 System.out.println("angle = " + angle);
                 a.setAngle(angle);
                 a.rotateSprite(-angle);
-                arrowDirection.normalizeSelf();
+                mouseDirection.normalizeSelf();
                 //arrowDirection.multiplySelfScalar(1.5f);
-                a.setSpeed(arrowDirection);
+                a.setSpeed(mouseDirection);
                 list.add(a);
             } catch (SlickException e) {
                 e.printStackTrace();
                 System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
             }
         } else if (i == Input.MOUSE_RIGHT_BUTTON){
-            this.rotateSprite(-2.5f);
+            mouseDirection.normalizeSelf();
+            System.out.println("mouseDirection = " + mouseDirection);
+            Vector currentlyCheckedPixel = new Vector(position);
+            for(int j = 0; j<hookLength; j++){
+                currentlyCheckedPixel.addSelfVector(mouseDirection);
+                if(MapUtils.collidesWithTerrain(currentlyCheckedPixel)){
+                    Arrow a = null;
+                    try {
+                        a = new Arrow("sprites/Arrow.png", 1);
+                    } catch (SlickException e) {
+                        e.printStackTrace();
+                        System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
+                    }
+                    a.setPosition(currentlyCheckedPixel);
+                    a.setAngle(mouseDirection.getAngle());
+                    a.rotateSprite(-a.getAngle());
+                    ListOfArrows la = ListOfArrows.getInstance();
+                    la.add(a);
+                    break;
+                }
+            }
         }
     }
 

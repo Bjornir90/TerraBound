@@ -47,7 +47,7 @@ public class Game extends BasicGame {
         vectortf = new TextField(container, container.getDefaultFont(), 1200, 20, 800, 20);
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 300, 75);
 
-        endpoint = ClientEndpoint.getInstance();
+        //endpoint = ClientEndpoint.getInstance();
 
         container.getInput().addMouseListener(player);
         container.getInput().addKeyListener(new KeyListener() {
