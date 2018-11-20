@@ -24,16 +24,13 @@ public abstract class Movable {
     private ArrayList<Vector> futureBoundaries;
 
 
-    public Movable(String spritePath, float scale, float mass) throws SlickException {
+    public Movable(float scale, float mass) {
         this.mass = mass;
-        sprite = new Image(spritePath);
         acceleration = new Vector(Game.GRAVITY.multiplyScalar(mass));
         speed = new Vector();
         position = new Vector();
         futureBoundaries = new ArrayList<>();
         this.scale = scale;
-        scaledWidth = sprite.getWidth()*scale;
-        scaledHeight = sprite.getHeight()*scale;
         this.centerOfSides = calculateCentersOfSides();
     }
 
@@ -199,5 +196,29 @@ public abstract class Movable {
 
     public void setPosition(Vector position) {
         this.position = position;
+    }
+
+    public void loadSprite(String spritePath) throws SlickException {
+        sprite = new Image(spritePath);
+        scaledWidth = sprite.getWidth()*scale;
+        scaledHeight = sprite.getHeight()*scale;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Movable movable = (Movable) o;
+
+        if (speed != null ? !speed.equals(movable.speed) : movable.speed != null) return false;
+        return position != null ? position.equals(movable.position) : movable.position == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = speed != null ? speed.hashCode() : 0;
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        return result;
     }
 }

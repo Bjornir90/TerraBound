@@ -32,7 +32,8 @@ public class Game extends BasicGame {
     public void init(GameContainer container) throws SlickException {
         container.setVSync(true);
 
-        player = new Player("sprites/Archer(noBow).png", 2);
+        player = new Player( 2);
+        player.loadSprite("sprites/Archer(noBow).png");
         player.setInput(container.getInput());
         player.setX(50);
         player.setY(50);

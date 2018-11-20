@@ -13,8 +13,8 @@ public class Player extends Movable implements KeyListener, MouseListener {
     private final float timeOfDash = 50, hookLength = 350;
     private float[] mouseCoords;
 
-    public Player(String spritePath, float scale) throws SlickException {
-        super(spritePath, scale, 1.0f);
+    public Player(float scale) throws SlickException {
+        super(scale, 1.0f);
         onPlatform = false;
         dashing = false;
         timeSinceDashBeginning = 0;
@@ -163,7 +163,8 @@ public class Player extends Movable implements KeyListener, MouseListener {
         if(i == Input.MOUSE_LEFT_BUTTON){
             ArrowsList list = ArrowsList.getInstance();
             try {
-                Arrow a = new Arrow("sprites/Arrow.png", 1);
+                Arrow a = new Arrow(1);
+                a.loadSprite("sprites/Arrow.png");
                 a.setX(this.getX());
                 a.setY(this.getY());
                 float angle = mouseDirection.getAngle();
@@ -187,7 +188,8 @@ public class Player extends Movable implements KeyListener, MouseListener {
                 if(MapUtils.collidesWithTerrain(currentlyCheckedPixel)){
                     Arrow a = null;
                     try {
-                        a = new Arrow("sprites/Arrow.png", 1);
+                        a = new Arrow(1);
+                        a.loadSprite("sprites/Arrow.png");
                     } catch (SlickException e) {
                         e.printStackTrace();
                         System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
