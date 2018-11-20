@@ -27,6 +27,12 @@ public class Arrow extends Movable {
 			rotateSprite(-angleIncrement);
 	}
 
+	public String formatForSending(){
+		return "x:"+position.getX()+"y:"+position.getY()+"sx:"+speed.getX()+"sy:"+speed.getY()+"a:"+angle;
+	}
+
+
+
 	public void setAngle(float angle) {
 		this.angle = angle;
 	}

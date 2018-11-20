@@ -19,6 +19,7 @@ public class ArrowsList {
 
 	private ArrowsList(){
 		localList = new ArrayList<>();
+		remoteList = new ArrayList<>();
 	}
 
 	public void addLocal(Arrow a){

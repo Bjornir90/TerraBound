@@ -193,6 +193,7 @@ public class Player extends Movable implements KeyListener, MouseListener {
                         System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
                     }
                     a.setPosition(currentlyCheckedPixel);
+                    a.setSpeed(new Vector(0,0));
                     a.setAngle(mouseDirection.getAngle());
                     a.rotateSprite(-a.getAngle());
                     ArrowsList la = ArrowsList.getInstance();
