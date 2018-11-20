@@ -26,13 +26,13 @@ public class ArrowsList {
 		localList.add(a);
 	}
 
-	public Arrow isPresent(long netID){
+	public Arrow isPresent(long netID) throws ElementNotPresentException{
 		for(Arrow a : remoteList){
 			if(a.getNetworkID() == netID){
 				return a;
 			}
 		}
-		return null;
+		throw new ElementNotPresentException("Arrow with netID "+netID+" not found");
 	}
 
 	public ArrayList<Arrow> getAllLocalArrows(){
