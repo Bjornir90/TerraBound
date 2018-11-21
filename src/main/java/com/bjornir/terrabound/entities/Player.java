@@ -6,7 +6,7 @@ import org.newdawn.slick.*;
 
 public class Player extends Entity implements KeyListener, MouseListener {
 
-    private boolean onPlatform, dashing;
+    private boolean onPlatform, dashing, usedSecondJump;
     private float timeSinceDashBeginning;
     private final float timeOfDash = 50, hookLength = 350;
     private float[] mouseCoords;
@@ -20,6 +20,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         timeSinceDashBeginning = 0;
         mouseCoords = new float[2];
         side = LEFT;
+        usedSecondJump = false;
     }
 
     @Override
@@ -92,6 +93,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         if(side == Entity.BOTTOM){
             if(colliding){
                 onPlatform = true;
+                usedSecondJump = false;
                 if(this.speed.getY()>0)
                     this.speed.setY(0);
                 if(this.acceleration.getY()>0)
@@ -131,8 +133,12 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 this.setAcceleration(new Vector(-Game.ACCELERATION, acceleration.getY()));
                 break;
             case Input.KEY_SPACE:
-                if(onPlatform) {
+                if(onPlatform || !usedSecondJump) {
                     this.setAcceleration(new Vector(acceleration.getX(), -0.029f));
+                    if(!onPlatform) {
+                        usedSecondJump = true;
+                        this.speed.setY(-0.5f);//Second jump is smaller than the first jump : don't know why
+                    }
                 }
                 break;
             case Input.KEY_F:
