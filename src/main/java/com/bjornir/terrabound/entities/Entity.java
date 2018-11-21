@@ -115,6 +115,8 @@ public abstract class Entity {
                 acceleration.setY(0);
             }
 
+            System.out.println("futurePixel.getX() = " + futurePixel.getX() + " getY() = " + futurePixel.getY());
+
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
                 //Remove the corners, because they detect a collision on the wrong sides

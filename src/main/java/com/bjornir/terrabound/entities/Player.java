@@ -113,7 +113,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 break;
             case Input.KEY_SPACE:
                 if(onPlatform) {
-                    this.setAcceleration(new Vector(acceleration.getX(), -0.08f));
+                    this.setAcceleration(new Vector(acceleration.getX(), -0.029f));
                 }
                 break;
             case Input.KEY_F:
