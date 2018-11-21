@@ -48,6 +48,11 @@ public class HookTarget extends Entity {
         }
     }
 
+    @Override
+    public void onCollisionSideChange(int newSide) {
+        //Nothing to do
+    }
+
     public boolean isInRange() {
         return inRange;
     }

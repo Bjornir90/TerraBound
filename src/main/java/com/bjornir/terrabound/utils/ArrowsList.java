@@ -12,7 +12,7 @@ public class ArrowsList {
 	public static ArrowsList getInstance(){
 		if(instance == null){
 			instance = new ArrowsList();
-			System.out.println("Instanciated ListOfArrow");
+			System.out.println("Instanciated ArrowsList");
 		}
 		return instance;
 	}

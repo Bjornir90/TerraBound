@@ -25,7 +25,6 @@ public class Player extends Entity implements KeyListener, MouseListener {
     @Override
     public void onTerrainCollision(int side) {
         if(side == Entity.BOTTOM){
-            onPlatform = true;
             if(this.speed.getY()>0)
                 this.speed.setY(0);
             if(this.acceleration.getY()>0)
@@ -67,8 +66,9 @@ public class Player extends Entity implements KeyListener, MouseListener {
             return;
         }
         Vector newSpeed = new Vector(speed);
-        //Apply gravity to player
-        acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
+        //Apply gravity to player only if not on a platform
+        if(!onPlatform)
+            acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
         //Friction, to bring the character to a stop
         float friction = delta*0.08f;
         //Delta too low might cause friction to get under 1 => it would accelerate infinitely
@@ -87,6 +87,19 @@ public class Player extends Entity implements KeyListener, MouseListener {
         }
     }
 
+    @Override
+    public void onCollisionSideChange(int newSide) {
+        if(newSide == Entity.BOTTOM){
+            if(collisionSides[Entity.BOTTOM] == 1){
+                onPlatform = true;
+                System.out.println("-----------Landed on platform-----------");
+            } else {
+                onPlatform = false;
+                System.out.println("-----------Left platform---------");
+            }
+        }
+    }
+
 
     @Override
     public void keyPressed(int i, char c) {
@@ -101,7 +114,6 @@ public class Player extends Entity implements KeyListener, MouseListener {
             case Input.KEY_SPACE:
                 if(onPlatform) {
                     this.setAcceleration(new Vector(acceleration.getX(), -0.08f));
-                    onPlatform = false;
                 }
                 break;
             case Input.KEY_F:

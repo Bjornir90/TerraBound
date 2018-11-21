@@ -16,10 +16,11 @@ public abstract class Entity {
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
     protected Image sprite;
-    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, COLLISION_TOLERANCE = 5;
+    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 5;
     protected boolean debug = false;
     protected float mass;
     protected Graphics g;
+    protected int[] collisionSides;
     private ArrayList<Vector> futureBoundaries;
 
 
@@ -31,6 +32,10 @@ public abstract class Entity {
         futureBoundaries = new ArrayList<>();
         this.scale = scale;
         this.centerOfSides = calculateCentersOfSides();
+        collisionSides = new int[4];
+        for(int i = 0; i<4; i++){
+            collisionSides[i] = 0;
+        }
     }
 
     private HashMap<Integer, Vector> calculateCentersOfSides(){
@@ -96,6 +101,10 @@ public abstract class Entity {
         speed.addSelfVector(acceleration.multiplyScalar(delta));
         onUpdate(delta);
         calculateFutureBounds(delta);
+        int [] oldCollisionSides = collisionSides.clone();
+        for (int i = 0; i < 4; i++) {
+            collisionSides[i] = 0;//Reset on every direction
+        }
         for(Vector futurePixel : futureBoundaries){
             if(futurePixel.getX() < 0 || futurePixel.getX() >= MapUtils.getMapWidth()){
                 speed.setX(0);
@@ -110,15 +119,25 @@ public abstract class Entity {
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
                 //Remove the corners, because they detect a collision on the wrong sides
                 if(futurePixel.getY() == position.getY() && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
-                    onTerrainCollision(TOP);
+                    collisionSides[TOP] = 1;
                 } else if(futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
-                    onTerrainCollision(BOTTOM);
+                    collisionSides[BOTTOM] = 1;
                 } else if(futurePixel.getX() == position.getX() && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE){
-                    onTerrainCollision(LEFT);
+                    collisionSides[LEFT] = 1;
                 } else if(futurePixel.getX() == position.getX()+scaledWidth && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE) {
-                    onTerrainCollision(RIGHT);
+                    collisionSides[RIGHT] = 1;
                 }
 
+            }
+        }
+        for(int i = 0; i<4; i++){
+            System.out.println("oldCollisionSides " + i + " = " + oldCollisionSides[i] + " : "+ this.getX());
+            System.out.println("---collisionSides " + i + " = " + collisionSides[i] + " : "+ this.getY());
+            if(oldCollisionSides[i] != collisionSides[i]) {
+                onCollisionSideChange(i);
+            }
+            if(collisionSides[i] == 1){
+                onTerrainCollision(i);//Not called for every pixels that collides with the terrain
             }
         }
         //We calculate the futurecoords again to take into account the collisions detected above
@@ -133,6 +152,9 @@ public abstract class Entity {
     public abstract void onTerrainCollision(int side);
 
     public abstract void onUpdate(int delta);
+
+    public abstract void onCollisionSideChange(int newSide);
+
     protected Vector calculateCenter(){
         Vector center = new Vector(position);
         center.addX(scaledWidth/2);

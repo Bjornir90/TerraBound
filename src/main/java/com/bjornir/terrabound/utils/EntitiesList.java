@@ -11,7 +11,7 @@ public class EntitiesList {
     public static EntitiesList getInstance(){
         if(instance == null){
             instance = new EntitiesList();
-            System.out.println("Instanciated ListOfArrow");
+            System.out.println("Instanciated EntitiesList");
         }
         return instance;
     }

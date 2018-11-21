@@ -34,6 +34,11 @@ public class Arrow extends Entity {
 			rotateSprite(-angleIncrement);
 	}
 
+	@Override
+	public void onCollisionSideChange(int newSide) {
+		//Nothing to do
+	}
+
 
 	/**
 	 * Returns a String that contains all necessary data to draw the arrow on the other computer.
