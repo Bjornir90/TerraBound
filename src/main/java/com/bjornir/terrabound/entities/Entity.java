@@ -2,7 +2,6 @@ package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.MapUtils;
-import com.bjornir.terrabound.utils.RayCaster;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -12,11 +11,11 @@ import org.newdawn.slick.SlickException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class Movable {
+public abstract class Entity {
     protected Vector acceleration, speed, position;
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
-    private Image sprite;
+    protected Image sprite;
     public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, COLLISION_TOLERANCE = 5;
     protected boolean debug = false;
     protected float mass;
@@ -24,7 +23,7 @@ public abstract class Movable {
     private ArrayList<Vector> futureBoundaries;
 
 
-    public Movable(float scale, float mass) {
+    public Entity(float scale, float mass) {
         this.mass = mass;
         acceleration = new Vector(Game.GRAVITY.multiplyScalar(mass));
         speed = new Vector();
@@ -93,7 +92,7 @@ public abstract class Movable {
         futureBoundaries = pixelsOnBoundaries;
     }
 
-    public Vector update(int delta){
+    public void update(int delta){
         speed.addSelfVector(acceleration.multiplyScalar(delta));
         onUpdate(delta);
         calculateFutureBounds(delta);
@@ -125,11 +124,10 @@ public abstract class Movable {
         //We calculate the futurecoords again to take into account the collisions detected above
         Vector updatedFutureCoords = calculateFutureCoords(delta);
         position = updatedFutureCoords;
-        return speed;
     }
 
     /**
-     * Is called by update() method in Movable when a collision is detected with the terrain
+     * Is called by update() method in Entity when a collision is detected with the terrain
      * Allow for different behaviors when colliding with the terrain
      */
     public abstract void onTerrainCollision(int side);
@@ -140,6 +138,11 @@ public abstract class Movable {
         center.addX(scaledWidth/2);
         center.addY(scaledHeight/2);
         return center;
+    }
+
+
+    public Vector getSpeed() {
+        return speed;
     }
 
     public float getX() {
@@ -209,10 +212,10 @@ public abstract class Movable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Movable movable = (Movable) o;
+        Entity entity = (Entity) o;
 
-        if (speed != null ? !speed.equals(movable.speed) : movable.speed != null) return false;
-        return position != null ? position.equals(movable.position) : movable.position == null;
+        if (speed != null ? !speed.equals(entity.speed) : entity.speed != null) return false;
+        return position != null ? position.equals(entity.position) : entity.position == null;
     }
 
     @Override

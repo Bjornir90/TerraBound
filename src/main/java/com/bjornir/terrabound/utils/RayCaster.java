@@ -1,6 +1,6 @@
 package com.bjornir.terrabound.utils;
 
-import com.bjornir.terrabound.entities.Movable;
+import com.bjornir.terrabound.entities.Entity;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -37,22 +37,22 @@ public class RayCaster {
 
     protected static Rectangle calculateRayCastCoordinates(float width, float height, Vector origin, int axis){ //The width and height are the size of the sprite, but the coordinates are the centers of the sides of the sprites
 	    float x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-	    if(axis == Movable.TOP){
+	    if(axis == Entity.TOP){
 		    x1 = origin.getX()-width/2;
 		    x2 = origin.getX()+width/2;
 		    y1 = origin.getY()-height;
 		    y2 = origin.getY();
-	    } else if(axis == Movable.LEFT){
+	    } else if(axis == Entity.LEFT){
 		    x1 = origin.getX()-width;
 		    x2 = origin.getX();
 		    y1 = origin.getY()-height/2;
 		    y2 = origin.getY()+height/2;
-	    } else if(axis == Movable.RIGHT){
+	    } else if(axis == Entity.RIGHT){
 		    x1 = origin.getX();
 		    x2 = origin.getX()+width;
 		    y1 = origin.getY()-height/2;
 		    y2 = origin.getY()+height/2;
-	    } else if(axis == Movable.BOTTOM){
+	    } else if(axis == Entity.BOTTOM){
 		    x1 = origin.getX()-width/2;
 		    x2 = origin.getX()+width/2;
 		    y1 = origin.getY();

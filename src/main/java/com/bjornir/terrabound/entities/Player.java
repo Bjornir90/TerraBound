@@ -1,12 +1,10 @@
 package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.Game;
-import com.bjornir.terrabound.utils.ArrowsList;
-import com.bjornir.terrabound.utils.MapUtils;
-import com.bjornir.terrabound.utils.Vector;
+import com.bjornir.terrabound.utils.*;
 import org.newdawn.slick.*;
 
-public class Player extends Movable implements KeyListener, MouseListener {
+public class Player extends Entity implements KeyListener, MouseListener {
 
     private boolean onPlatform, dashing;
     private float timeSinceDashBeginning;
@@ -23,7 +21,7 @@ public class Player extends Movable implements KeyListener, MouseListener {
 
     @Override
     public void onTerrainCollision(int side) {
-        if(side == Movable.BOTTOM){
+        if(side == Entity.BOTTOM){
             onPlatform = true;
             if(this.speed.getY()>0)
                 this.speed.setY(0);
@@ -31,18 +29,18 @@ public class Player extends Movable implements KeyListener, MouseListener {
                 this.acceleration.setY(0);
             //get out of the terrain tile
             this.position.addY(-this.position.getY()%MapUtils.getTileHeight());
-        }else if(side == Movable.TOP) {
+        }else if(side == Entity.TOP) {
             if(this.speed.getY()<0)
                 this.speed.setY(0);
             if(this.acceleration.getY()<0)
                 this.acceleration.setY(0);
             //get out of the terrain tile
             this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
-        } else if(side == Movable.LEFT){
+        } else if(side == Entity.LEFT){
             if(this.speed.getX()<0)
                 this.speed.setX(0);
             this.position.addX(MapUtils.getTileWidth()-this.position.getX()%MapUtils.getTileWidth());
-        } else if( side == Movable.RIGHT){
+        } else if( side == Entity.RIGHT){
             if(this.speed.getX()>0)
                 this.speed.setX(0);
             this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
@@ -180,7 +178,7 @@ public class Player extends Movable implements KeyListener, MouseListener {
                 System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
             }
         } else if (i == Input.MOUSE_RIGHT_BUTTON){
-            mouseDirection.normalizeSelf();
+            /*mouseDirection.normalizeSelf();
             System.out.println("mouseDirection = " + mouseDirection);
             Vector currentlyCheckedPixel = new Vector(position);
             for(int j = 0; j<hookLength; j++){
@@ -202,7 +200,15 @@ public class Player extends Movable implements KeyListener, MouseListener {
                     la.addLocal(a);
                     break;
                 }
-            }
+            }*/
+
+
+            HookTarget target = new HookTarget(1, 0);
+            target.setPosition(new Vector(i1, i2));
+            HookTargetWatcher.getInstance().addWatched(target);
+            EntitiesList.getInstance().add(target);
+
+
         }
     }
 

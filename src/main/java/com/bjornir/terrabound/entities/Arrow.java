@@ -1,9 +1,8 @@
 package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.utils.Vector;
-import org.newdawn.slick.SlickException;
 
-public class Arrow extends Movable {
+public class Arrow extends Entity {
 
 	private float angle;
 	private long networkID;
