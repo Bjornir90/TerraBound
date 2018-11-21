@@ -16,7 +16,7 @@ public abstract class Entity {
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
     protected Image sprite;
-    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 5;
+    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 20;
     protected boolean debug = false;
     protected float mass;
     protected Graphics g;
@@ -115,8 +115,6 @@ public abstract class Entity {
                 acceleration.setY(0);
             }
 
-            System.out.println("futurePixel.getX() = " + futurePixel.getX() + " getY() = " + futurePixel.getY());
-
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
                 //Remove the corners, because they detect a collision on the wrong sides
@@ -133,10 +131,8 @@ public abstract class Entity {
             }
         }
         for(int i = 0; i<4; i++){
-            System.out.println("oldCollisionSides " + i + " = " + oldCollisionSides[i] + " : "+ this.getX());
-            System.out.println("---collisionSides " + i + " = " + collisionSides[i] + " : "+ this.getY());
             if(oldCollisionSides[i] != collisionSides[i]) {
-                onCollisionSideChange(i);
+                onCollisionSideChange(i, collisionSides[i] == 1);
             }
             if(collisionSides[i] == 1){
                 onTerrainCollision(i);//Not called for every pixels that collides with the terrain
@@ -155,7 +151,7 @@ public abstract class Entity {
 
     public abstract void onUpdate(int delta);
 
-    public abstract void onCollisionSideChange(int newSide);
+    public abstract void onCollisionSideChange(int newSide, boolean colliding);
 
     protected Vector calculateCenter(){
         Vector center = new Vector(position);

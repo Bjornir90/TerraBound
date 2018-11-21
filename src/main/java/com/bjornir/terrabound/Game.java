@@ -102,6 +102,7 @@ public class Game extends BasicGame {
         for(Entity e : entities){
             e.draw();
         }
+        player.drawBounds();
         map.render(0, 0);
         tf.render(container, g);
         vectortf.render(container, g);

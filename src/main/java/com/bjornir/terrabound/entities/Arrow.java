@@ -35,7 +35,7 @@ public class Arrow extends Entity {
 	}
 
 	@Override
-	public void onCollisionSideChange(int newSide) {
+	public void onCollisionSideChange(int newSide, boolean colliding) {
 		//Nothing to do
 	}
 

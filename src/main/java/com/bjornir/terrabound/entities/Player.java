@@ -24,7 +24,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void onTerrainCollision(int side) {
-        if(side == Entity.BOTTOM){
+       /* if(side == Entity.BOTTOM){
             if(this.speed.getY()>0)
                 this.speed.setY(0);
             if(this.acceleration.getY()>0)
@@ -46,7 +46,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
             if(this.speed.getX()>0)
                 this.speed.setX(0);
             this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
-        }
+        }*/
     }
 
     @Override
@@ -88,15 +88,34 @@ public class Player extends Entity implements KeyListener, MouseListener {
     }
 
     @Override
-    public void onCollisionSideChange(int newSide) {
-        if(newSide == Entity.BOTTOM){
-            if(collisionSides[Entity.BOTTOM] == 1){
+    public void onCollisionSideChange(int side, boolean colliding) {
+        if(side == Entity.BOTTOM){
+            if(colliding){
                 onPlatform = true;
-                System.out.println("-----------Landed on platform-----------");
+                if(this.speed.getY()>0)
+                    this.speed.setY(0);
+                if(this.acceleration.getY()>0)
+                    this.acceleration.setY(0);
+                //get out of the terrain tile
+                this.position.addY(-this.position.getY()%MapUtils.getTileHeight());
             } else {
                 onPlatform = false;
-                System.out.println("-----------Left platform---------");
             }
+        } else if(side == Entity.TOP && colliding) {
+            if(this.speed.getY()<0)
+                this.speed.setY(0);
+            if(this.acceleration.getY()<0)
+                this.acceleration.setY(0);
+            //get out of the terrain tile
+            this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
+        } else if(side == Entity.LEFT && colliding){
+            if(this.speed.getX()<0)
+                this.speed.setX(0);
+            this.position.addX(MapUtils.getTileWidth()-this.position.getX()%MapUtils.getTileWidth());
+        } else if( side == Entity.RIGHT && colliding){
+            if(this.speed.getX()>0)
+                this.speed.setX(0);
+            this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
         }
     }
 
