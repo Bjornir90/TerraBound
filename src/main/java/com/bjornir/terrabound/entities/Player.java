@@ -10,6 +10,8 @@ public class Player extends Entity implements KeyListener, MouseListener {
     private float timeSinceDashBeginning;
     private final float timeOfDash = 50, hookLength = 350;
     private float[] mouseCoords;
+    private int side;
+    private final int LEFT = 0, RIGHT = 1;
 
     public Player(float scale) throws SlickException {
         super(scale, 1.0f);
@@ -17,6 +19,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         dashing = false;
         timeSinceDashBeginning = 0;
         mouseCoords = new float[2];
+        side = LEFT;
     }
 
     @Override
@@ -49,6 +52,11 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void onUpdate(int delta) {
+        if(speed.getX()<0){
+            side = LEFT;
+        } else if(speed.getX()>0){
+            side = RIGHT;
+        }
         if(dashing){
             if(timeSinceDashBeginning>timeOfDash){
                 dashing = false;
@@ -97,18 +105,16 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 }
                 break;
             case Input.KEY_F:
-                this.position.addY(-200);
+                this.position.addY(-400);
                 speed = new Vector(0, 0);
                 break;
             case Input.KEY_E:
                 this.acceleration = new Vector(0, 0);
-                this.speed = new Vector(4, 0);
-                dashing = true;
-                timeSinceDashBeginning = 0;
-                break;
-            case Input.KEY_Q:
-                this.acceleration = new Vector(0, 0);
-                this.speed = new Vector(-4, 0);
+                float speedX = 4;
+                if(side == LEFT){
+                    speedX = -speedX;
+                }
+                this.speed = new Vector(speedX, 0);
                 dashing = true;
                 timeSinceDashBeginning = 0;
                 break;
