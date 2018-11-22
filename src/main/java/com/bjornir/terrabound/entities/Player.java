@@ -8,12 +8,12 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     private boolean onPlatform, dashing, usedSecondJump, usedTeleportation;
     private float timeSinceDashBeginning;
-    private final float timeOfDash = 50, hookLength = 350;
+	private final float hookLength = 350;
     private float[] mouseCoords;
     private int side;
     private final int LEFT = 0, RIGHT = 1;
 
-    public Player(float scale) throws SlickException {
+    public Player(float scale) {
         super(scale, 1.0f);
         onPlatform = false;
         dashing = false;
@@ -59,7 +59,8 @@ public class Player extends Entity implements KeyListener, MouseListener {
             side = RIGHT;
         }
         if(dashing){
-            if(timeSinceDashBeginning>timeOfDash){
+	        float durationOfDash = 50;
+	        if(timeSinceDashBeginning> durationOfDash){
                 dashing = false;
             }
             timeSinceDashBeginning += delta;
