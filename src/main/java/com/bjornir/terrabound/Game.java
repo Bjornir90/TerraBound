@@ -32,7 +32,8 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        container.setVSync(true);
+        //container.setVSync(true);
+        container.setTargetFrameRate(120);
 
         player = new Player( 2);
         player.loadSprite("sprites/Archer(noBow).png");

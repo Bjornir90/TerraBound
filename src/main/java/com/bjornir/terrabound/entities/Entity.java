@@ -10,13 +10,14 @@ import org.newdawn.slick.SlickException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 public abstract class Entity {
     protected Vector acceleration, speed, position;
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
     protected Image sprite;
-    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 20;
+    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 10;
     protected boolean debug = false;
     protected float mass;
     protected Graphics g;
@@ -48,11 +49,23 @@ public abstract class Entity {
     }
 
     protected Vector calculateFutureCoords(int delta){
-        Vector futureCoords = new Vector();
-        futureCoords.setX(position.getX());
-        futureCoords.setY(position.getY());
+        Vector futureCoords = new Vector(position);
         futureCoords = handleMovement(delta, futureCoords);
+        correctCoordinates(futureCoords);
         return futureCoords;
+    }
+
+    protected void correctCoordinates(Vector coords){
+        if(coords.getX() < 0){
+            coords.setX(1);
+        } else if(coords.getX() > MapUtils.getMapWidth()){
+            coords.setX(MapUtils.getTileWidth()-1);
+        }
+        if(coords.getY() < 0){
+            coords.setY(1);
+        } else if(coords.getY() > MapUtils.getMapHeight()){
+            coords.setY(MapUtils.getTileHeight()-1);
+        }
     }
 
     private Vector handleMovement(int delta, Vector originPosition){
@@ -93,7 +106,10 @@ public abstract class Entity {
             pixelsOnBoundaries.add(pixelOnRightBoundary);
         }
 
-        pixelsOnBoundaries.forEach(p -> handleMovement(delta, p));
+        pixelsOnBoundaries.forEach(vector -> {
+            handleMovement(delta, vector);
+            correctCoordinates(vector);
+        });
         futureBoundaries = pixelsOnBoundaries;
     }
 

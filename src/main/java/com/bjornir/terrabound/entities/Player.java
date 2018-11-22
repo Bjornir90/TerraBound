@@ -153,6 +153,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
             case Input.KEY_F:
                 if(!usedTeleportation){
                     this.position.addY(-400);
+                    correctCoordinates(position);
                     speed = new Vector(0, 0);
                     usedTeleportation = true;
                 }
