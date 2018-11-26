@@ -23,6 +23,7 @@ public class ClientEndpoint {
                     System.out.println("Received message : " + message);
                     int separatorIndex = message.indexOf(';');
                     long networkID = Long.parseLong(message.substring(0, separatorIndex));
+                    System.out.println("networkID = " + networkID);
                 }
 
                 @Override

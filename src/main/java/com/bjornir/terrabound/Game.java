@@ -51,7 +51,7 @@ public class Game extends BasicGame {
         vectortf = new TextField(container, container.getDefaultFont(), 1200, 20, 800, 20);
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 300, 75);
 
-        //endpoint = ClientEndpoint.getInstance();
+        endpoint = ClientEndpoint.getInstance();
         hookTargetWatcher = HookTargetWatcher.getInstance();
         hookTargetWatcher.init(player);
 
@@ -66,6 +66,8 @@ public class Game extends BasicGame {
                         container.resume();
                 } else if(i == Input.KEY_ESCAPE){
                     container.exit();
+                } else if(i == Input.KEY_P){
+                    endpoint.send("5325;Test data : player pressed p");
                 }
             }
 
