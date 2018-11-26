@@ -66,8 +66,9 @@ public class Game extends BasicGame {
                         container.resume();
                 } else if(i == Input.KEY_ESCAPE){
                     container.exit();
-                } else if(i == Input.KEY_P){
-                    endpoint.send("5325;Test data : player pressed p");
+                } else if(i == Input.KEY_O){
+                    System.out.println("Sending packet to websocket server");
+                    endpoint.send("5325;Test data : player pressed O");
                 }
             }
 

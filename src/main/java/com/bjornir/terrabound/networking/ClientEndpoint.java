@@ -52,7 +52,6 @@ public class ClientEndpoint {
     }
 
     public void send(String data){
-        ws.sendText(data);
-        ws.flush();
+        ws.sendText(data);;
     }
 }
