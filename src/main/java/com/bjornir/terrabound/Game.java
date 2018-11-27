@@ -47,7 +47,7 @@ public class Game extends BasicGame {
 
         arrowsList = ArrowsList.getInstance();
 
-        vectortf = new TextField(container, container.getDefaultFont(), 1200, 20, 800, 20);
+        vectortf = new TextField(container, container.getDefaultFont(), 400, 20, 800, 20);
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 300, 75);
 
         endpoint = ClientEndpoint.getInstance();
@@ -111,6 +111,7 @@ public class Game extends BasicGame {
         vectortf.render(container, g);
         for(Arrow a : arrowsList.getAllArrows()){
             a.draw();
+            a.drawBounds();
         }
     }
 

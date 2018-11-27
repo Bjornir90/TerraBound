@@ -4,7 +4,6 @@ import com.bjornir.terrabound.utils.Vector;
 
 public class Arrow extends Entity {
 
-	private float angle;
 	private long networkID;
 
 	public static Arrow createFromRemote(String data){
@@ -15,7 +14,6 @@ public class Arrow extends Entity {
 
 	public Arrow(float scale) {
 		super(scale, 0.2f);
-		angle = 0.0f;
 		generateNetworkID();
 	}
 
@@ -31,7 +29,7 @@ public class Arrow extends Entity {
 		this.angle = this.speed.getAngle();
 		float angleIncrement = this.angle-oldAngle;
 		if(!speed.isNullVector())
-			rotateSprite(-angleIncrement);
+			rotateSprite(angleIncrement);
 	}
 
 	@Override

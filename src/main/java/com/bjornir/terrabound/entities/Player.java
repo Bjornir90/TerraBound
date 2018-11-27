@@ -176,7 +176,6 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void keyReleased(int i, char c) {
-        System.out.println("Key released : " + c);
         if(i == Input.KEY_D || i == Input.KEY_A){
             this.setAcceleration(new Vector(0, acceleration.getY()));
         }
@@ -224,12 +223,12 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 a.setX(this.getX());
                 a.setY(this.getY());
                 float angle = mouseDirection.getAngle();
-                System.out.println("angle = " + angle);
                 a.setAngle(angle);
-                a.rotateSprite(-angle);
+                a.rotateSprite(angle);
                 mouseDirection.normalizeSelf();
                 //arrowDirection.multiplySelfScalar(1.5f);
                 a.setSpeed(mouseDirection);
+                a.setG(g);
                 list.addLocal(a);
             } catch (SlickException e) {
                 e.printStackTrace();

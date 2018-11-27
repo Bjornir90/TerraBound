@@ -17,9 +17,9 @@ public abstract class Entity {
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
     protected Image sprite;
-    public static int TOP = 0, BOTTOM = 1, LEFT = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 10;
+    public static int TOP = 0, BOTTOM = 1, LEFT = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 5;
     protected boolean debug = false;
-    protected float mass;
+    protected float mass, angle;
     protected Graphics g;
     protected int[] collisionSides;
     private ArrayList<Vector> futureBoundaries;
@@ -35,6 +35,7 @@ public abstract class Entity {
         this.scale = scale;
         this.centerOfSides = calculateCentersOfSides();
         collisionSides = new int[4];
+        angle = 0.0f;
         for(int i = 0; i<4; i++){
             collisionSides[i] = 0;
         }
@@ -88,6 +89,7 @@ public abstract class Entity {
         bottomLeft.addY(scaledHeight);
         Vector topRight = new Vector(position);
         topRight.addX(scaledWidth);
+        Vector center = calculateCenter();
 
         //Get the sign of the speed for the two axis
         //int speedXSign = (speed.getX() >= 0)?1:-1, speedYSign = (speed.getY() >= 0)?1:-1;
@@ -99,10 +101,12 @@ public abstract class Entity {
             for (int x = COLLISION_TOLERANCE; x <= scaledWidth-COLLISION_TOLERANCE; x++) {
                 Vector pixelOnTopBoundary = new Vector(position);
                 pixelOnTopBoundary.addX(x);
-                //pixelOnTopBoundary.addY(y);
+                pixelOnTopBoundary.rotateSelf(center, angle);
+
                 Vector pixelOnBottomBoundary = new Vector(bottomLeft);
                 pixelOnBottomBoundary.addX(x);
-                //pixelOnBottomBoundary.addY(y);
+                pixelOnBottomBoundary.rotateSelf(center, angle);
+
                 pixelsOnBoundaries.add(pixelOnTopBoundary);
                 pixelsOnBoundaries.add(pixelOnBottomBoundary);
             }
@@ -113,10 +117,12 @@ public abstract class Entity {
             for (int y = COLLISION_TOLERANCE; y <= scaledHeight-COLLISION_TOLERANCE; y++) {
                 Vector pixelOnLeftBoundary = new Vector(position);
                 pixelOnLeftBoundary.addY(y);
-                //pixelOnLeftBoundary.addX(x);
+                pixelOnLeftBoundary.rotateSelf(center, angle);
+
                 Vector pixelOnRightBoundary = new Vector(topRight);
                 pixelOnRightBoundary.addY(y);
-                //pixelOnRightBoundary.addX(x);
+                pixelOnRightBoundary.rotateSelf(center, angle);
+
                 pixelsOnBoundaries.add(pixelOnLeftBoundary);
                 pixelsOnBoundaries.add(pixelOnRightBoundary);
             }
@@ -167,7 +173,7 @@ public abstract class Entity {
         for(int i = 0; i<4; i++){
             if(oldCollisionSides[i] != collisionSides[i]) {
                 onCollisionSideChange(i, collisionSides[i] == 1);
-                break;//to prevent character shifting to the side when landing
+                break;//only one collision per tick
             }
             if(collisionSides[i] == 1){
                 onTerrainCollision(i);//Not called for every pixels that collides with the terrain
@@ -249,7 +255,7 @@ public abstract class Entity {
     }
 
     public void rotateSprite(float angle){
-        this.sprite.rotate(angle);
+        this.sprite.rotate(-angle);
     }
 
     public void setPosition(Vector position) {
@@ -260,6 +266,7 @@ public abstract class Entity {
         sprite = new Image(spritePath);
         scaledWidth = sprite.getWidth()*scale;
         scaledHeight = sprite.getHeight()*scale;
+        sprite.setCenterOfRotation(position.getX()+scaledWidth/2, position.getY()+scaledHeight/2);
     }
 
     @Override

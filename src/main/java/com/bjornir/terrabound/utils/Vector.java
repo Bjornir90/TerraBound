@@ -75,6 +75,16 @@ public class Vector {
         return angle;
     }
 
+    public void rotateSelf(Vector center, float angle){
+        angle = - (float) Math.toRadians(angle);
+        this.addSelfVector(center.negateVector());
+        float tempX = this.getX(), tempY = this.getY();
+        float rotatedX = (float) (tempX*Math.cos(angle)-tempY*Math.sin(angle)), rotatedY = (float) (tempX*Math.sin(angle)+tempY*Math.cos(angle));
+        this.setX(rotatedX);
+        this.setY(rotatedY);
+        this.addSelfVector(center);
+    }
+
     public boolean isNullVector(){
         return (this.x == 0 && this.y == 0);
     }
