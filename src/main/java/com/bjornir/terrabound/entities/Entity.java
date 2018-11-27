@@ -90,37 +90,37 @@ public abstract class Entity {
         topRight.addX(scaledWidth);
 
         //Get the sign of the speed for the two axis
-        int speedXSign = (speed.getX() >= 0)?1:-1, speedYSign = (speed.getY() >= 0)?1:-1;
+        //int speedXSign = (speed.getX() >= 0)?1:-1, speedYSign = (speed.getY() >= 0)?1:-1;
 
 
         //We check the absolute value of y against the absolute value of the speed
         //We increment or decrement y, depending on the direction of the speed : if the speed is negative, we want to go towards the negative and vice-versa
-        for(float y = 0; Math.abs(y)<=Math.abs(speed.multiplyScalar(delta).getY()); y+=speedYSign) {
+        //for(float y = 0; Math.abs(y)<=Math.abs(speed.multiplyScalar(delta).getY()); y+=speedYSign) {
             for (int x = COLLISION_TOLERANCE; x <= scaledWidth-COLLISION_TOLERANCE; x++) {
                 Vector pixelOnTopBoundary = new Vector(position);
                 pixelOnTopBoundary.addX(x);
-                pixelOnTopBoundary.addY(y);
+                //pixelOnTopBoundary.addY(y);
                 Vector pixelOnBottomBoundary = new Vector(bottomLeft);
                 pixelOnBottomBoundary.addX(x);
-                pixelOnBottomBoundary.addY(y);
+                //pixelOnBottomBoundary.addY(y);
                 pixelsOnBoundaries.add(pixelOnTopBoundary);
                 pixelsOnBoundaries.add(pixelOnBottomBoundary);
             }
-        }
+        //}
 
         //Same thing, same reasons
-        for(float x = 0; Math.abs(x)<=Math.abs(speed.multiplyScalar(delta).getX()); x+=speedXSign) {
+        //for(float x = 0; Math.abs(x)<=Math.abs(speed.multiplyScalar(delta).getX()); x+=speedXSign) {
             for (int y = COLLISION_TOLERANCE; y <= scaledHeight-COLLISION_TOLERANCE; y++) {
                 Vector pixelOnLeftBoundary = new Vector(position);
                 pixelOnLeftBoundary.addY(y);
-                pixelOnLeftBoundary.addX(x);
+                //pixelOnLeftBoundary.addX(x);
                 Vector pixelOnRightBoundary = new Vector(topRight);
                 pixelOnRightBoundary.addY(y);
-                pixelOnRightBoundary.addX(x);
+                //pixelOnRightBoundary.addX(x);
                 pixelsOnBoundaries.add(pixelOnLeftBoundary);
                 pixelsOnBoundaries.add(pixelOnRightBoundary);
             }
-        }
+      //  }
 
         pixelsOnBoundaries.forEach(vector -> {
             //handleMovement(delta, vector);
