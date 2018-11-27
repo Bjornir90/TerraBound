@@ -134,13 +134,13 @@ public abstract class Entity {
             if(MapUtils.collidesWithTerrain(futurePixel)){
                 //Won't work at very high speed, where the speed on an axis per update is higher than half the size of the player on this axis
                 //Remove the corners, because they detect a collision on the wrong sides
-                if(futurePixel.getY() == position.getY() && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
+                if(collisionSides[TOP] != 1 && futurePixel.getY() == position.getY() && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
                     collisionSides[TOP] = 1;
-                } else if(futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
+                } else if(collisionSides[BOTTOM] != 1 && futurePixel.getY() == position.getY()+scaledHeight  && futurePixel.getX() > position.getX()+COLLISION_TOLERANCE && futurePixel.getX() < position.getX()+scaledWidth-COLLISION_TOLERANCE){
                     collisionSides[BOTTOM] = 1;
-                } else if(futurePixel.getX() == position.getX() && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE){
+                } else if(collisionSides[LEFT] != 1 && futurePixel.getX() == position.getX() && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE){
                     collisionSides[LEFT] = 1;
-                } else if(futurePixel.getX() == position.getX()+scaledWidth && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE) {
+                } else if(collisionSides[RIGHT] != 1 && futurePixel.getX() == position.getX()+scaledWidth && futurePixel.getY() > position.getY()+COLLISION_TOLERANCE && futurePixel.getY() < position.getY()+scaledHeight-COLLISION_TOLERANCE) {
                     collisionSides[RIGHT] = 1;
                 }
 

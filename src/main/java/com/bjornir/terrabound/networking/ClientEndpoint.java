@@ -82,6 +82,6 @@ public class ClientEndpoint {
     }
 
     public void send(String data){
-        ws.sendText(data);;
+        ws.sendText(data);
     }
 }
