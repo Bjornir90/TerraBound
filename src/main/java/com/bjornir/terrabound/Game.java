@@ -17,7 +17,6 @@ public class Game extends BasicGame {
     private Player player;
     private TiledMap map;
     private TextField tf, vectortf;
-    private float maxSpeedReached;
     private ArrowsList arrowsList;
     private ClientEndpoint endpoint;
     private HookTargetWatcher hookTargetWatcher;

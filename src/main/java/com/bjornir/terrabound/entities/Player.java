@@ -75,7 +75,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         //Friction, to bring the character to a stop
         float friction = delta*0.08f;
         //Delta too low might cause friction to get under 1 => it would accelerate infinitely
-        friction = (friction<1)?1.005f:friction;
+        friction = (friction<1)?1.01f:friction;
         newSpeed.setX(newSpeed.getX()/((friction)));
         //Limit objects speed
         if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
@@ -123,10 +123,12 @@ public class Player extends Entity implements KeyListener, MouseListener {
         } else if(side == Entity.LEFT && colliding){
             if(this.speed.getX()<0)
                 this.speed.setX(0);
+            System.out.println("Left collision : " + System.currentTimeMillis());
             this.position.addX(MapUtils.getTileWidth()-this.position.getX()%MapUtils.getTileWidth());
         } else if( side == Entity.RIGHT && colliding){
             if(this.speed.getX()>0)
                 this.speed.setX(0);
+            System.out.println("Right collision : " + System.currentTimeMillis());
             this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
         }
     }
@@ -134,7 +136,6 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(int i, char c) {
-        System.out.println("Key pressed : " + c);
         switch(i){
             case Input.KEY_D:
                 this.setAcceleration(new Vector(Game.ACCELERATION, acceleration.getY()));

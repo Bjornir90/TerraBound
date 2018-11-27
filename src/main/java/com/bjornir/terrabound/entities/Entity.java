@@ -17,12 +17,13 @@ public abstract class Entity {
     private HashMap<Integer, Vector> centerOfSides;
     private float scale, scaledWidth, scaledHeight;
     protected Image sprite;
-    public static int TOP = 0, LEFT = 1, BOTTOM = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 10;
+    public static int TOP = 0, BOTTOM = 1, LEFT = 2, RIGHT = 3, NODIRECTION = 4, COLLISION_TOLERANCE = 10;
     protected boolean debug = false;
     protected float mass;
     protected Graphics g;
     protected int[] collisionSides;
     private ArrayList<Vector> futureBoundaries;
+    private int timeSinceLastPrint = 0;
 
 
     public Entity(float scale, float mass) {
@@ -75,7 +76,7 @@ public abstract class Entity {
     public void drawBounds(){
         g.setColor(Color.cyan);
         for(Vector p : futureBoundaries){
-            g.drawRect(p.getX(), p.getY(), 1, 1);
+            g.fillRect(p.getX(), p.getY(), 1, 1);
         }
     }
 
@@ -88,26 +89,41 @@ public abstract class Entity {
         Vector topRight = new Vector(position);
         topRight.addX(scaledWidth);
 
-        for(int x = 0; x<=scaledWidth; x++){
-            Vector pixelOnTopBoundary = new Vector(position);
-            pixelOnTopBoundary.addX(x);
-            Vector pixelOnBottomBoundary = new Vector(bottomLeft);
-            pixelOnBottomBoundary.addX(x);
-            pixelsOnBoundaries.add(pixelOnTopBoundary);
-            pixelsOnBoundaries.add(pixelOnBottomBoundary);
+        //Get the sign of the speed for the two axis
+        int speedXSign = (speed.getX() >= 0)?1:-1, speedYSign = (speed.getY() >= 0)?1:-1;
+
+
+        //We check the absolute value of y against the absolute value of the speed
+        //We increment or decrement y, depending on the direction of the speed : if the speed is negative, we want to go towards the negative and vice-versa
+        for(float y = 0; Math.abs(y)<=Math.abs(speed.multiplyScalar(delta).getY()); y+=speedYSign) {
+            for (int x = COLLISION_TOLERANCE; x <= scaledWidth-COLLISION_TOLERANCE; x++) {
+                Vector pixelOnTopBoundary = new Vector(position);
+                pixelOnTopBoundary.addX(x);
+                pixelOnTopBoundary.addY(y);
+                Vector pixelOnBottomBoundary = new Vector(bottomLeft);
+                pixelOnBottomBoundary.addX(x);
+                pixelOnBottomBoundary.addY(y);
+                pixelsOnBoundaries.add(pixelOnTopBoundary);
+                pixelsOnBoundaries.add(pixelOnBottomBoundary);
+            }
         }
 
-        for(int y = 0; y<=scaledHeight; y++){
-            Vector pixelOnLeftBoundary = new Vector(position);
-            pixelOnLeftBoundary.addY(y);
-            Vector pixelOnRightBoundary = new Vector(topRight);
-            pixelOnRightBoundary.addY(y);
-            pixelsOnBoundaries.add(pixelOnLeftBoundary);
-            pixelsOnBoundaries.add(pixelOnRightBoundary);
+        //Same thing, same reasons
+        for(float x = 0; Math.abs(x)<=Math.abs(speed.multiplyScalar(delta).getX()); x+=speedXSign) {
+            for (int y = COLLISION_TOLERANCE; y <= scaledHeight-COLLISION_TOLERANCE; y++) {
+                Vector pixelOnLeftBoundary = new Vector(position);
+                pixelOnLeftBoundary.addY(y);
+                pixelOnLeftBoundary.addX(x);
+                Vector pixelOnRightBoundary = new Vector(topRight);
+                pixelOnRightBoundary.addY(y);
+                pixelOnRightBoundary.addX(x);
+                pixelsOnBoundaries.add(pixelOnLeftBoundary);
+                pixelsOnBoundaries.add(pixelOnRightBoundary);
+            }
         }
 
         pixelsOnBoundaries.forEach(vector -> {
-            handleMovement(delta, vector);
+            //handleMovement(delta, vector);
             correctCoordinates(vector);
         });
         futureBoundaries = pixelsOnBoundaries;
@@ -115,6 +131,8 @@ public abstract class Entity {
 
     public void update(int delta){
         speed.addSelfVector(acceleration.multiplyScalar(delta));
+        if(speed.getY() > Game.MAX_SPEED)
+            speed.setY(Game.MAX_SPEED);
         onUpdate(delta);
         calculateFutureBounds(delta);
         int [] oldCollisionSides = collisionSides.clone();
@@ -149,6 +167,7 @@ public abstract class Entity {
         for(int i = 0; i<4; i++){
             if(oldCollisionSides[i] != collisionSides[i]) {
                 onCollisionSideChange(i, collisionSides[i] == 1);
+                break;//to prevent character shifting to the side when landing
             }
             if(collisionSides[i] == 1){
                 onTerrainCollision(i);//Not called for every pixels that collides with the terrain
