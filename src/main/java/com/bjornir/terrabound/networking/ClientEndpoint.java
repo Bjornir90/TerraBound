@@ -2,20 +2,50 @@ package com.bjornir.terrabound.networking;
 
 import com.neovisionaries.ws.client.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class ClientEndpoint {
     private WebSocket ws;
-    private String server = "ws://127.0.0.1:8080";
+    private String server;
     private static ClientEndpoint instance;
 
     private ClientEndpoint(){
         initConnection();
     }
 
+    private void readServerAddress(){
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader("properties.conf"));
+        } catch (FileNotFoundException e) {
+            System.err.println("Error : could not locate config file\nPlease download properties.conf again.");
+            System.exit(1);
+        }
+        try {
+            String currentLine;
+            int delimiterIndex;
+            String propertyName;
+            do {
+                currentLine = reader.readLine();
+                delimiterIndex = currentLine.indexOf(':');
+                propertyName = currentLine.substring(0, delimiterIndex);
+            } while (!propertyName.equals("serveraddress"));
+            String value = currentLine.substring(delimiterIndex+1);
+            server = "ws://"+value;
+
+        } catch (IOException e) {
+            System.err.println("Could not read config file.\nPlease restart the game.\nIf this persists, try reinstallating the game.");
+            System.exit(1);
+        }
+    }
+
     private void initConnection(){
+        readServerAddress();
         try {
             ws = new WebSocketFactory().setConnectionTimeout(5000).createSocket(server).addListener(new WebSocketAdapter(){
                 @Override
