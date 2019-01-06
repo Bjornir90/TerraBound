@@ -6,12 +6,13 @@ import org.newdawn.slick.*;
 
 public class Player extends Entity implements KeyListener, MouseListener {
 
-    private boolean onPlatform, dashing, usedSecondJump, usedTeleportation;
+    private boolean onPlatform, dashing, usedSecondJump, usedTeleportation, hooking;
     private float timeSinceDashBeginning;
-	private final float hookLength = 350;
     private float[] mouseCoords;
     private int side;
     private final int LEFT = 0, RIGHT = 1;
+    private HookTarget closestTarget;
+
 
     public Player(float scale) {
         super(scale, 1.0f);
@@ -22,6 +23,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         side = LEFT;
         usedSecondJump = false;
         usedTeleportation = false;
+        hooking = false;
     }
 
     @Override
@@ -68,6 +70,15 @@ public class Player extends Entity implements KeyListener, MouseListener {
         if(dashing){
             return;
         }
+        if(hooking && closestTarget != null){
+            Vector playerToTarget = new Vector(closestTarget.getX()-getX()-20.0f, closestTarget.getY()-getY()+5.0f);
+            float distanceToTarget = playerToTarget.norm();
+            if(distanceToTarget < 30.0f){
+                hooking = false;
+                setSpeed(new Vector(0, 0));
+            }
+            return;
+        }
         Vector newSpeed = new Vector(speed);
         //Apply gravity to player only if not on a platform
         if(!onPlatform)
@@ -75,7 +86,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         //Friction, to bring the character to a stop
         float friction = delta*0.08f;
         //Delta too low might cause friction to get under 1 => it would accelerate infinitely
-        friction = (friction<1)?1.005f:friction;
+        friction = (friction<1)?1.05f:friction;
         newSpeed.setX(newSpeed.getX()/((friction)));
         //Limit objects speed
         if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
@@ -88,6 +99,11 @@ public class Player extends Entity implements KeyListener, MouseListener {
         } else if(newSpeed.getX() < 0){
             speed = new Vector(-Game.MAX_SPEED, newSpeed.getY());
         }
+    }
+
+
+    public void setClosestTarget(HookTarget closestTarget) {
+        this.closestTarget = closestTarget;
     }
 
     /**
@@ -168,6 +184,14 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 this.speed = new Vector(speedX, 0);
                 dashing = true;
                 timeSinceDashBeginning = 0;
+                break;
+            case Input.KEY_Q:
+                if(closestTarget == null) return;
+                Vector playerToTarget = new Vector(closestTarget.getX()-getX()-20.0f, closestTarget.getY()-getY()+5.0f);
+                Vector hookingSpeed = playerToTarget.normalize();
+                hookingSpeed.multiplySelfScalar(2.0f);
+                this.setSpeed(hookingSpeed);
+                hooking = true;
                 break;
         }
 

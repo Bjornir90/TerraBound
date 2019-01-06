@@ -31,14 +31,21 @@ public class HookTargetWatcher {
     }
 
     public void onUpdate(){
+        float closestDistance = 100000.0f;
+        HookTarget closestTarget = null;
         for(HookTarget t : targetArrayList){
             Vector playerToTarget = new Vector(t.getX()-player.getX(), t.getY()-player.getY());
             float distancePlayerToTarget = playerToTarget.norm();
             if(distancePlayerToTarget < Game.HOOKRANGE){
                 t.setInRange(true);
+                if(closestDistance > distancePlayerToTarget){
+                    closestDistance = distancePlayerToTarget;
+                    closestTarget = t;
+                }
             } else {
                 t.setInRange(false);
             }
         }
+        player.setClosestTarget(closestTarget);
     }
 }

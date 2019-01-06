@@ -66,6 +66,12 @@ public class Vector {
         this.y = this.y/norm;
     }
 
+    public Vector normalize(){
+        Vector toReturn = new Vector(this);
+        toReturn.normalizeSelf();
+        return toReturn;
+    }
+
     public float getAngle(){
         float angle = (float) Math.toDegrees(Math.acos(this.x/this.norm()));
         if(this.y > 0){
