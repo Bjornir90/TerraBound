@@ -34,6 +34,7 @@ public class Game extends BasicGame {
     public void init(GameContainer container) throws SlickException {
         //container.setVSync(true);
         container.setTargetFrameRate(120);
+        container.getGraphics().setLineWidth(4);
 
         player = new Player( 2);
         player.loadSprite("sprites/Archer(noBow).png");
@@ -107,6 +108,7 @@ public class Game extends BasicGame {
             e.draw();
         }
         player.drawBounds();
+        player.drawGrapplinHook(g);
         map.render(0, 0);
         tf.render(container, g);
         vectortf.render(container, g);

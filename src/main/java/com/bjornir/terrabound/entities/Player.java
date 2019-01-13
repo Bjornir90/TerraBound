@@ -53,6 +53,13 @@ public class Player extends Entity implements KeyListener, MouseListener {
         }*/
     }
 
+    public void drawGrapplinHook(Graphics g){
+        if(hooking && closestTarget != null) {
+            g.setColor(Color.red);
+            g.drawLine(getX()+(getScaledWidth()/2), getY(), closestTarget.getX()+(closestTarget.getScaledWidth()/2), closestTarget.getY()+(getScaledHeight()/2));
+        }
+    }
+
     @Override
     public void onUpdate(int delta) {
         if(speed.getX()<0){
