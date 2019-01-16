@@ -103,6 +103,7 @@ public class Game extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) {
+        g.translate(-player.getX()+container.getWidth()/2, -player.getY()+container.getHeight()/2);
         ArrayList<Entity> entities = EntitiesList.getInstance().getAllEntities();
         for(Entity e : entities){
             e.draw();
