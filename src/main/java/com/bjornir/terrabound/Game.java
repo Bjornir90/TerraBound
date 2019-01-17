@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class Game extends BasicGame {
     public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f, HOOKRANGE = 550.0f;
+    public static float WINDOWSWIDTH, WINDOWSHEIGHT;
     public static Vector GRAVITY;
     private Player player;
     private TiledMap map;
@@ -27,13 +28,15 @@ public class Game extends BasicGame {
     }
 
     public Game() {
-        super("TerraBound");
+        super("ColorJourneyProto");
     }
 
     @Override
     public void init(GameContainer container) throws SlickException {
         //container.setVSync(true);
         container.setTargetFrameRate(120);
+        WINDOWSWIDTH = container.getWidth();
+        WINDOWSHEIGHT = container.getHeight();
 
         player = new Player( 2);
         player.loadSprite("sprites/Archer(noBow).png");

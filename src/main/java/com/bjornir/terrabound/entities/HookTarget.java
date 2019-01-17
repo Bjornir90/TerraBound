@@ -1,6 +1,7 @@
 package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.utils.HookTargetWatcher;
+import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -59,5 +60,10 @@ public class HookTarget extends Entity {
 
     public void setInRange(boolean inRange) {
         this.inRange = inRange;
+    }
+
+    public Vector getDistanceFromPlayer(Player p){
+        Vector distance = this.position.addVector(p.position.negateVector());
+        return distance;
     }
 }

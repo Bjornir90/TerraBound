@@ -292,7 +292,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
 
             HookTarget target = new HookTarget(1, 0);
-            target.setPosition(new Vector(i1, i2));
+            target.setPosition(new Vector(i1+position.getX()-Game.WINDOWSWIDTH/2, i2+position.getY()-Game.WINDOWSHEIGHT/2));
             HookTargetWatcher.getInstance().addWatched(target);
             EntitiesList.getInstance().add(target);
 
@@ -307,8 +307,10 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void mouseMoved(int i, int i1, int i2, int i3) {
-        mouseCoords[0] = i2;
-        mouseCoords[1] = i3;
+        mouseCoords[0] = i2+position.getX()-Game.WINDOWSWIDTH/2;
+        mouseCoords[1] = i3+position.getY()-Game.WINDOWSHEIGHT/2;
+        System.out.println("i2 = " + i2 + "i3 = " + i3);
+        System.out.println("mouseCoords = " + mouseCoords[0] + " " + mouseCoords[1]);
     }
 
     @Override
