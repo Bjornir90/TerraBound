@@ -12,7 +12,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import java.util.ArrayList;
 
 public class Game extends BasicGame {
-    public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f, HOOKRANGE = 350.0f;
+    public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f, HOOKRANGE = 550.0f;
     public static Vector GRAVITY;
     private Player player;
     private TiledMap map;
@@ -34,7 +34,6 @@ public class Game extends BasicGame {
     public void init(GameContainer container) throws SlickException {
         //container.setVSync(true);
         container.setTargetFrameRate(120);
-        container.getGraphics().setLineWidth(4);
 
         player = new Player( 2);
         player.loadSprite("sprites/Archer(noBow).png");
@@ -44,7 +43,7 @@ public class Game extends BasicGame {
         player.setG(container.getGraphics());
         EntitiesList.getInstance().add(player);
 
-        map = new TiledMap("sprites/arena.tmx");
+        map = new TiledMap("sprites/prototype.tmx");
         MapUtils.setMap(map);
 
         arrowsList = ArrowsList.getInstance();

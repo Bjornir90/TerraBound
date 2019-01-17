@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1">
+ <tileset firstgid="1" source="stoneplatform.tsx"/>
+ <tileset firstgid="2" source="grassplatform.tsx"/>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACu3ZwWqDQBRAUe3/f3RXhRLaxlijd5xz4IGrIXhJGF7WZVnWhYL123A9PVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjRY8WPVr0aNGjZfYeHw9ztdl71OjRokeLHi16vGbdOEecz3Pvflej9zj7vqpHix4terTo0aJHy0w9aru9n8zUYwR6tOjRokfLCD1maqlHix4terTo0aJHy916PO5ErtyN/PZZ/pq79RidHi16tOjRokeLHi16tOjRMkKPmejRcrce64Y5wp5dyJY9jh4td+sxOj1a9GjRo0WPFj1a9GjRo0WPFj1a9GjRo+XMHv/dfX7Zc8ae5yvG96NFjxY9WvRo0aNFj5a9d9FX7296bLPl//+jhuf8XrWc0eMTVCjywECcAAA=
+  </data>
+ </layer>
+</map>
