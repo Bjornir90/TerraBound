@@ -21,7 +21,6 @@ public class Game extends BasicGame {
     private TextField tf, vectortf;
     private ArrowsList arrowsList;
     private ClientEndpoint endpoint;
-    private HookTargetWatcher hookTargetWatcher;
 
     static {
         GRAVITY = new Vector(0, GRAVITYSTRENGTH);
@@ -34,7 +33,7 @@ public class Game extends BasicGame {
     @Override
     public void init(GameContainer container) throws SlickException {
         //container.setVSync(true);
-        container.setTargetFrameRate(120);
+        container.setTargetFrameRate(60);
 
         player = new Player( 2);
         player.loadSprite("sprites/Archer(noBow).png");
@@ -45,11 +44,9 @@ public class Game extends BasicGame {
         EntitiesList.getInstance().add(player);
 
         LightingCore.initLighting();
-        LightSource lightSource1 = new LightSource(Color.white, 700.0f, 1460, 100);
+        LightSource lightSource1 = new LightSource(Color.white, 700.0f, 1400, 150);
         lightSource1.turnOn();
-        LightSource lightSource2 = new LightSource(Color.white, 500.0f, 900, 500);
-        //lightSource2.turnOn();
-        LightSource lightSource3 = new LightSource(Color.white, 500.0f, 600, 500);
+        LightSource lightSource3 = new LightSource(Color.white, 500.0f, 600, 150);
         lightSource3.turnOn();
 
 
@@ -62,8 +59,6 @@ public class Game extends BasicGame {
         tf = new TextField(container, container.getDefaultFont(), 15, 15, 300, 75);
 
         endpoint = ClientEndpoint.getInstance();
-        hookTargetWatcher = HookTargetWatcher.getInstance();
-        hookTargetWatcher.init(player);
 
         container.getInput().addMouseListener(player);
         container.getInput().addKeyListener(new KeyListener() {
@@ -137,7 +132,6 @@ public class Game extends BasicGame {
         for(Entity e : entities){
             e.update(delta);
         }
-        hookTargetWatcher.onUpdate();
         tf.setText("Time to update : "+ delta + "ms\n Speed : "+player.getSpeed()+"\n Accel : "+player.getAcceleration());
         vectortf.setText("Vector to mouse " + player.mouseVector());
     }

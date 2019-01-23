@@ -8,7 +8,6 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     private boolean onPlatform, dashing, usedSecondJump, usedTeleportation;
     private float timeSinceDashBeginning;
-	private final float hookLength = 350;
     private float[] mouseCoords;
     private int side;
     private final int LEFT = 0, RIGHT = 1;
@@ -234,38 +233,6 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 e.printStackTrace();
                 System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
             }
-        } else if (i == Input.MOUSE_RIGHT_BUTTON){
-            /*mouseDirection.normalizeSelf();
-            System.out.println("mouseDirection = " + mouseDirection);
-            Vector currentlyCheckedPixel = new Vector(position);
-            for(int j = 0; j<hookLength; j++){
-                currentlyCheckedPixel.addSelfVector(mouseDirection);
-                if(MapUtils.collidesWithTerrain(currentlyCheckedPixel)){
-                    Arrow a = null;
-                    try {
-                        a = new Arrow(1);
-                        a.loadSprite("sprites/Arrow.png");
-                    } catch (SlickException e) {
-                        e.printStackTrace();
-                        System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
-                    }
-                    a.setPosition(currentlyCheckedPixel);
-                    a.setSpeed(new Vector(0,0));
-                    a.setAngle(mouseDirection.getAngle());
-                    a.rotateSprite(-a.getAngle());
-                    ArrowsList la = ArrowsList.getInstance();
-                    la.addLocal(a);
-                    break;
-                }
-            }*/
-
-
-            HookTarget target = new HookTarget(1, 0);
-            target.setPosition(new Vector(i1, i2));
-            HookTargetWatcher.getInstance().addWatched(target);
-            EntitiesList.getInstance().add(target);
-
-
         }
     }
 
