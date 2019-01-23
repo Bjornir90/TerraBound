@@ -45,11 +45,11 @@ public class Game extends BasicGame {
         EntitiesList.getInstance().add(player);
 
         LightingCore.initLighting();
-        LightSource lightSource1 = new LightSource(Color.white, 80000.0f, 1460, 540);
+        LightSource lightSource1 = new LightSource(Color.white, 700.0f, 1460, 100);
         lightSource1.turnOn();
-        LightSource lightSource2 = new LightSource(Color.white, 80000.0f, 1000, 540);
+        LightSource lightSource2 = new LightSource(Color.white, 500.0f, 900, 500);
         //lightSource2.turnOn();
-        LightSource lightSource3 = new LightSource(Color.white, 80000.0f, 600, 540);
+        LightSource lightSource3 = new LightSource(Color.white, 500.0f, 600, 500);
         lightSource3.turnOn();
 
 
