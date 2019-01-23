@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="PhotonFX">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/main/java/PhotonFX.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

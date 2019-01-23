@@ -215,7 +215,9 @@ public abstract class Entity {
     }
 
     public void draw(){
-        sprite.draw(position.getX(), position.getY(), scale);
+        sprite.startUse();
+        sprite.drawEmbedded(position.getX(), position.getY(), this.scaledWidth, this.scaledHeight);
+        sprite.endUse();
     }
 
     public void setX(float x) {

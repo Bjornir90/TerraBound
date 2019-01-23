@@ -5,6 +5,8 @@ import com.bjornir.terrabound.entities.Entity;
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.networking.ClientEndpoint;
 import com.bjornir.terrabound.utils.*;
+import engine.lighting.LightSource;
+import engine.lighting.LightingCore;
 import org.newdawn.slick.*;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
@@ -41,6 +43,15 @@ public class Game extends BasicGame {
         player.setY(50);
         player.setG(container.getGraphics());
         EntitiesList.getInstance().add(player);
+
+        LightingCore.initLighting();
+        LightSource lightSource1 = new LightSource(Color.white, 80000.0f, 1460, 540);
+        lightSource1.turnOn();
+        LightSource lightSource2 = new LightSource(Color.white, 80000.0f, 1000, 540);
+        //lightSource2.turnOn();
+        LightSource lightSource3 = new LightSource(Color.white, 80000.0f, 600, 540);
+        lightSource3.turnOn();
+
 
         map = new TiledMap("sprites/arena.tmx");
         MapUtils.setMap(map);
@@ -101,18 +112,20 @@ public class Game extends BasicGame {
 
     @Override
     public void render(GameContainer container, Graphics g) {
+        player.drawBounds();
+        tf.render(container, g);
+        vectortf.render(container, g);
+        LightingCore.startTexRendering();
         ArrayList<Entity> entities = EntitiesList.getInstance().getAllEntities();
         for(Entity e : entities){
             e.draw();
         }
-        player.drawBounds();
         map.render(0, 0);
-        tf.render(container, g);
-        vectortf.render(container, g);
         for(Arrow a : arrowsList.getAllArrows()){
             a.draw();
-            a.drawBounds();
+            //a.drawBounds();
         }
+        LightingCore.endTexRendering();
     }
 
     @Override
