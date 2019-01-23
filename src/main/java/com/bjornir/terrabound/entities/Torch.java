@@ -2,6 +2,7 @@ package com.bjornir.terrabound.entities;
 
 import com.bjornir.terrabound.utils.Vector;
 import engine.lighting.LightSource;
+import engine.lighting.LightingCore;
 import engine.particle.ParticleEmitter;
 import org.lwjgl.Sys;
 import org.newdawn.slick.Color;
@@ -25,11 +26,11 @@ public class Torch extends Entity {
     }
 
     private void init() throws SlickException {
-        lightSource = new LightSource(new Color( 230.0f/255.0f, 160.0f/255.0f, 20.0f/255.0f), 60.0f, getX()+getScaledWidth()/2, getY()+1);
+        lightSource = new LightSource(new Color( 230.0f/255.0f, 160.0f/255.0f, 20.0f/255.0f), 60.0f, getX()+getScaledWidth()+10, getY()+1);
         lightSource.turnOn();
-        particleEmitter = new ParticleEmitter(0.5f, 0.0f, 1.0f, 1, Color.orange, null, getX()+getScaledWidth()/2, getY()+2, 2000);
+        particleEmitter = new ParticleEmitter(0.000001f, 0.0f, 0.00002f, 2.0f, Color.orange, null, getX()+getScaledWidth()+10, getY()+2, 2000);
         particleEmitter.setInterval(1000);
-        particleEmitter.setEmission(0.0f, 1.0f, 1.0f, 0.5f);
+        particleEmitter.setEmission(0.0f, -0.003f, 0.003f, 0.0005f);
         this.loadSprite("sprites/MetalTorch.png");
     }
 
@@ -44,8 +45,12 @@ public class Torch extends Entity {
     }
 
     public void draw(Graphics g){
+        LightingCore.startTexRendering();
         super.draw();
+        LightingCore.endTexRendering();
+        LightingCore.startPrimRendering();
         particleEmitter.drawParticles(g);
+        LightingCore.endPrimRendering();
     }
     @Override
     public void onCollisionSideChange(int newSide, boolean colliding) {

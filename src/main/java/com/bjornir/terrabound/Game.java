@@ -114,13 +114,14 @@ public class Game extends BasicGame {
         player.drawBounds();
         tf.render(container, g);
         vectortf.render(container, g);
+        //Torches have a special rendering with shaders
+        for(Torch t : torches){
+            t.draw(g);
+        }
         LightingCore.startTexRendering();
         ArrayList<Entity> entities = EntitiesList.getInstance().getAllEntities();
         for(Entity e : entities){
             e.draw();
-        }
-        for(Torch t : torches){
-            t.draw(g);
         }
         map.render(0, 0);
         for(Arrow a : arrowsList.getAllArrows()){
