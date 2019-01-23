@@ -3,6 +3,7 @@ package com.bjornir.terrabound;
 import com.bjornir.terrabound.entities.Arrow;
 import com.bjornir.terrabound.entities.Entity;
 import com.bjornir.terrabound.entities.Player;
+import com.bjornir.terrabound.entities.Torch;
 import com.bjornir.terrabound.networking.ClientEndpoint;
 import com.bjornir.terrabound.utils.*;
 import engine.lighting.LightSource;
@@ -20,6 +21,7 @@ public class Game extends BasicGame {
     private TiledMap map;
     private TextField tf, vectortf;
     private ArrowsList arrowsList;
+    private ArrayList<Torch> torches;
     private ClientEndpoint endpoint;
 
     static {
@@ -32,8 +34,9 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        //container.setVSync(true);
+        container.setVSync(true);
         container.setTargetFrameRate(60);
+        container.getGraphics().setBackground(Color.gray);
 
         player = new Player( 2);
         player.loadSprite("sprites/Archer(noBow).png");
@@ -42,12 +45,13 @@ public class Game extends BasicGame {
         player.setY(50);
         player.setG(container.getGraphics());
         EntitiesList.getInstance().add(player);
+        torches = new ArrayList<>();
 
         LightingCore.initLighting();
-        LightSource lightSource1 = new LightSource(Color.white, 700.0f, 1400, 150);
-        lightSource1.turnOn();
-        LightSource lightSource3 = new LightSource(Color.white, 500.0f, 600, 150);
-        lightSource3.turnOn();
+        for(int i = 0; i<10; i++){
+            Torch torch = new Torch(1.0f, 0.0f, i*190+80, 150.0f);
+            torches.add(torch);
+        }
 
 
         map = new TiledMap("sprites/arena.tmx");
@@ -115,6 +119,9 @@ public class Game extends BasicGame {
         for(Entity e : entities){
             e.draw();
         }
+        for(Torch t : torches){
+            t.draw(g);
+        }
         map.render(0, 0);
         for(Arrow a : arrowsList.getAllArrows()){
             a.draw();
@@ -131,6 +138,9 @@ public class Game extends BasicGame {
         ArrayList<Entity> entities = EntitiesList.getInstance().getAllEntities();
         for(Entity e : entities){
             e.update(delta);
+        }
+        for(Torch t : torches){
+            t.onUpdate(delta);
         }
         tf.setText("Time to update : "+ delta + "ms\n Speed : "+player.getSpeed()+"\n Accel : "+player.getAcceleration());
         vectortf.setText("Vector to mouse " + player.mouseVector());
