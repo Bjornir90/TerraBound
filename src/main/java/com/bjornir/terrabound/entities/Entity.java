@@ -7,6 +7,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,9 +78,7 @@ public abstract class Entity {
 
     public void drawBounds(){
         g.setColor(Color.cyan);
-        for(Vector p : futureBoundaries){
-            g.fillRect(p.getX(), p.getY(), 1, 1);
-        }
+        g.draw(getBoundingBox());
     }
 
     protected void calculateFutureBounds(int delta){
@@ -262,6 +262,11 @@ public abstract class Entity {
 
     public void setPosition(Vector position) {
         this.position = position;
+    }
+
+    public Rectangle getBoundingBox(){
+        Rectangle box = new Rectangle(position.getX(), position.getY(), scaledWidth, scaledHeight);
+        return box;
     }
 
     public void loadSprite(String spritePath) throws SlickException {
