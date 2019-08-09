@@ -1,182 +1,106 @@
 package com.bjornir.terrabound.entities;
 
-import com.bjornir.terrabound.Game;
-import com.bjornir.terrabound.utils.*;
-import org.newdawn.slick.*;
+import com.bjornir.terrabound.utils.Side;
+import com.bjornir.terrabound.utils.Vector;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
 
-public class Player extends Entity implements KeyListener, MouseListener {
+public class Player extends Entity implements KeyListener {
 
-    private boolean onPlatform, dashing, usedSecondJump, usedTeleportation;
-    private float timeSinceDashBeginning;
-    private float[] mouseCoords;
-    private int side;
-    private final int LEFT = 0, RIGHT = 1;
+    public static final float MAX_HORIZONTAL_SPEED = 1.0f, HORIZONTAL_ACCELERATION = 0.2f;
 
-    public Player(float scale) {
-        super(scale, 1.0f);
-        onPlatform = false;
-        dashing = false;
-        timeSinceDashBeginning = 0;
-        mouseCoords = new float[2];
-        side = LEFT;
-        usedSecondJump = false;
-        usedTeleportation = false;
+    private HorizontalDirection currentMovingState;
+
+    public Player(String spritePath, int width, int height) {
+        super(spritePath, width, height);
+        currentMovingState = HorizontalDirection.NOTMOVING;
     }
 
     @Override
-    public void onTerrainCollision(int side) {
-       /* if(side == Entity.BOTTOM){
-            if(this.speed.getY()>0)
-                this.speed.setY(0);
-            if(this.acceleration.getY()>0)
-                this.acceleration.setY(0);
-            //get out of the terrain tile
-            this.position.addY(-this.position.getY()%MapUtils.getTileHeight());
-        }else if(side == Entity.TOP) {
-            if(this.speed.getY()<0)
-                this.speed.setY(0);
-            if(this.acceleration.getY()<0)
-                this.acceleration.setY(0);
-            //get out of the terrain tile
-            this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
-        } else if(side == Entity.LEFT){
-            if(this.speed.getX()<0)
-                this.speed.setX(0);
-            this.position.addX(MapUtils.getTileWidth()-this.position.getX()%MapUtils.getTileWidth());
-        } else if( side == Entity.RIGHT){
-            if(this.speed.getX()>0)
-                this.speed.setX(0);
-            this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
-        }*/
+    public void update(int delta){
+        super.update(delta);
+
+        switch(currentMovingState){
+            case LEFT:
+                speed.addX(-HORIZONTAL_ACCELERATION);
+                if(speed.getX()<-MAX_HORIZONTAL_SPEED)
+                    speed.setX(-MAX_HORIZONTAL_SPEED);
+                break;
+
+            case RIGHT:
+                speed.addX(HORIZONTAL_ACCELERATION);
+                if(speed.getX()>MAX_HORIZONTAL_SPEED)
+                    speed.setX(MAX_HORIZONTAL_SPEED);
+                break;
+
+            case NOTMOVING:
+
+                if(speed.getX() < 0.0f) {
+
+                    speed.addX(HORIZONTAL_ACCELERATION);
+                    if(speed.getX() > 0.0f)
+                        speed.setX(0.0f);
+
+                } else if(speed.getX() > 0.0f) {
+
+                    speed.addX(-HORIZONTAL_ACCELERATION);
+                    if(speed.getX() < 0.0f)
+                        speed.setX(0.0f);
+
+                }
+                break;
+
+        }
+
     }
 
     @Override
-    public void onUpdate(int delta) {
-        if(speed.getX()<0){
-            side = LEFT;
-        } else if(speed.getX()>0){
-            side = RIGHT;
-        }
-        if(dashing){
-	        float durationOfDash = 50;
-	        if(timeSinceDashBeginning> durationOfDash){
-                dashing = false;
-            }
-            timeSinceDashBeginning += delta;
-        }
-        if(dashing){
-            return;
-        }
-        Vector newSpeed = new Vector(speed);
-        //Apply gravity to player only if not on a platform
-        if(!onPlatform)
-            acceleration = Game.GRAVITY.addVector(acceleration.getXProjection());
-        //Friction, to bring the character to a stop
-        float friction = delta*0.08f;
-        //Delta too low might cause friction to get under 1 => it would accelerate infinitely
-        friction = (friction<1)?1.01f:friction;
-        newSpeed.setX(newSpeed.getX()/((friction)));
-        //Limit objects speed
-        if(Math.abs(newSpeed.getX()) <= Game.MAX_SPEED){
-            //Set speed to 0 if close enough (rounding error)
-            if(Math.abs(newSpeed.getX()) < 0.0001f)
-                newSpeed.setX(0);
-            speed = newSpeed;
-        } else if(newSpeed.getX() > 0){
-            speed = new Vector(Game.MAX_SPEED, newSpeed.getY());
-        } else if(newSpeed.getX() < 0){
-            speed = new Vector(-Game.MAX_SPEED, newSpeed.getY());
+    protected void onTerrainCollision(Side side) {
+        switch(side){
+            case TOP:
+                if(speed.getY()>0)
+                    speed.setY(0.0f);
+                break;
+            case BOTTOM:
+                if(speed.getY()<0)
+                    speed.setY(0.0f);
+                break;
+            case LEFT:
+                if(speed.getX()<0)
+                    speed.setX(0.0f);
+                break;
+            case RIGHT:
+                if(speed.getX()>0)
+                    speed.setX(0.0f);
+                break;
         }
     }
-
-    /**
-     * A simple function used to reset some values when the player lands on a platform
-     */
-    private void onLanding(){
-        onPlatform = true;
-        usedSecondJump = false;
-        usedTeleportation = false;
-    }
-
-    @Override
-    public void onCollisionSideChange(int side, boolean colliding) {
-        if(side == Entity.BOTTOM){
-            if(colliding){
-                onLanding();
-                if(this.speed.getY()>0)
-                    this.speed.setY(0);
-                if(this.acceleration.getY()>0)
-                    this.acceleration.setY(0);
-                //get out of the terrain tile
-                this.position.addY(-this.position.getY()%MapUtils.getTileHeight());
-            } else {
-                onPlatform = false;
-            }
-        } else if(side == Entity.TOP && colliding) {
-            if(this.speed.getY()<0)
-                this.speed.setY(0);
-            if(this.acceleration.getY()<0)
-                this.acceleration.setY(0);
-            //get out of the terrain tile
-            this.position.addY(MapUtils.getTileHeight()-this.position.getY()%MapUtils.getTileHeight());
-        } else if(side == Entity.LEFT && colliding){
-            if(this.speed.getX()<0)
-                this.speed.setX(0);
-            System.out.println("Left collision : " + System.currentTimeMillis());
-            this.position.addX(MapUtils.getTileWidth()-this.position.getX()%MapUtils.getTileWidth());
-        } else if( side == Entity.RIGHT && colliding){
-            if(this.speed.getX()>0)
-                this.speed.setX(0);
-            System.out.println("Right collision : " + System.currentTimeMillis());
-            this.position.addX(-this.position.getX()%MapUtils.getTileWidth());
-        }
-    }
-
 
     @Override
     public void keyPressed(int i, char c) {
         switch(i){
             case Input.KEY_D:
-                this.setAcceleration(new Vector(Game.ACCELERATION, acceleration.getY()));
+                currentMovingState = HorizontalDirection.RIGHT;
+                speed = new Vector();
                 break;
-            case Input.KEY_A:
-                this.setAcceleration(new Vector(-Game.ACCELERATION, acceleration.getY()));
-                break;
-            case Input.KEY_SPACE:
-                if(onPlatform || !usedSecondJump) {
-                    this.setAcceleration(new Vector(acceleration.getX(), -0.029f));
-                    if(!onPlatform) {
-                        usedSecondJump = true;
-                        this.speed.setY(-0.8f);//Second jump is smaller than the first jump : don't know why
-                    }
-                }
-                break;
-            case Input.KEY_F:
-                if(!usedTeleportation){
-                    this.position.addY(-400);
-                    correctCoordinates(position);
-                    speed = new Vector(0, 0);
-                    usedTeleportation = true;
-                }
-                break;
-            case Input.KEY_E:
-                this.acceleration = new Vector(0, 0);
-                float speedX = 4;
-                if(side == LEFT){
-                    speedX = -speedX;
-                }
-                this.speed = new Vector(speedX, 0);
-                dashing = true;
-                timeSinceDashBeginning = 0;
+            case Input.KEY_Q:
+                currentMovingState = HorizontalDirection.LEFT;
+                speed = new Vector();
                 break;
         }
-
     }
 
     @Override
     public void keyReleased(int i, char c) {
-        if(i == Input.KEY_D || i == Input.KEY_A){
-            this.setAcceleration(new Vector(0, acceleration.getY()));
+        switch(i){
+            case Input.KEY_D:
+                if(currentMovingState == HorizontalDirection.RIGHT)
+                    currentMovingState = HorizontalDirection.NOTMOVING;
+                break;
+            case Input.KEY_Q:
+                if(currentMovingState == HorizontalDirection.LEFT)
+                    currentMovingState = HorizontalDirection.NOTMOVING;
+                break;
         }
     }
 
@@ -199,62 +123,11 @@ public class Player extends Entity implements KeyListener, MouseListener {
     public void inputStarted() {
 
     }
+}
 
 
-    @Override
-    public void mouseWheelMoved(int i) {
-
-    }
-
-    @Override
-    public void mouseClicked(int i, int i1, int i2, int i3) {
-
-    }
-
-    @Override
-    public void mousePressed(int i, int i1, int i2) {
-        Vector mouseDirection = this.position.negateVector().addVector(new Vector(i1, i2));
-        if(i == Input.MOUSE_LEFT_BUTTON){
-            ArrowsList list = ArrowsList.getInstance();
-            try {
-                Arrow a = new Arrow(1);
-                a.loadSprite("sprites/Arrow.png");
-                a.setX(this.getX());
-                a.setY(this.getY());
-                float angle = mouseDirection.getAngle();
-                a.setAngle(angle);
-                a.rotateSprite(angle);
-                mouseDirection.normalizeSelf();
-                //arrowDirection.multiplySelfScalar(1.5f);
-                a.setSpeed(mouseDirection);
-                a.setG(g);
-                list.addLocal(a);
-            } catch (SlickException e) {
-                e.printStackTrace();
-                System.err.println("Could not instanciate Arrow : files are probably missing or corrupted");
-            }
-        }
-    }
-
-    @Override
-    public void mouseReleased(int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void mouseMoved(int i, int i1, int i2, int i3) {
-        mouseCoords[0] = i2;
-        mouseCoords[1] = i3;
-    }
-
-    @Override
-    public void mouseDragged(int i, int i1, int i2, int i3) {
-
-    }
-
-    public Vector mouseVector(){
-        Vector mousePos = new Vector(mouseCoords[0], mouseCoords[1]);
-        Vector fromPlayerToMouse = position.negateVector().addVector(mousePos);
-        return fromPlayerToMouse;
-    }
+enum HorizontalDirection{
+    LEFT,
+    NOTMOVING,
+    RIGHT
 }
