@@ -17,6 +17,7 @@ public class Game extends BasicGame {
     private ClientEndpoint endpoint;
     private ArrayList<Entity> entities;
     private Player player;
+    public static GameContainer Container;
 
     static {
         GRAVITY = new Vector(0, GRAVITYSTRENGTH);
@@ -28,9 +29,11 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
-        container.setVSync(true);
+        container.setVSync(false);
         container.setTargetFrameRate(60);
         container.getGraphics().setBackground(Color.gray);
+
+        Container = container;
 
         LightingCore.initLighting();
 
@@ -51,12 +54,13 @@ public class Game extends BasicGame {
     @Override
     public void render(GameContainer container, Graphics g) {
 
-        LightingCore.startTexRendering();
-        entities.forEach(entity -> entity.draw());
-        player.draw();
+        //LightingCore.startTexRendering();
         CurrentMap.render(0,0);
-        LightingCore.endTexRendering();
+        //entities.forEach(entity -> entity.draw());
+        player.draw();
+        //LightingCore.endTexRendering();
 
+        g.flush();
     }
 
     @Override

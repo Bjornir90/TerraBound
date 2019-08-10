@@ -1,6 +1,18 @@
 package com.bjornir.terrabound.utils;
 
+import java.util.ArrayList;
+
 public class Vector {
+
+    public static Vector getMeanPosition(ArrayList<Vector> list){
+        Vector result = new Vector();
+        for(Vector vec : list){
+            result.addSelfVector(vec);
+        }
+        result.multiplySelfScalar(1.0f/list.size());
+        return result;
+    }
+
     private float x, y;
 
     public Vector(){

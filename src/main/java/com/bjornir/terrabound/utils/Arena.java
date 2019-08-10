@@ -1,8 +1,12 @@
 package com.bjornir.terrabound.utils;
 
+import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.entities.Entity;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.tiled.TiledMap;
+
+import java.util.ArrayList;
 
 public class Arena {
 
@@ -14,19 +18,23 @@ public class Arena {
     private static Vector checkForCollision(Entity entity, TiledMap map){
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
+        ArrayList<Vector> collisionPoints = new ArrayList<>();
 
         for(int x = (int)entity.getLeftBound(); x < entity.getRightBound(); x++){
             for(int y = (int)entity.getTopBound(); y < entity.getBottomBound(); y++){
 
                 Image tile = map.getTileImage(x / tileWidth, y / tileHeight, 0);
 
-                if(tile != null)
-                    return new Vector(x, y);
-
+                if(tile != null) {
+                    collisionPoints.add(new Vector(x, y));
+                }
             }
         }
 
-        return null;
+        if(collisionPoints.isEmpty())
+            return null;
+
+        return Vector.getMeanPosition(collisionPoints);
     }
 
     public static Vector Collides(Entity entity, TiledMap map){

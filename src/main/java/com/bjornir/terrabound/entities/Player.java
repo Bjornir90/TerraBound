@@ -56,24 +56,7 @@ public class Player extends Entity implements KeyListener {
 
     @Override
     protected void onTerrainCollision(Side side) {
-        switch(side){
-            case TOP:
-                if(speed.getY()>0)
-                    speed.setY(0.0f);
-                break;
-            case BOTTOM:
-                if(speed.getY()<0)
-                    speed.setY(0.0f);
-                break;
-            case LEFT:
-                if(speed.getX()<0)
-                    speed.setX(0.0f);
-                break;
-            case RIGHT:
-                if(speed.getX()>0)
-                    speed.setX(0.0f);
-                break;
-        }
+
     }
 
     @Override
