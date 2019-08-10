@@ -16,8 +16,13 @@ public class Arena {
      * @return null if there is not a collision with the terrain, the position of the pixel that collides otherwise
      */
     private static Vector checkForCollision(Entity entity, TiledMap map){
+
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
+
+        if(entity.getX() >= map.getWidth()*tileWidth || entity.getX() < 0 || entity.getY() >= map.getHeight()*tileHeight || entity.getY() < 0)
+            return null;
+
         ArrayList<Vector> collisionPoints = new ArrayList<>();
 
         for(int x = (int)entity.getLeftBound(); x < entity.getRightBound(); x++){

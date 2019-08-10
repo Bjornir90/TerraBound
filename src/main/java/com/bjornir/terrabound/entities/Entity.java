@@ -45,7 +45,9 @@ public abstract class Entity {
     }
 
     private Side getClosestBound(Vector target){
+
         Vector distanceFromCenter = target.addVector(position.negateVector());
+
         if(distanceFromCenter.getX() > Math.abs(distanceFromCenter.getY()) ){
             return Side.RIGHT;
         } else if(-distanceFromCenter.getX() > Math.abs(distanceFromCenter.getY()) ){

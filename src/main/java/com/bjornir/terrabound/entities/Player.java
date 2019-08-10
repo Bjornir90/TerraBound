@@ -16,6 +16,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
     public Player(String spritePath, int width, int height) {
         super(spritePath, width, height);
         currentMovingState = HorizontalDirection.NOTMOVING;
+        setScale(2.0f);
     }
 
     @Override
