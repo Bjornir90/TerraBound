@@ -4,6 +4,7 @@ import com.bjornir.terrabound.entities.Entity;
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.networking.ClientEndpoint;
 import com.bjornir.terrabound.utils.*;
+import engine.lighting.LightSource;
 import engine.lighting.LightingCore;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.*;
@@ -12,7 +13,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import java.util.ArrayList;
 
 public class Game extends BasicGame {
-    public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f, HOOKRANGE = 350.0f;
+    public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f;
     public static Vector GRAVITY;
     public static TiledMap CurrentMap;
     public static final float NATIVE_DISPLAY_WIDTH = 1920, NATIVE_DISPLAY_HEIGHT = 1080;
@@ -20,6 +21,7 @@ public class Game extends BasicGame {
     private ClientEndpoint endpoint;
     public ArrayList<Entity> entities;
     private Player player;
+    private LightSource lightSource;
     public static GameContainer Container;
 
     static {
@@ -38,7 +40,6 @@ public class Game extends BasicGame {
     public void init(GameContainer container) throws SlickException {
         instance = this;
 
-        container.setTargetFrameRate(60);
         container.getGraphics().setBackground(Color.gray);
 
         Container = container;
@@ -58,11 +59,12 @@ public class Game extends BasicGame {
         player.setInput(container.getInput());
 
         entities.add(player);
-
     }
 
     @Override
     public void render(GameContainer container, Graphics g) {
+
+        System.out.println("Rendering");
 
         g.scale((float)container.getWidth()/NATIVE_DISPLAY_WIDTH, (float)container.getHeight()/NATIVE_DISPLAY_HEIGHT);
 
@@ -70,8 +72,6 @@ public class Game extends BasicGame {
         CurrentMap.render(0,0);
         entities.forEach(entity -> entity.draw());
         //LightingCore.endTexRendering();
-
-        g.flush();
     }
 
     @Override
