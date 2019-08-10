@@ -61,10 +61,10 @@ public abstract class Entity {
         //This avoids moving into walls, as the entity's position is "immutable" and won't change unless the path is clear
         Entity futureEntity = new LogicEntity(this);
 
-        speed.addY(0.01f);
+        speed.addY(0.1f);
 
-        if(speed.getY() > 0.1f)
-            speed.setY(0.1f);
+        if(speed.getY() > 0.9f)
+            speed.setY(0.9f);
 
         //Move the logical entity to this entity's future position
         futureEntity.moveBy(speed.multiplyScalar(delta));
@@ -84,6 +84,7 @@ public abstract class Entity {
                         if(speed.getY()<0)
                             speed.setY(0.0f);
 
+                        //Replace the entity to the closest position possible that won't intersect with the terrain
                         float distanceToGetOutOfTile = (futureEntity.position.getY() - height / 2.0f) % tileHeight;
                         futureEntity.position.addY(tileHeight - distanceToGetOutOfTile);
 
@@ -115,7 +116,6 @@ public abstract class Entity {
                 }
 
                 onTerrainCollision(collisionSide);
-                //TODO move to obstacle
 
             }
 
