@@ -146,9 +146,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void mouseMoved(int i, int i1, int i2, int i3) {
-        i2 = Math.round(i2*(Game.NATIVE_DISPLAY_WIDTH/Game.getInstance().Container.getScreenWidth()));
-        i3 = Math.round(i3*(Game.NATIVE_DISPLAY_HEIGHT/Game.getInstance().Container.getScreenHeight()));
-        Game.logicEntity.position = new Vector(i2, i3);
+
     }
 
     @Override

@@ -24,7 +24,6 @@ public class Game extends BasicGame {
     public ArrayList<Entity> entities;
     private Player player;
     private LightSource lightSource;
-    public static Arrow logicEntity;
     public GameContainer Container;
 
     static {
@@ -63,12 +62,6 @@ public class Game extends BasicGame {
 
         entities.add(player);
 
-        Vector vec = new Vector(5, 5);
-        Vector newVec = vec.multiplyScalar(3.0f);
-        System.out.println("Vec "+vec+" newVec "+newVec);
-
-        logicEntity = new Arrow("sprites/MetalTorch.png", 32, 32);
-        entities.add(logicEntity);
     }
 
     @Override

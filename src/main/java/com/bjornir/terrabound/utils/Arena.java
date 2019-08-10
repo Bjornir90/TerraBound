@@ -20,7 +20,8 @@ public class Arena {
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
 
-        if(entity.getX() >= map.getWidth()*tileWidth || entity.getX() < 0 || entity.getY() >= map.getHeight()*tileHeight || entity.getY() < 0)
+
+        if(entity.getX()/tileWidth >= map.getWidth()-1 || entity.getX() < 0 || entity.getY()/tileHeight >= map.getHeight()-1 || entity.getY() < 0)
             return null;
 
         ArrayList<Vector> collisionPoints = new ArrayList<>();
