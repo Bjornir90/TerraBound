@@ -1,11 +1,13 @@
 package com.bjornir.terrabound.entities;
 
+import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.Side;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
+import org.newdawn.slick.MouseListener;
 
-public class Player extends Entity implements KeyListener {
+public class Player extends Entity implements KeyListener, MouseListener {
 
     public static final float MAX_HORIZONTAL_SPEED = 1.0f, HORIZONTAL_ACCELERATION = 0.2f;
 
@@ -90,6 +92,7 @@ public class Player extends Entity implements KeyListener {
     @Override
     public void setInput(Input input) {
         input.addKeyListener(this);
+        input.addMouseListener(this);
     }
 
     @Override
@@ -104,6 +107,42 @@ public class Player extends Entity implements KeyListener {
 
     @Override
     public void inputStarted() {
+
+    }
+
+    @Override
+    public void mouseWheelMoved(int i) {
+
+    }
+
+    @Override
+    public void mouseClicked(int i, int i1, int i2, int i3) {
+        Arrow arrow = new Arrow("sprites/Arrow.png", 32, 32);
+        Vector toMouse = new Vector(i1, i2).addVector(position.negateVector());
+
+        toMouse.normalizeSelf();
+        arrow.speed = toMouse.multiplyScalar(2.5f);
+        arrow.position = new Vector(this.position);
+        Game.getInstance().entities.add(arrow);
+    }
+
+    @Override
+    public void mousePressed(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseReleased(int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void mouseMoved(int i, int i1, int i2, int i3) {
+
+    }
+
+    @Override
+    public void mouseDragged(int i, int i1, int i2, int i3) {
 
     }
 }

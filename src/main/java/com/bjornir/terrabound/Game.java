@@ -16,13 +16,18 @@ public class Game extends BasicGame {
     public static Vector GRAVITY;
     public static TiledMap CurrentMap;
     public static final float NATIVE_DISPLAY_WIDTH = 1920, NATIVE_DISPLAY_HEIGHT = 1080;
+    private static Game instance;
     private ClientEndpoint endpoint;
-    private ArrayList<Entity> entities;
+    public ArrayList<Entity> entities;
     private Player player;
     public static GameContainer Container;
 
     static {
         GRAVITY = new Vector(0, GRAVITYSTRENGTH);
+    }
+
+    public static Game getInstance(){
+        return instance;
     }
 
     public Game() {
@@ -31,6 +36,8 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer container) throws SlickException {
+        instance = this;
+
         container.setTargetFrameRate(60);
         container.getGraphics().setBackground(Color.gray);
 

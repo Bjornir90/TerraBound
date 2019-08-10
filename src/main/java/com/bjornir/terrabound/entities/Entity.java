@@ -14,6 +14,7 @@ public abstract class Entity {
     private SpriteSheet sprite;
     protected int height, width;
     private float scale;
+    protected boolean isPhysical;
 
     public Entity(String spritePath, int width, int height){
         try {
@@ -28,6 +29,7 @@ public abstract class Entity {
 
         position = new Vector();
         speed = new Vector();
+        isPhysical = true;
 
         setScale(1.0f);
     }
@@ -39,6 +41,7 @@ public abstract class Entity {
         height = other.height;
         width = other.width;
         scale = other.scale;
+        isPhysical = other.isPhysical;
     }
 
     private Side getClosestBound(Vector target){
@@ -61,10 +64,11 @@ public abstract class Entity {
         //This avoids moving into walls, as the entity's position is "immutable" and won't change unless the path is clear
         Entity futureEntity = new LogicEntity(this);
 
-        speed.addY(0.1f);
+        if(isPhysical)
+            speed.addY(0.1f);
 
-        if(speed.getY() > 0.9f)
-            speed.setY(0.9f);
+        if(speed.getY() > 1.0f)
+            speed.setY(1.0f);
 
         //Move the logical entity to this entity's future position
         futureEntity.moveBy(speed.multiplyScalar(delta));
