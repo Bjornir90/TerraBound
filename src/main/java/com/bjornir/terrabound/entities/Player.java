@@ -66,11 +66,14 @@ public class Player extends Entity implements KeyListener, MouseListener {
         switch(i){
             case Input.KEY_D:
                 currentMovingState = HorizontalDirection.RIGHT;
-                speed = new Vector();
+                speed.setX(0);
                 break;
             case Input.KEY_Q:
                 currentMovingState = HorizontalDirection.LEFT;
-                speed = new Vector();
+                speed.setX(0);
+                break;
+            case Input.KEY_SPACE:
+                this.speed.setY(-1.8f);
                 break;
         }
     }
