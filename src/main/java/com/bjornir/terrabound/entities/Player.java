@@ -121,18 +121,22 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void mouseClicked(int i, int i1, int i2, int i3) {
-        Arrow arrow = new Arrow("sprites/Arrow.png", 32, 32);
-        Vector toMouse = new Vector(i1, i2).addVector(position.negateVector());
 
-        toMouse.normalizeSelf();
-        arrow.speed = toMouse.multiplyScalar(2.5f);
-        arrow.position = new Vector(this.position);
-        Game.getInstance().entities.add(arrow);
     }
 
     @Override
     public void mousePressed(int i, int i1, int i2) {
+        i1 = Math.round(i1*(Game.NATIVE_DISPLAY_WIDTH/Game.getInstance().Container.getScreenWidth()));
+        i2 = Math.round(i2*(Game.NATIVE_DISPLAY_HEIGHT/Game.getInstance().Container.getScreenHeight()));
 
+        Arrow arrow = new Arrow("sprites/Arrow.png", 32, 32);
+        Vector toMouse = new Vector(i1, i2).addVector(position.negateVector());
+
+        toMouse.normalizeSelf();
+
+        arrow.speed = toMouse.multiplyScalar(3.0f);
+        arrow.position = new Vector(this.position);
+        Game.getInstance().entities.add(arrow);
     }
 
     @Override
@@ -142,7 +146,9 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void mouseMoved(int i, int i1, int i2, int i3) {
-
+        i2 = Math.round(i2*(Game.NATIVE_DISPLAY_WIDTH/Game.getInstance().Container.getScreenWidth()));
+        i3 = Math.round(i3*(Game.NATIVE_DISPLAY_HEIGHT/Game.getInstance().Container.getScreenHeight()));
+        Game.logicEntity.position = new Vector(i2, i3);
     }
 
     @Override

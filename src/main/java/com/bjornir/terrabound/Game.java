@@ -1,6 +1,8 @@
 package com.bjornir.terrabound;
 
+import com.bjornir.terrabound.entities.Arrow;
 import com.bjornir.terrabound.entities.Entity;
+import com.bjornir.terrabound.entities.LogicEntity;
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.networking.ClientEndpoint;
 import com.bjornir.terrabound.utils.*;
@@ -22,7 +24,8 @@ public class Game extends BasicGame {
     public ArrayList<Entity> entities;
     private Player player;
     private LightSource lightSource;
-    public static GameContainer Container;
+    public static Arrow logicEntity;
+    public GameContainer Container;
 
     static {
         GRAVITY = new Vector(0, GRAVITYSTRENGTH);
@@ -59,12 +62,17 @@ public class Game extends BasicGame {
         player.setInput(container.getInput());
 
         entities.add(player);
+
+        Vector vec = new Vector(5, 5);
+        Vector newVec = vec.multiplyScalar(3.0f);
+        System.out.println("Vec "+vec+" newVec "+newVec);
+
+        logicEntity = new Arrow("sprites/MetalTorch.png", 32, 32);
+        entities.add(logicEntity);
     }
 
     @Override
     public void render(GameContainer container, Graphics g) {
-
-        System.out.println("Rendering");
 
         g.scale((float)container.getWidth()/NATIVE_DISPLAY_WIDTH, (float)container.getHeight()/NATIVE_DISPLAY_HEIGHT);
 

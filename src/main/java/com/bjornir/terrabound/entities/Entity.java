@@ -80,8 +80,9 @@ public abstract class Entity {
         if(terrainCollisionPosition != null){ //There is a collision with the terrain
 
             Side collisionSide = futureEntity.getClosestBound(terrainCollisionPosition);
+
             if(collisionSide != Side.VOID) {
-                System.out.println("Terrain collision : "+collisionSide);
+
                 float tileHeight = Game.CurrentMap.getTileHeight();
                 float tileWidth = Game.CurrentMap.getTileWidth();
 
