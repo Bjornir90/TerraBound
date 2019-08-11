@@ -1,16 +1,12 @@
 package com.bjornir.terrabound;
 
-import com.bjornir.terrabound.entities.Arrow;
 import com.bjornir.terrabound.entities.Entity;
-import com.bjornir.terrabound.entities.LogicEntity;
 import com.bjornir.terrabound.entities.Player;
 import com.bjornir.terrabound.networking.ClientEndpoint;
 import com.bjornir.terrabound.utils.*;
 import engine.lighting.LightSource;
 import engine.lighting.LightingCore;
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.*;
-import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ public class Game extends BasicGame {
     private ClientEndpoint endpoint;
     public ArrayList<Entity> entities;
     private Player player;
-    private LightSource lightSource;
+    private LightSource cursorLightSource;
     public GameContainer Container;
 
     static {
@@ -63,8 +59,66 @@ public class Game extends BasicGame {
 
         entities.add(player);
 
-        lightSource = new LightSource(Color.white, 500, container.getWidth()/2.0f, container.getHeight()/2.0f);
-        lightSource.turnOn();
+        new LightSource(Color.white, 400, 1920.0f/2.0f, 1080.0f/2.0f).turnOn();
+
+        cursorLightSource = new LightSource(Color.cyan, 200, 0.0f, 0.0f);
+        cursorLightSource.setFalloff(6.0f);
+        cursorLightSource.turnOn();
+
+        container.getInput().addMouseListener(new MouseListener() {
+            @Override
+            public void mouseWheelMoved(int i) {
+
+            }
+
+            @Override
+            public void mouseClicked(int i, int i1, int i2, int i3) {
+
+            }
+
+            @Override
+            public void mousePressed(int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void mouseReleased(int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void mouseMoved(int i, int i1, int i2, int i3) {
+                //Reposition the mouse click in Native coordinates (1920x1080)
+                float x = Math.round(i2*(Game.NATIVE_DISPLAY_WIDTH/Game.getInstance().Container.getScreenWidth()));
+                float y = Math.round(i3*(Game.NATIVE_DISPLAY_HEIGHT/Game.getInstance().Container.getScreenHeight()));
+                cursorLightSource.setPosition(x, y);
+            }
+
+            @Override
+            public void mouseDragged(int i, int i1, int i2, int i3) {
+
+            }
+
+            @Override
+            public void setInput(Input input) {
+
+            }
+
+            @Override
+            public boolean isAcceptingInput() {
+                return true;
+            }
+
+            @Override
+            public void inputEnded() {
+
+            }
+
+            @Override
+            public void inputStarted() {
+
+            }
+        });
 
     }
 
