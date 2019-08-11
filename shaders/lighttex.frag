@@ -25,5 +25,14 @@ void main() {
             float brightness = lights[i].brightness/(lights[i].quadraticFalloff*pow(distance, 2)+distance*lights[i].falloff);
             finalColor += color.rgb*lights[i].color*vec3(brightness);
     }
+    if(finalColor.r > color.r){
+        finalColor.r = color.r;
+    }
+    if(finalColor.g > color.g){
+        finalColor.g = color.g;
+    }
+    if(finalColor.b > color.b){
+        finalColor.b = color.b;
+    }
 	gl_FragColor = vec4(finalColor, color.a);
 }
