@@ -142,6 +142,9 @@ public class Player extends Entity implements KeyListener, MouseListener {
         toMouse.normalizeSelf();
 
         arrow.speed = toMouse.multiplyScalar(2.0f);
+
+        arrow.setAngle(arrow.speed.getAngle());
+
         arrow.position = new Vector(this.position);
         Game.getInstance().entities.add(arrow);
     }

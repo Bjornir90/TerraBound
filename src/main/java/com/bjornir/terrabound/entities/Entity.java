@@ -5,20 +5,21 @@ import com.bjornir.terrabound.utils.Arena;
 import com.bjornir.terrabound.utils.Side;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public abstract class Entity {
     //Center of the sprite
     protected Vector position, speed;
-    private SpriteSheet sprite;
+    protected Image sprite;
     protected int height, width;
-    private float scale;
+    protected float scale, angle;
     protected boolean isPhysical;
 
     public Entity(String spritePath, int width, int height){
         try {
-            sprite = new SpriteSheet(spritePath, width, height);
+            sprite = new Image(spritePath);
         } catch (SlickException e) {
             System.err.println("Could not load sprite "+spritePath);
             e.printStackTrace();
@@ -30,8 +31,12 @@ public abstract class Entity {
         position = new Vector();
         speed = new Vector();
         isPhysical = true;
+        angle = 0.0f;
 
         setScale(1.0f);
+
+        sprite.setCenterOfRotation(width/2.0f, height/2.0f);
+        sprite.setRotation(angle);
     }
 
     public Entity(Entity other){
@@ -42,6 +47,7 @@ public abstract class Entity {
         width = other.width;
         scale = other.scale;
         isPhysical = other.isPhysical;
+        angle = other.angle;
     }
 
     private Side getClosestBound(Vector target){
@@ -134,9 +140,12 @@ public abstract class Entity {
     }
 
     public void draw(){
+        /*
         sprite.startUse();
         sprite.drawEmbedded(position.getX() - width / 2.0f, position.getY() - height / 2.0f, width, height);
         sprite.endUse();
+         */
+        sprite.draw(position.getX(), position.getY());
     }
 
     //Leave the implementation to the child classes
@@ -145,6 +154,12 @@ public abstract class Entity {
     public Vector moveBy(Vector displacement){
         position.addSelfVector(displacement);
         return position;
+    }
+
+    public void setAngle(float angle){
+        float oldAngle = this.angle;
+        this.angle = angle;
+        sprite.rotate(oldAngle-angle);
     }
 
     public void moveTo(Vector target){
@@ -177,6 +192,10 @@ public abstract class Entity {
 
     public float getBottomBound(){
         return position.getY()+(float)(height)/2.0f;
+    }
+
+    public Vector getPosition(){
+        return position;
     }
 
     public float getScale(){

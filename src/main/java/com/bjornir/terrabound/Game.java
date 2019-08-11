@@ -10,6 +10,7 @@ import engine.lighting.LightSource;
 import engine.lighting.LightingCore;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.*;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;

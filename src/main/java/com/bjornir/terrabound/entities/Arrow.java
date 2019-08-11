@@ -29,5 +29,11 @@ public class Arrow extends Entity {
         timeFromCreation += delta;
         if(timeFromCreation >= millisecondsOfFlyingStraight && !isLanded)
             isPhysical = true;
+
+
+        if(!speed.isNullVector()){
+            setAngle(speed.getAngle());
+        }
+
     }
 }
