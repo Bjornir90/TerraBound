@@ -63,6 +63,9 @@ public class Game extends BasicGame {
 
         entities.add(player);
 
+        lightSource = new LightSource(Color.white, 500, container.getWidth()/2.0f, container.getHeight()/2.0f);
+        lightSource.turnOn();
+
     }
 
     @Override
@@ -70,10 +73,10 @@ public class Game extends BasicGame {
 
         g.scale((float)container.getWidth()/NATIVE_DISPLAY_WIDTH, (float)container.getHeight()/NATIVE_DISPLAY_HEIGHT);
 
-        //LightingCore.startTexRendering();
+        LightingCore.startTexRendering();
         CurrentMap.render(0,0);
         entities.forEach(entity -> entity.draw());
-        //LightingCore.endTexRendering();
+        LightingCore.endTexRendering();
     }
 
     @Override

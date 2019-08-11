@@ -3,23 +3,26 @@ package com.bjornir.terrabound.entities;
 import com.bjornir.terrabound.Game;
 import com.bjornir.terrabound.utils.Arena;
 import com.bjornir.terrabound.utils.Side;
+import com.bjornir.terrabound.utils.Sprite;
 import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.opengl.renderer.Renderer;
+import org.newdawn.slick.opengl.renderer.SGL;
 
 public abstract class Entity {
     //Center of the sprite
     protected Vector position, speed;
-    protected Image sprite;
+    protected Sprite sprite;
     protected int height, width;
     protected float scale, angle;
     protected boolean isPhysical;
 
     public Entity(String spritePath, int width, int height){
         try {
-            sprite = new Image(spritePath);
+            sprite = new Sprite(spritePath);
         } catch (SlickException e) {
             System.err.println("Could not load sprite "+spritePath);
             e.printStackTrace();
@@ -140,12 +143,7 @@ public abstract class Entity {
     }
 
     public void draw(){
-        /*
-        sprite.startUse();
-        sprite.drawEmbedded(position.getX() - width / 2.0f, position.getY() - height / 2.0f, width, height);
-        sprite.endUse();
-         */
-        sprite.draw(position.getX(), position.getY());
+        sprite.drawWithShader(position.getX(), position.getY());
     }
 
     //Leave the implementation to the child classes
