@@ -12,11 +12,13 @@ public class Player extends Entity implements KeyListener, MouseListener {
     public static final float MAX_HORIZONTAL_SPEED = 1.0f, HORIZONTAL_ACCELERATION = 0.2f;
 
     private HorizontalDirection currentMovingState;
+    private boolean canJump;
 
     public Player(String spritePath, int width, int height) {
         super(spritePath, width, height);
         currentMovingState = HorizontalDirection.NOTMOVING;
         setScale(2.0f);
+        canJump = true;
     }
 
     @Override
@@ -59,7 +61,8 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     protected void onTerrainCollision(Side side) {
-
+        if(side != Side.TOP)
+            canJump = true;
     }
 
     @Override
@@ -74,7 +77,10 @@ public class Player extends Entity implements KeyListener, MouseListener {
                 speed.setX(0);
                 break;
             case Input.KEY_SPACE:
+                if(!canJump)
+                    break;
                 this.speed.setY(-1.8f);
+                canJump = false;
                 break;
         }
     }
@@ -126,6 +132,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(int i, int i1, int i2) {
+        //Reposition the mouse click in Native coordinates (1920x1080)
         i1 = Math.round(i1*(Game.NATIVE_DISPLAY_WIDTH/Game.getInstance().Container.getScreenWidth()));
         i2 = Math.round(i2*(Game.NATIVE_DISPLAY_HEIGHT/Game.getInstance().Container.getScreenHeight()));
 
@@ -134,7 +141,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
 
         toMouse.normalizeSelf();
 
-        arrow.speed = toMouse.multiplyScalar(3.0f);
+        arrow.speed = toMouse.multiplyScalar(2.0f);
         arrow.position = new Vector(this.position);
         Game.getInstance().entities.add(arrow);
     }
