@@ -1,5 +1,6 @@
 package com.bjornir.terrabound.entities;
 
+import com.bjornir.terrabound.networking.ClientEndpoint;
 import com.bjornir.terrabound.utils.Side;
 import com.bjornir.terrabound.utils.Vector;
 
@@ -49,6 +50,8 @@ public class Arrow extends Entity {
         if(!speed.isNullVector()){
             setAngle(speed.getAngle());
         }
+
+        ClientEndpoint.getInstance().send(networkID+";"+this.formatForSending());
 
     }
 

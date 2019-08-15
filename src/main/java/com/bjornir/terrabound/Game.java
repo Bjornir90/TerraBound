@@ -20,6 +20,7 @@ public class Game extends BasicGame {
     private static Game instance;
     private ClientEndpoint endpoint;
     public ArrayList<Entity> entities;
+    public HashMap<Long, Entity> remoteEntities;
     private Player player;
     private LightSource cursorLightSource;
     public GameContainer Container;
@@ -61,6 +62,7 @@ public class Game extends BasicGame {
         endpoint = ClientEndpoint.getInstance();
 
         entities = new ArrayList<>();
+        remoteEntities = new HashMap<>();
 
         player = new Player(32, 32);
 
@@ -141,9 +143,11 @@ public class Game extends BasicGame {
         LightingCore.startTexRendering();
         CurrentMap.render(0,0);
         entities.forEach(entity -> entity.draw());
-        g.setLineWidth(3.0f);
+        remoteEntities.values().forEach(entity -> entity.draw());
         LightingCore.endTexRendering();
-        //entities.forEach(entity -> entity.drawBounds(g));
+
+        g.setLineWidth(3.0f);
+        entities.forEach(entity -> entity.drawBounds(g));
     }
 
     @Override

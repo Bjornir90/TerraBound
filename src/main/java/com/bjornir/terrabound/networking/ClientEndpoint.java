@@ -1,11 +1,16 @@
 package com.bjornir.terrabound.networking;
 
+import com.bjornir.terrabound.Game;
+import com.bjornir.terrabound.entities.Arrow;
+import com.bjornir.terrabound.entities.Entity;
 import com.neovisionaries.ws.client.*;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +44,7 @@ public class ClientEndpoint {
             server = "ws://"+value;
 
         } catch (IOException e) {
-            System.err.println("Could not read config file.\nPlease restart the game.\nIf this persists, try reinstallating the game.");
+            System.err.println("Could not read config file.\nPlease restart the game.\nIf this persists, try reinstalling the game.");
             System.exit(1);
         }
     }
@@ -50,10 +55,17 @@ public class ClientEndpoint {
             ws = new WebSocketFactory().setConnectionTimeout(5000).createSocket(server).addListener(new WebSocketAdapter(){
                 @Override
                 public void onTextMessage(WebSocket webSocket, String message){
+
+                    HashMap<Long, Entity> remote = Game.getInstance().remoteEntities;
                     System.out.println("Received message : " + message);
                     int separatorIndex = message.indexOf(';');
                     long networkID = Long.parseLong(message.substring(0, separatorIndex));
                     System.out.println("networkID = " + networkID);
+                    if(remote.containsKey(networkID)){
+                        ((Arrow) remote.get(networkID) ).updateFromString(message);
+                    } else {
+                        remote.put(networkID, Arrow.createFromString(message));
+                    }
                 }
 
                 @Override
