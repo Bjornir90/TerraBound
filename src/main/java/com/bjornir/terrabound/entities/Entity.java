@@ -8,6 +8,7 @@ import com.bjornir.terrabound.utils.Vector;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Entity {
@@ -146,15 +147,12 @@ public abstract class Entity {
     }
 
     public void drawBounds(Graphics g){
-        Vector topLeft = position.addVector(new Vector(-width/2.0f, -height/2.0f)),
-                topRight = position.addVector(new Vector(width/2.0f, -height/2.0f)),
-                botLeft = position.addVector(new Vector(-width/2.0f, height/2.0f)),
-                botRight = position.addVector(new Vector(width/2.0f, height/2.0f));
+        ArrayList<Vector> corners = getBoundCorners();
 
-        topLeft.rotateSelfRelative(position, angle);
-        topRight.rotateSelfRelative(position, angle);
-        botLeft.rotateSelfRelative(position, angle);
-        botRight.rotateSelfRelative(position, angle);
+        Vector topLeft = corners.get(0);
+        Vector topRight = corners.get(1);
+        Vector botLeft = corners.get(2);
+        Vector botRight = corners.get(3);
 
         Color oldColor = g.getColor();
         g.setColor(Color.magenta);
@@ -165,6 +163,26 @@ public abstract class Entity {
         g.drawLine(botLeft.getX(), botLeft.getY(), botRight.getX(), botRight.getY());
 
         g.setColor(oldColor);
+    }
+
+    public ArrayList<Vector> getBoundCorners(){
+        ArrayList<Vector> corners = new ArrayList<>();
+        Vector topLeft = position.addVector(new Vector(-width/2.0f, -height/2.0f)),
+                topRight = position.addVector(new Vector(width/2.0f, -height/2.0f)),
+                botLeft = position.addVector(new Vector(-width/2.0f, height/2.0f)),
+                botRight = position.addVector(new Vector(width/2.0f, height/2.0f));
+
+        topLeft.rotateSelfRelative(position, angle);
+        topRight.rotateSelfRelative(position, angle);
+        botLeft.rotateSelfRelative(position, angle);
+        botRight.rotateSelfRelative(position, angle);
+
+        corners.add(topLeft);
+        corners.add(topRight);
+        corners.add(botLeft);
+        corners.add(botRight);
+
+        return corners;
     }
 
     //Leave the implementation to the child classes
