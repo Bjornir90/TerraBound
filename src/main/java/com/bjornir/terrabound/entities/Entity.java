@@ -155,7 +155,7 @@ public abstract class Entity {
         float oldAngle = this.angle;
         this.angle = angle;
         if(sprite != null)
-            sprite.rotate(oldAngle-angle);
+            sprite.rotate(angle-oldAngle);
     }
 
     public void setSprite(String name){

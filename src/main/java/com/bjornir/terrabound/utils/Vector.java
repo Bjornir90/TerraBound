@@ -80,7 +80,7 @@ public class Vector {
 
     public float getAngle(){
         float angle = (float) Math.toDegrees(Math.acos(this.x/this.norm()));
-        if(this.y > 0){
+        if(this.y < 0){
             angle = -angle;
         }
 
@@ -88,10 +88,11 @@ public class Vector {
     }
 
     public void rotateSelf(Vector center, float angle){
-        angle = - (float) Math.toRadians(angle);
+        float angleRad = (float) Math.toRadians(angle);
+        float thisAngleRad = (float)Math.toRadians(this.getAngle());
+
         this.addSelfVector(center.negateVector());
-        float tempX = this.getX(), tempY = this.getY();
-        float rotatedX = (float) (tempX*Math.cos(angle)-tempY*Math.sin(angle)), rotatedY = (float) (tempX*Math.sin(angle)+tempY*Math.cos(angle));
+        float rotatedX = norm()*(float)Math.cos(thisAngleRad+angleRad), rotatedY = norm()*(float)Math.sin(thisAngleRad+angleRad);
         this.setX(rotatedX);
         this.setY(rotatedY);
         this.addSelfVector(center);
