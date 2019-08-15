@@ -12,6 +12,8 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.opengl.renderer.Renderer;
 import org.newdawn.slick.opengl.renderer.SGL;
 
+import java.util.Objects;
+
 public abstract class Entity {
     //Center of the sprite
     protected Vector position, speed;
@@ -20,7 +22,20 @@ public abstract class Entity {
     protected float scale, angle;
     protected boolean isPhysical;
 
+    public Entity(){
+        this.width = 0;
+        this.height = 0;
+
+        position = new Vector();
+        speed = new Vector();
+        isPhysical = true;
+        angle = 0.0f;
+
+        setScale(1.0f);
+    }
+
     public Entity(String spritePath, int width, int height){
+        this();
         try {
             sprite = new Sprite(spritePath);
         } catch (SlickException e) {
@@ -30,13 +45,6 @@ public abstract class Entity {
 
         this.width = width;
         this.height = height;
-
-        position = new Vector();
-        speed = new Vector();
-        isPhysical = true;
-        angle = 0.0f;
-
-        setScale(1.0f);
 
         sprite.setCenterOfRotation(width/2.0f, height/2.0f);
         sprite.setRotation(angle);
@@ -157,7 +165,12 @@ public abstract class Entity {
     public void setAngle(float angle){
         float oldAngle = this.angle;
         this.angle = angle;
-        sprite.rotate(oldAngle-angle);
+        if(sprite != null)
+            sprite.rotate(oldAngle-angle);
+    }
+
+    public void setSprite(String name){
+        sprite = Sprite.LoadedSprites.get(name);
     }
 
     public void moveTo(Vector target){
@@ -206,4 +219,27 @@ public abstract class Entity {
         this.height = Math.round(height*scale);
     }
 
+    public void setSpeed(Vector speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entity entity = (Entity) o;
+        return height == entity.height &&
+                width == entity.width &&
+                Float.compare(entity.scale, scale) == 0 &&
+                Float.compare(entity.angle, angle) == 0 &&
+                isPhysical == entity.isPhysical &&
+                Objects.equals(position, entity.position) &&
+                Objects.equals(speed, entity.speed) &&
+                Objects.equals(sprite, entity.sprite);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, speed, sprite, height, width, scale, angle, isPhysical);
+    }
 }

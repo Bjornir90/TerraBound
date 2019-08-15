@@ -3,7 +3,12 @@ package com.bjornir.terrabound.utils;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Sprite extends Image {
+
+    public static HashMap<String, Sprite> LoadedSprites = new HashMap<>();
 
     public Sprite(String ref) throws SlickException {
         super(ref);

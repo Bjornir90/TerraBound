@@ -136,7 +136,7 @@ public class Player extends Entity implements KeyListener, MouseListener {
         i1 = Math.round(i1*(Game.NATIVE_DISPLAY_WIDTH/Game.getInstance().Container.getScreenWidth()));
         i2 = Math.round(i2*(Game.NATIVE_DISPLAY_HEIGHT/Game.getInstance().Container.getScreenHeight()));
 
-        Arrow arrow = new Arrow("sprites/Arrow.png", 32, 32);
+        Arrow arrow = new Arrow(32, 32);
         Vector toMouse = new Vector(i1, i2).addVector(position.negateVector());
 
         toMouse.normalizeSelf();
