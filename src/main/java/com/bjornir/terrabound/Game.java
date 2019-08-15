@@ -141,7 +141,9 @@ public class Game extends BasicGame {
         LightingCore.startTexRendering();
         CurrentMap.render(0,0);
         entities.forEach(entity -> entity.draw());
+        g.setLineWidth(3.0f);
         LightingCore.endTexRendering();
+        //entities.forEach(entity -> entity.drawBounds(g));
     }
 
     @Override

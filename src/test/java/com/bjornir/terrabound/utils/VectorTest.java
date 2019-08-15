@@ -10,28 +10,28 @@ class VectorTest {
         Vector origin = new Vector(0, 0);
         Vector v = new Vector(3,3);
         float oldNorm = v.norm();
-        v.rotateSelf(origin, 45);
+        v.rotateSelf(45);
 
         assertEquals(oldNorm, v.norm());
         assertEquals(3.0f*(float)Math.sqrt(2), v.getY(), delta);
         assertEquals(0.0f, v.getX(), delta);
         assertEquals(90.0f, v.getAngle(), delta);
 
-        v.rotateSelf(origin, -45);
+        v.rotateSelf(-45);
 
         assertEquals(oldNorm, v.norm());
         assertEquals(3.0f, v.getY(), delta);
         assertEquals(3.0f, v.getX(), delta);
         assertEquals(45.0f, v.getAngle(), delta);
 
-        v.rotateSelf(origin, 180);
+        v.rotateSelf(180);
 
         assertEquals(oldNorm, v.norm());
         assertEquals(-3.0f, v.getY(), delta);
         assertEquals(-3.0f, v.getX(), delta);
         assertEquals(-135.0f, v.getAngle(), delta);
 
-        v.rotateSelf(origin, -90);
+        v.rotateSelf(-90);
 
         assertEquals(oldNorm, v.norm());
         assertEquals(3.0f, v.getY(), delta);

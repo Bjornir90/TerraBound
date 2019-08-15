@@ -87,15 +87,19 @@ public class Vector {
         return angle;
     }
 
-    public void rotateSelf(Vector center, float angle){
+    public void rotateSelfRelative(Vector center, float angle){
+        this.addSelfVector(center.negateVector());
+        this.rotateSelf(angle);
+        this.addSelfVector(center);
+    }
+
+    public void rotateSelf(float angle){
         float angleRad = (float) Math.toRadians(angle);
         float thisAngleRad = (float)Math.toRadians(this.getAngle());
 
-        this.addSelfVector(center.negateVector());
         float rotatedX = norm()*(float)Math.cos(thisAngleRad+angleRad), rotatedY = norm()*(float)Math.sin(thisAngleRad+angleRad);
         this.setX(rotatedX);
         this.setY(rotatedY);
-        this.addSelfVector(center);
     }
 
     public boolean isNullVector(){

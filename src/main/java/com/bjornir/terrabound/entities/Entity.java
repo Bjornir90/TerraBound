@@ -5,6 +5,8 @@ import com.bjornir.terrabound.utils.Arena;
 import com.bjornir.terrabound.utils.Side;
 import com.bjornir.terrabound.utils.Sprite;
 import com.bjornir.terrabound.utils.Vector;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 
 import java.util.Objects;
 
@@ -141,6 +143,28 @@ public abstract class Entity {
 
     public void draw(){
         sprite.drawWithShader(position.getX()-width/2.0f, position.getY()-height/2.0f, width, height);
+    }
+
+    public void drawBounds(Graphics g){
+        Vector topLeft = position.addVector(new Vector(-width/2.0f, -height/2.0f)),
+                topRight = position.addVector(new Vector(width/2.0f, -height/2.0f)),
+                botLeft = position.addVector(new Vector(-width/2.0f, height/2.0f)),
+                botRight = position.addVector(new Vector(width/2.0f, height/2.0f));
+
+        topLeft.rotateSelfRelative(position, angle);
+        topRight.rotateSelfRelative(position, angle);
+        botLeft.rotateSelfRelative(position, angle);
+        botRight.rotateSelfRelative(position, angle);
+
+        Color oldColor = g.getColor();
+        g.setColor(Color.magenta);
+
+        g.drawLine(topLeft.getX(), topLeft.getY(), topRight.getX(), topRight.getY());
+        g.drawLine(topLeft.getX(), topLeft.getY(), botLeft.getX(), botLeft.getY());
+        g.drawLine(botRight.getX(), botRight.getY(), topRight.getX(), topRight.getY());
+        g.drawLine(botLeft.getX(), botLeft.getY(), botRight.getX(), botRight.getY());
+
+        g.setColor(oldColor);
     }
 
     //Leave the implementation to the child classes
