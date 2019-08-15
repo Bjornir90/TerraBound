@@ -10,6 +10,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game extends BasicGame {
     public static final float MAX_SPEED = 1.5f, ACCELERATION = 0.015f, GRAVITYSTRENGTH = 0.003f;
@@ -39,6 +40,16 @@ public class Game extends BasicGame {
     public void init(GameContainer container) throws SlickException {
         instance = this;
 
+        HashMap<String, Sprite> spriteMap = new HashMap<>();
+
+        Sprite playerS = new Sprite("Archer(noBow).png");
+        Sprite arrowS = new Sprite("Arrow.png");
+
+        spriteMap.put("archer", playerS);
+        spriteMap.put("arrow", arrowS);
+
+        Sprite.LoadedSprites = spriteMap;
+
         container.getGraphics().setBackground(Color.gray);
 
         Container = container;
@@ -51,7 +62,7 @@ public class Game extends BasicGame {
 
         entities = new ArrayList<>();
 
-        player = new Player("sprites/Archer(noBow).png", 32, 32);
+        player = new Player(32, 32);
 
         player.moveTo(64, 64);
 

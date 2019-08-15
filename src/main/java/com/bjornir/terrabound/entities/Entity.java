@@ -5,12 +5,6 @@ import com.bjornir.terrabound.utils.Arena;
 import com.bjornir.terrabound.utils.Side;
 import com.bjornir.terrabound.utils.Sprite;
 import com.bjornir.terrabound.utils.Vector;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.opengl.renderer.Renderer;
-import org.newdawn.slick.opengl.renderer.SGL;
 
 import java.util.Objects;
 
@@ -34,14 +28,9 @@ public abstract class Entity {
         setScale(1.0f);
     }
 
-    public Entity(String spritePath, int width, int height){
+    public Entity(String spriteName, int width, int height){
         this();
-        try {
-            sprite = new Sprite(spritePath);
-        } catch (SlickException e) {
-            System.err.println("Could not load sprite "+spritePath);
-            e.printStackTrace();
-        }
+        setSprite(spriteName);
 
         this.width = width;
         this.height = height;
@@ -53,7 +42,7 @@ public abstract class Entity {
     public Entity(Entity other){
         position = new Vector(other.position);
         speed = new Vector(other.speed);
-        sprite = other.sprite;
+        sprite = other.sprite.copy();
         height = other.height;
         width = other.width;
         scale = other.scale;
@@ -170,7 +159,7 @@ public abstract class Entity {
     }
 
     public void setSprite(String name){
-        sprite = Sprite.LoadedSprites.get(name);
+        sprite = Sprite.LoadedSprites.get(name).copy();
     }
 
     public void moveTo(Vector target){

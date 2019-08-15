@@ -8,10 +8,14 @@ import java.util.HashMap;
 
 public class Sprite extends Image {
 
-    public static HashMap<String, Sprite> LoadedSprites = new HashMap<>();
+    public static HashMap<String, Sprite> LoadedSprites;
 
     public Sprite(String ref) throws SlickException {
-        super(ref);
+        super("sprites/"+ref);
+    }
+
+    public Sprite(Image sprite){
+        super(sprite);
     }
 
     public void drawWithShader(float x, float y, float width, float height){
@@ -42,5 +46,9 @@ public class Sprite extends Image {
 
         GL.glTranslatef(-x, -y, 0.0F);
 
+    }
+
+    public Sprite copy(){
+        return new Sprite(this);
     }
 }

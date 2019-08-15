@@ -23,7 +23,7 @@ public class Arrow extends Entity {
     }
 
     public Arrow(int width, int height) {
-        super("sprites/Arrow.png", width, height);
+        super("arrow", width, height);
         timeFromCreation = 0;
         isPhysical = false;
         isLanded = false;
