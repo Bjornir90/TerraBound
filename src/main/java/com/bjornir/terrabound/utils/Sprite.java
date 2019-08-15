@@ -9,7 +9,7 @@ public class Sprite extends Image {
         super(ref);
     }
 
-    public void drawWithShader(float x, float y){
+    public void drawWithShader(float x, float y, float width, float height){
         this.texture.bind();
 
         GL.glTranslatef(x, y, 0.0F);

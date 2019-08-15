@@ -143,7 +143,7 @@ public abstract class Entity {
     }
 
     public void draw(){
-        sprite.drawWithShader(position.getX(), position.getY());
+        sprite.drawWithShader(position.getX()-width/2.0f, position.getY()-height/2.0f, width, height);
     }
 
     //Leave the implementation to the child classes
