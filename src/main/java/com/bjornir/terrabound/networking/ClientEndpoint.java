@@ -57,15 +57,17 @@ public class ClientEndpoint {
                 public void onTextMessage(WebSocket webSocket, String message){
 
                     HashMap<Long, Entity> remote = Game.getInstance().remoteEntities;
-                    System.out.println("Received message : " + message);
                     int separatorIndex = message.indexOf(';');
                     long networkID = Long.parseLong(message.substring(0, separatorIndex));
-                    System.out.println("networkID = " + networkID);
+
                     if(remote.containsKey(networkID)){
                         ((Arrow) remote.get(networkID) ).updateFromString(message);
                     } else {
-                        remote.put(networkID, Arrow.createFromString(message));
+                        remote.put(networkID, new Arrow(message));
                     }
+
+                    Game.getInstance().remoteEntities = remote;
+
                 }
 
                 @Override

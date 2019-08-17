@@ -12,12 +12,6 @@ public class Arrow extends Entity {
     private boolean isLanded;
     private long networkID;
 
-    public static Arrow createFromString(String data){
-        Arrow a =  new Arrow(32, 32);
-        a.updateFromString(data);
-        return a;
-    }
-
     public Arrow(){
         super();
         generateNetworkID();
@@ -29,6 +23,14 @@ public class Arrow extends Entity {
         isPhysical = false;
         isLanded = false;
         generateNetworkID();
+    }
+
+    public Arrow(String data){
+        this(32, 32);
+        int separatorIndex = data.indexOf(';');
+        long networkID = Long.parseLong(data.substring(0, separatorIndex));
+        this.updateFromString(data);
+        this.networkID = networkID;
     }
 
 
@@ -75,6 +77,11 @@ public class Arrow extends Entity {
         int currentEndIndex, currentDataIndex = 0;
         float[] dataNumbers = new float[expectedNumberOfData];
 
+        int separatorIndex = data.indexOf(';');
+        data = data.substring(separatorIndex+1);
+
+
+
         for(; currentDataIndex<expectedNumberOfData; currentDataIndex++){
 
             currentEndIndex = data.indexOf(':');
@@ -117,5 +124,19 @@ public class Arrow extends Entity {
 
     public long getNetworkID() {
         return networkID;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Arrow{" +
+                "timeFromCreation=" + timeFromCreation +
+                ", isLanded=" + isLanded +
+                ", networkID=" + networkID +
+                ", position=" + position +
+                ", speed=" + speed +
+                ", angle=" + angle +
+                ", isPhysical=" + isPhysical +
+                '}';
     }
 }

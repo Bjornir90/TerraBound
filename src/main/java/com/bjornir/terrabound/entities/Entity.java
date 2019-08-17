@@ -143,6 +143,7 @@ public abstract class Entity {
     }
 
     public void draw(){
+        System.out.println("Drawing entity "+angle);
         sprite.drawWithShader(position.getX()-width/2.0f, position.getY()-height/2.0f, width, height);
     }
 
@@ -272,5 +273,16 @@ public abstract class Entity {
     @Override
     public int hashCode() {
         return Objects.hash(position, speed, sprite, height, width, scale, angle, isPhysical);
+    }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "position=" + position +
+                ", speed=" + speed +
+                ", scale=" + scale +
+                ", angle=" + angle +
+                ", isPhysical=" + isPhysical +
+                '}';
     }
 }
