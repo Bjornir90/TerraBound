@@ -10,7 +10,6 @@ public class Arrow extends Entity {
     private static final int millisecondsOfFlyingStraight = 250;
     private int timeFromCreation;
     private boolean isLanded;
-    private long networkID;
 
     public Arrow(){
         super();
@@ -31,6 +30,7 @@ public class Arrow extends Entity {
         long networkID = Long.parseLong(data.substring(0, separatorIndex));
         this.updateFromString(data);
         this.networkID = networkID;
+        this.isLocal = false;
     }
 
 
@@ -53,8 +53,11 @@ public class Arrow extends Entity {
             setAngle(speed.getAngle());
         }
 
-        ClientEndpoint.getInstance().send(networkID+";"+this.formatForSending());
-
+        //first update of the object
+        if(timeFromCreation == delta && isLocal){
+            ClientEndpoint.getInstance().send(networkID+";"+this.formatForSending());
+            System.out.println("Send object creation");
+        }
     }
 
     /**
@@ -116,14 +119,6 @@ public class Arrow extends Entity {
     @Override
     public int hashCode() {
         return Objects.hash(timeFromCreation, isLanded);
-    }
-
-    private void generateNetworkID(){//Only collision possible : arrows spawned at the same time, at the same place, with the same direction
-        networkID = hashCode()*System.nanoTime();
-    }
-
-    public long getNetworkID() {
-        return networkID;
     }
 
 

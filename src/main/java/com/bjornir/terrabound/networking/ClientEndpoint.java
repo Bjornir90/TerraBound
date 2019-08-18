@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +18,11 @@ public class ClientEndpoint {
     private WebSocket ws;
     private String server;
     private static ClientEndpoint instance;
+    private ArrayList<Entity> createdEntities;
 
     private ClientEndpoint(){
         initConnection();
+        createdEntities = new ArrayList<>();
     }
 
     private void readServerAddress(){
@@ -62,7 +65,8 @@ public class ClientEndpoint {
                     if(remote.containsKey(networkID)){
                         ((Arrow) remote.get(networkID) ).updateFromString(message);
                     } else {
-                        remote.put(networkID, new Arrow(message));
+                        createdEntities.add(new Arrow(message));
+                        System.out.println("Create arrow from remote");
                     }
 
                     Game.getInstance().remoteEntities = remote;
@@ -96,5 +100,14 @@ public class ClientEndpoint {
 
     public void send(String data){
         ws.sendText(data);
+    }
+
+    public ArrayList<Entity> getCreatedEntities(){
+        //Needs to be a copy to avoid concurrent modifications
+        return new ArrayList<>(createdEntities);
+    }
+
+    public void clearCreatedEntities(){
+        createdEntities.clear();
     }
 }

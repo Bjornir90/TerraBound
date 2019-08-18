@@ -143,7 +143,11 @@ public class Game extends BasicGame {
         LightingCore.startTexRendering();
         CurrentMap.render(0,0);
         entities.forEach(entity -> entity.draw());
+
+        ClientEndpoint.getInstance().getCreatedEntities().forEach(entity -> remoteEntities.put(entity.getNetworkID(), entity));
+        ClientEndpoint.getInstance().clearCreatedEntities();
         remoteEntities.values().forEach(entity -> entity.draw());
+
         LightingCore.endTexRendering();
 
         g.setLineWidth(3.0f);
@@ -153,6 +157,7 @@ public class Game extends BasicGame {
     @Override
     public void update(GameContainer container, int delta) {
         entities.forEach(entity -> entity.update(delta));
+        remoteEntities.values().forEach(entity -> entity.update(delta));
     }
 
 

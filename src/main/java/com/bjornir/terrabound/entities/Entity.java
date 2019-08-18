@@ -17,7 +17,8 @@ public abstract class Entity {
     protected Sprite sprite;
     protected int height, width;
     protected float scale, angle;
-    protected boolean isPhysical;
+    protected boolean isPhysical, isLocal;
+    protected long networkID;
 
     public Entity(){
         this.width = 0;
@@ -26,6 +27,7 @@ public abstract class Entity {
         position = new Vector();
         speed = new Vector();
         isPhysical = true;
+        isLocal = true;
         angle = 0.0f;
 
         setScale(1.0f);
@@ -51,6 +53,7 @@ public abstract class Entity {
         scale = other.scale;
         isPhysical = other.isPhysical;
         angle = other.angle;
+        isLocal = other.isLocal;
     }
 
     private Side getClosestBound(Vector target){
@@ -252,6 +255,14 @@ public abstract class Entity {
 
     public void setSpeed(Vector speed) {
         this.speed = speed;
+    }
+
+    protected void generateNetworkID(){//Only collision possible : arrows spawned at the same time, at the same place, with the same direction
+        networkID = hashCode()*System.nanoTime();
+    }
+
+    public long getNetworkID() {
+        return networkID;
     }
 
     @Override
