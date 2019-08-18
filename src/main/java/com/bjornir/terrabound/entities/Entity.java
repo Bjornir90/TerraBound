@@ -143,7 +143,6 @@ public abstract class Entity {
     }
 
     public void draw(){
-        System.out.println("Drawing entity "+angle);
         sprite.drawWithShader(position.getX()-width/2.0f, position.getY()-height/2.0f, width, height);
     }
 

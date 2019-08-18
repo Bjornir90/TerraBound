@@ -8,7 +8,10 @@ public class Main {
     public static void main(String[] args) throws SlickException {
 
         AppGameContainer agc = new AppGameContainer(new Game());
-        agc.setDisplayMode(agc.getScreenWidth(), agc.getScreenHeight(), true);
+        agc.setDisplayMode(agc.getScreenWidth(), agc.getScreenHeight(), false);
+        agc.setUpdateOnlyWhenVisible(false);
+        agc.setAlwaysRender(true);
+        agc.setVSync(false);
         agc.start();
     }
 
